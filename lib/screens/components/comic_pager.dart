@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
+import 'package:jasmine/screens/components/content_builder.dart';
 
 import '../comic_info_screen.dart';
 import 'images.dart';
 
 class ComicPager extends StatefulWidget {
-  final Future<List<ComicSimple>> Function(int page) onPage;
+  final Future<ComicsResponse> Function(int page) onPage;
 
   const ComicPager({required this.onPage, Key? key}) : super(key: key);
 
@@ -23,12 +25,17 @@ class _ComicPagerState extends State<ComicPager> {
 
   @override
   Widget build(BuildContext context) {
-    return _StreamPager(onPage: widget.onPage);
+    switch (currentPagerControllerMode) {
+      case PagerControllerMode.stream:
+        return _StreamPager(onPage: widget.onPage);
+      case PagerControllerMode.pager:
+        return _PagerPager(onPage: widget.onPage);
+    }
   }
 }
 
 class _StreamPager extends StatefulWidget {
-  final Future<List<ComicSimple>> Function(int page) onPage;
+  final Future<ComicsResponse> Function(int page) onPage;
 
   const _StreamPager({Key? key, required this.onPage}) : super(key: key);
 
@@ -46,8 +53,8 @@ class _StreamPagerState extends State<_StreamPager> {
   Future<List<ComicSimple>> _next() async {
     var response = await widget.onPage(_nextPage);
     _nextPage++;
-    _over = response.isEmpty;
-    return response;
+    _over = response.content.isEmpty;
+    return response.content;
   }
 
   Future _join() async {
@@ -140,6 +147,176 @@ class _StreamPagerState extends State<_StreamPager> {
       controller: _controller,
       data: _data,
       append: _buildLoadingCard(),
+    );
+  }
+}
+
+class _PagerPager extends StatefulWidget {
+  final Future<ComicsResponse> Function(int page) onPage;
+
+  const _PagerPager({Key? key, required this.onPage}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _PagerPagerState();
+}
+
+class _PagerPagerState extends State<_PagerPager> {
+  final TextEditingController _textEditController =
+      TextEditingController(text: '');
+  late int _currentPage = 1;
+  late int _maxPage = 1;
+  late final List<ComicSimple> _data = [];
+  late Future _pageFuture = _load();
+
+  Future<dynamic> _load() async {
+    var response = await widget.onPage(_currentPage);
+    setState(() {
+      if (_currentPage == 1) {
+        if (response.total == 0) {
+          _maxPage = 1;
+        } else {
+          _maxPage = (response.total / response.content.length).ceil();
+        }
+      }
+      _data.clear();
+      _data.addAll(response.content);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textEditController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ContentBuilder(
+      future: _pageFuture,
+      onRefresh: () async {
+        setState(() {
+          _pageFuture = _load();
+        });
+      },
+      successBuilder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Scaffold(
+          appBar: _buildPagerBar(),
+          body: _PagerGirdView(
+            data: _data,
+          ),
+        );
+      },
+    );
+  }
+
+  PreferredSize _buildPagerBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(50),
+      child: Container(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: .5,
+              style: BorderStyle.solid,
+              color: Colors.grey[200]!,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () {
+                _textEditController.clear();
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: Card(
+                        child: TextField(
+                          controller: _textEditController,
+                          decoration: const InputDecoration(
+                            labelText: "请输入页数：",
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'\d+')),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('取消'),
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            var text = _textEditController.text;
+                            if (text.isEmpty || text.length > 5) {
+                              return;
+                            }
+                            var num = int.parse(text);
+                            if (num == 0 || num > _maxPage) {
+                              return;
+                            }
+                            setState(() {
+                              _currentPage = num;
+                              _pageFuture = _load();
+                            });
+                          },
+                          child: const Text('确定'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Row(
+                children: [
+                  Text("第 $_currentPage / $_maxPage 页"),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                MaterialButton(
+                  minWidth: 0,
+                  onPressed: () {
+                    if (_currentPage > 1) {
+                      setState(() {
+                        _currentPage = _currentPage - 1;
+                        _pageFuture = _load();
+                      });
+                    }
+                  },
+                  child: const Text('上一页'),
+                ),
+                MaterialButton(
+                  minWidth: 0,
+                  onPressed: () {
+                    if (_currentPage < _maxPage) {
+                      setState(() {
+                        _currentPage = _currentPage + 1;
+                        _pageFuture = _load();
+                      });
+                    }
+                  },
+                  child: const Text('下一页'),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

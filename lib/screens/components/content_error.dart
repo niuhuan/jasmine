@@ -52,48 +52,8 @@ class ContentError extends StatelessWidget {
         var textSize = min / 16;
         var tipSize = min / 20;
         var infoSize = min / 30;
-        if (false) {
-          return GestureDetector(
-            onTap: onRefresh,
-            child: ListView(
-              children: [
-                Container(
-                  height: height,
-                  child: Column(
-                    children: [
-                      Expanded(child: Container()),
-                      Container(
-                        child: Icon(
-                          iconData,
-                          size: iconSize,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                      Container(height: min / 10),
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: 30,
-                          right: 30,
-                        ),
-                        child: Text(
-                          message,
-                          style: TextStyle(fontSize: textSize),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Text('(点击刷新)', style: TextStyle(fontSize: tipSize)),
-                      Container(height: min / 15),
-                      Text('$error', style: TextStyle(fontSize: infoSize)),
-                      Expanded(child: Container()),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-        return RefreshIndicator(
-          onRefresh: onRefresh,
+        return GestureDetector(
+          onTap: onRefresh,
           child: ListView(
             children: [
               Container(
@@ -110,7 +70,7 @@ class ContentError extends StatelessWidget {
                     ),
                     Container(height: min / 10),
                     Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 30,
                         right: 30,
                       ),
@@ -120,7 +80,7 @@ class ContentError extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    Text('(下拉刷新)', style: TextStyle(fontSize: tipSize)),
+                    Text('(点击刷新)', style: TextStyle(fontSize: tipSize)),
                     Container(height: min / 15),
                     Text('$error', style: TextStyle(fontSize: infoSize)),
                     Expanded(child: Container()),

@@ -20,7 +20,7 @@ PagerControllerMode _parse(String string) {
       return value;
     }
   }
-  return PagerControllerMode.stream;
+  return PagerControllerMode.pager;
 }
 
 Future initPagerControllerMode() async {

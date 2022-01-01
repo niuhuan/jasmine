@@ -37,7 +37,7 @@ class SearchPage {
   });
 
   late final String searchQuery;
-  late final String total;
+  late final int total;
 
   SearchPage.fromJson(Map<String, dynamic> json) {
     searchQuery = json['search_query'];
