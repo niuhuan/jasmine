@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
+import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 
 import '../comic_info_screen.dart';
@@ -143,7 +144,7 @@ class _StreamPagerState extends State<_StreamPager> {
 
   @override
   Widget build(BuildContext context) {
-    return _PagerGirdView(
+    return _PagerComicListView(
       controller: _controller,
       data: _data,
       append: _buildLoadingCard(),
@@ -206,7 +207,7 @@ class _PagerPagerState extends State<_PagerPager> {
       successBuilder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return Scaffold(
           appBar: _buildPagerBar(),
-          body: _PagerGirdView(
+          body: _PagerComicListView(
             data: _data,
           ),
         );
@@ -321,27 +322,41 @@ class _PagerPagerState extends State<_PagerPager> {
   }
 }
 
-class _PagerGirdView extends StatelessWidget {
+class _PagerComicListView extends StatefulWidget {
   final List<ComicSimple> data;
   final Widget? append;
   final ScrollController? controller;
 
-  const _PagerGirdView(
+  const _PagerComicListView(
       {Key? key, required this.data, this.append, this.controller})
       : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _PagerComicListViewState();
+}
+
+class _PagerComicListViewState extends State<_PagerComicListView> {
+  @override
   Widget build(BuildContext context) {
-    List<Widget> widgets = [];
-    for (var i = 0; i < data.length; i++) {
-      widgets.add(_buildImageCard(context, data[i]));
+    switch (currentPagerViewMode) {
+      case PagerViewMode.cover:
+        return _buildCoverMode();
+      case PagerViewMode.info:
+        return _buildInfoMode();
     }
-    if (append != null) {
-      widgets.add(append!);
+  }
+
+  Widget _buildCoverMode() {
+    List<Widget> widgets = [];
+    for (var i = 0; i < widget.data.length; i++) {
+      widgets.add(_buildCoverCard(context, widget.data[i]));
+    }
+    if (widget.append != null) {
+      widgets.add(widget.append!);
     }
 
     return GridView.count(
-      controller: controller,
+      controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(10.0),
       mainAxisSpacing: 5,
@@ -352,12 +367,12 @@ class _PagerGirdView extends StatelessWidget {
     );
   }
 
-  Widget _buildImageCard(BuildContext context, ComicSimple item) {
+  Widget _buildCoverCard(BuildContext context, ComicSimple data) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
-            return ComicInfoScreen(item);
+            return ComicInfoScreen(data);
           },
         ));
       },
@@ -367,13 +382,76 @@ class _PagerGirdView extends StatelessWidget {
             return Stack(
               children: [
                 JM3x4Cover(
-                  comicId: item.id,
+                  comicId: data.id,
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,
                 ),
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoMode() {
+    List<Widget> widgets = [];
+    for (var i = 0; i < widget.data.length; i++) {
+      widgets.add(_buildInfoCard(context, widget.data[i]));
+    }
+    if (widget.append != null) {
+      widgets.add(SizedBox(height: 100, child: widget.append!));
+    }
+    return ListView(
+      controller: widget.controller,
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      children: widgets,
+    );
+  }
+
+  Widget _buildInfoCard(BuildContext context, ComicSimple data) {
+    const titleStyle = TextStyle(fontWeight: FontWeight.bold);
+    final authorStyle = TextStyle(
+      fontSize: 13,
+      color: Colors.pink.shade300,
+    );
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) {
+            return ComicInfoScreen(data);
+          },
+        ));
+      },
+      child: Container(
+        padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+            ),
+          ),
+        ),
+        child: Row(
+          children: [
+            Card(
+              child: JM3x4Cover(
+                comicId: data.id,
+                width: 100 * 3 / 4,
+                height: 100,
+              ),
+            ),
+            Container(width: 10),
+            Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(data.name, style: titleStyle),
+                Container(height: 4),
+                Text(data.author, style: authorStyle),
+              ],
+            )),
+          ],
         ),
       ),
     );
