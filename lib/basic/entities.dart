@@ -1,3 +1,35 @@
+class SortBy {
+  final String _value;
+  final String _name;
+
+  const SortBy._(this._value, this._name);
+
+  get value => _value;
+
+  @override
+  String toString() {
+    return _name;
+  }
+}
+
+const sortByDefault = SortBy._("", "默认");
+const sortByNew = SortBy._("mr", "最新");
+const sortByLike = SortBy._("tf", "心");
+const sortByView = SortBy._("mv", "查看");
+const sortByViewDay = SortBy._("mv_t", "日榜");
+const sortByViewWeek = SortBy._("mv_w", "周榜");
+const sortByViewMonth = SortBy._("mv_m", "月榜");
+
+const sorts = [
+  sortByDefault,
+  sortByNew,
+  sortByLike,
+  sortByView,
+  sortByViewDay,
+  sortByViewWeek,
+  sortByViewMonth,
+];
+
 class SearchPage {
   SearchPage({
     required this.searchQuery,
@@ -47,13 +79,13 @@ class ComicSimple {
     required this.categorySub,
   });
 
-  late final String id;
+  late final int id;
   late final String author;
   late final String description;
   late final String name;
   late final String image;
   late final ComicSimpleCategory category;
-  late final CategorySub categorySub;
+  late final ComicSimpleCategory categorySub;
 
   ComicSimple.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -62,7 +94,7 @@ class ComicSimple {
     name = json['name'];
     image = json['image'];
     category = ComicSimpleCategory.fromJson(json['category']);
-    categorySub = CategorySub.fromJson(json['category_sub']);
+    categorySub = ComicSimpleCategory.fromJson(json['category_sub']);
   }
 
   Map<String, dynamic> toJson() {
@@ -80,16 +112,16 @@ class ComicSimple {
 
 class ComicSimpleCategory {
   ComicSimpleCategory({
-    required this.id,
-    required this.title,
+    this.id,
+    this.title,
   });
 
-  late final String id;
-  late final String title;
+  late final String? id;
+  late final String? title;
 
   ComicSimpleCategory.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
+    id = null;
+    title = null;
   }
 
   Map<String, dynamic> toJson() {
@@ -100,24 +132,82 @@ class ComicSimpleCategory {
   }
 }
 
-class CategorySub {
-  CategorySub({
-    this.id,
-    this.title,
+class CategoriesResponse {
+  CategoriesResponse({
+    required this.categories,
+    required this.blocks,
   });
 
-  late final String? id;
-  late final String? title;
+  late final List<Categories> categories;
+  late final List<Blocks> blocks;
 
-  CategorySub.fromJson(Map<String, dynamic> json) {
-    id = null;
-    title = null;
+  CategoriesResponse.fromJson(Map<String, dynamic> json) {
+    categories = List.from(json['categories'])
+        .map((e) => Categories.fromJson(e))
+        .toList();
+    blocks = List.from(json['blocks']).map((e) => Blocks.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['categories'] = categories.map((e) => e.toJson()).toList();
+    _data['blocks'] = blocks.map((e) => e.toJson()).toList();
+    return _data;
+  }
+}
+
+class Categories {
+  Categories({
+    required this.id,
+    required this.name,
+    required this.slug,
+    required this.totalAlbums,
+    this.type,
+  });
+
+  late final int id;
+  late final String name;
+  late final String slug;
+  late final int totalAlbums;
+  late final String? type;
+
+  Categories.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    slug = json['slug'];
+    totalAlbums = json['total_albums'];
+    type = null;
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
+    _data['name'] = name;
+    _data['slug'] = slug;
+    _data['total_albums'] = totalAlbums;
+    _data['type'] = type;
+    return _data;
+  }
+}
+
+class Blocks {
+  Blocks({
+    required this.title,
+    required this.content,
+  });
+
+  late final String title;
+  late final List<String> content;
+
+  Blocks.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    content = List.castFrom<dynamic, String>(json['content']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
     _data['title'] = title;
+    _data['content'] = content;
     return _data;
   }
 }

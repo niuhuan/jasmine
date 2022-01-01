@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jasmine/configs/configs.dart';
 
 import 'app_screen.dart';
 
@@ -24,6 +25,7 @@ class _InitScreenState extends State<InitScreen> {
   }
 
   Future _init() async {
+    await initConfigs();
     Future.delayed(Duration.zero, () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (BuildContext context) {

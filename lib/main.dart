@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/init_screen.dart';
 
 void main() {
@@ -12,9 +11,20 @@ class Jasmine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.light().copyWith(
+          appBarTheme: const AppBarTheme().copyWith(
+            titleTextStyle: const TextStyle().copyWith(
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.black87,
+            iconTheme: const IconThemeData().copyWith(
+              color: Colors.white,
+            ),
+          ),
+          tabBarTheme: const TabBarTheme().copyWith(
+            labelColor: Colors.deepOrangeAccent,
+            unselectedLabelColor: Colors.white,
+          )),
       home: const InitScreen(),
     );
   }

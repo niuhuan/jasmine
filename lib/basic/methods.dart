@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import 'entities.dart';
+export 'entities.dart';
 
 const methods = Methods._();
 
@@ -25,13 +26,30 @@ class Methods {
     return response.responseData;
   }
 
-  Future<ComicsResponse> comics(String slug, String sortBy, int page) async {
+  Future<String> loadProperty(String propertyKey) {
+    return _invoke("load_property", propertyKey);
+  }
+
+  Future<ComicsResponse> comics(String slug, SortBy sortBy, int page) async {
     final rsp = await _invoke("comics", {
       "categories_slug": slug,
-      "sort_by": sortBy,
+      "sort_by": sortBy.value,
       "page": page,
     });
     return ComicsResponse.fromJson(jsonDecode(rsp));
+  }
+
+  Future<CategoriesResponse> categories() async {
+    return CategoriesResponse.fromJson(
+        jsonDecode(await _invoke("categories", "")));
+  }
+
+  Future<String> jm3x4Cover(int comicId) {
+    return _invoke("jm3x4_cover", comicId);
+  }
+
+  Future saveImageFileToGallery(String path) {
+    return _channel.invokeMethod("saveImageFileToGallery", path);
   }
 }
 

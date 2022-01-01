@@ -23,7 +23,7 @@ public class MethodsPlugin: NSObject, FlutterPlugin {
 
     
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "native", binaryMessenger: registrar.messenger)
+        let channel = FlutterMethodChannel(name: "methods", binaryMessenger: registrar.messenger)
         let instance = MethodsPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
