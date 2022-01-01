@@ -51,6 +51,10 @@ class Methods {
   Future saveImageFileToGallery(String path) {
     return _channel.invokeMethod("saveImageFileToGallery", path);
   }
+
+  Future saveProperty(String key, String v) {
+    return _invoke("save_property", {"k": key, "v": v});
+  }
 }
 
 class _Response {

@@ -64,13 +64,13 @@ class _AppScreenState extends State<AppScreen>  {
 const List<AppScreenData> _screens = [
   AppScreenData(
     BrowserScreen(),
-    '漫画',
+    '浏览',
     Icons.menu_book_outlined,
     Icons.menu_book,
   ),
   AppScreenData(
     UserScreen(),
-    '插画',
+    '书架',
     Icons.image_outlined,
     Icons.image,
   ),

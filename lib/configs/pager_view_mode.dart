@@ -1,17 +1,35 @@
 import 'package:event/event.dart';
+import 'package:flutter/material.dart';
+import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 
 const _propertyKey = "pager_view_mode";
 late PagerViewMode _value;
-Event _currentPagerViewModeEvent = Event();
+final Event currentPagerViewModeEvent = Event();
 
 PagerViewMode get currentPagerViewMode => _value;
-
-Event get currentPagerViewModeEvent => _currentPagerViewModeEvent;
 
 enum PagerViewMode {
   cover,
   info,
+}
+
+Map<PagerViewMode, String> _nameMap = {
+  PagerViewMode.cover: "封面",
+  PagerViewMode.info: "详情",
+};
+
+String get currentPagerViewModeName => _nameMap[_value]!;
+
+Future choosePagerViewMode(BuildContext context) async {
+  final target = await chooseMapDialog(context,
+      title: "请选择展现形式",
+      values: _nameMap.map((key, value) => MapEntry(value, key)));
+  if (target != null && target != _value) {
+    await methods.saveProperty(_propertyKey, "$target");
+    _value = target;
+    currentPagerViewModeEvent.broadcast();
+  }
 }
 
 PagerViewMode _parse(String string) {

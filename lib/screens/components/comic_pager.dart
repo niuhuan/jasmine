@@ -21,7 +21,18 @@ class ComicPager extends StatefulWidget {
 class _ComicPagerState extends State<ComicPager> {
   @override
   void initState() {
+    currentPagerControllerModeEvent.subscribe(_setState);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    currentPagerControllerModeEvent.unsubscribe(_setState);
+    super.dispose();
+  }
+
+  _setState(_) {
+    setState(() {});
   }
 
   @override
@@ -337,6 +348,22 @@ class _PagerComicListView extends StatefulWidget {
 
 class _PagerComicListViewState extends State<_PagerComicListView> {
   @override
+  void initState() {
+    currentPagerViewModeEvent.subscribe(_setState);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    currentPagerViewModeEvent.unsubscribe(_setState);
+    super.dispose();
+  }
+
+  _setState(_) {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     switch (currentPagerViewMode) {
       case PagerViewMode.cover:
@@ -443,7 +470,8 @@ class _PagerComicListViewState extends State<_PagerComicListView> {
               ),
             ),
             Container(width: 10),
-            Expanded(child: Column(
+            Expanded(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(data.name, style: titleStyle),

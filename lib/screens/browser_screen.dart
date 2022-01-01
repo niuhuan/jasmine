@@ -6,6 +6,8 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/comic_pager.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 
+import 'components/browser_bottom_sheet.dart';
+
 class BrowserScreen extends StatefulWidget {
   const BrowserScreen({Key? key}) : super(key: key);
 
@@ -47,7 +49,7 @@ class _BrowserScreenState extends State<BrowserScreen>
               title: const Text("浏览"),
               actions: [
                 IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+                const BrowserBottomSheetAction(),
               ],
             ),
             body: Column(children: [

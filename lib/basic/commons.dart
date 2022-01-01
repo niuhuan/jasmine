@@ -47,6 +47,29 @@ Future<T?> chooseListDialog<T>(BuildContext context,
   );
 }
 
+Future<T?> chooseMapDialog<T>(
+  BuildContext buildContext, {
+  required String title,
+  required Map<String, T> values,
+}) async {
+  return await showDialog<T>(
+    context: buildContext,
+    builder: (BuildContext context) {
+      return SimpleDialog(
+        title: Text(title),
+        children: values.entries
+            .map((e) => SimpleDialogOption(
+                  child: Text(e.key),
+                  onPressed: () {
+                    Navigator.of(context).pop(e.value);
+                  },
+                ))
+            .toList(),
+      );
+    },
+  );
+}
+
 Future saveImageFileToGallery(BuildContext context, String path) async {
   if (Platform.isAndroid) {
     if (!(await Permission.storage.request()).isGranted) {
