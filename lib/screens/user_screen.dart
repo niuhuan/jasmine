@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/commons.dart';
+import 'package:jasmine/configs/versions.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -16,9 +17,16 @@ class _UserScreenState extends State<UserScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return const Scaffold(
-      body: Center(
-        child: Text("敬请期待"),
+    return Scaffold(
+      body: GestureDetector(
+        onTap: (){
+          openUrl("https://github.com/niuhuan/jasmine/releases/");
+        },
+        child: Center(
+          child: Text(
+            latestVersion == null ? "没有检测到新版本" : "检测到新版本 : $latestVersion",
+          ),
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// 显示一个toast
 void defaultToast(BuildContext context, String title) {
@@ -86,4 +87,23 @@ Future saveImageFileToGallery(BuildContext context, String path) async {
 
 Future<SortBy?> chooseSortBy(BuildContext context) async {
   return await chooseListDialog(context, title: "请选择排序方式", items: sorts);
+}
+
+/// 将字符串前面加0直至满足len位
+String add0(int num, int len) {
+  var rsp = "$num";
+  while (rsp.length < len) {
+    rsp = "0$rsp";
+  }
+  return rsp;
+}
+
+/// 打开web页面
+Future<dynamic> openUrl(String url) async {
+  if (await canLaunch(url)) {
+    await launch(
+      url,
+      forceSafariVC: false,
+    );
+  }
 }

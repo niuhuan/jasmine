@@ -1,4 +1,6 @@
+import 'package:jasmine/configs/reader_controller_type.dart';
 import 'package:jasmine/configs/reader_direction.dart';
+import 'package:jasmine/configs/reader_slider_position.dart';
 import 'package:jasmine/configs/reader_type.dart';
 
 import 'pager_controller_mode.dart';
@@ -9,4 +11,6 @@ Future initConfigs() async {
   await initPagerViewMode();
   await initReaderType();
   await initReaderDirection();
+  await initReaderControllerType();
+  await initReaderSliderPosition();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/screens/browser_screen.dart';
+import 'package:jasmine/screens/components/badge.dart';
 import 'package:jasmine/screens/user_screen.dart';
 
 class AppScreen extends StatefulWidget {
@@ -45,8 +46,8 @@ class _AppScreenState extends State<AppScreen>  {
         items: _screens
             .map((e) => BottomNavigationBarItem(
                   label: e.title,
-                  icon: Icon(e.icon),
-                  activeIcon: Icon(e.activeIcon),
+                  icon: e.icon,
+                  activeIcon: e.activeIcon,
                 ))
             .toList(),
         currentIndex: _selectedIndex,
@@ -65,22 +66,22 @@ const List<AppScreenData> _screens = [
   AppScreenData(
     BrowserScreen(),
     '浏览',
-    Icons.menu_book_outlined,
-    Icons.menu_book,
+    Icon(Icons.menu_book_outlined),
+    Icon(Icons.menu_book),
   ),
   AppScreenData(
     UserScreen(),
     '书架',
-    Icons.image_outlined,
-    Icons.image,
+    VersionBadged(child: Icon(Icons.image_outlined)),
+    VersionBadged(child: Icon(Icons.image)),
   ),
 ];
 
 class AppScreenData {
   final Widget screen;
   final String title;
-  final IconData icon;
-  final IconData activeIcon;
+  final Widget icon;
+  final Widget activeIcon;
 
   const AppScreenData(this.screen, this.title, this.icon, this.activeIcon);
 }

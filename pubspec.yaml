@@ -20,6 +20,7 @@ dependencies:
   modal_bottom_sheet: ^2.0.0
   another_xlider: ^1.0.0
   scrollable_positioned_list: ^0.2.3
+  url_launcher: ^6.0.17
 
 dev_dependencies:
   flutter_test:

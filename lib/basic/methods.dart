@@ -75,6 +75,10 @@ class Methods {
   Future<ImageSize> imageSize(String path) async {
     return ImageSize.fromJson(jsonDecode(await _invoke("image_size", path)));
   }
+
+  Future httpGet(String versionUrl) {
+    return _invoke("http_get", versionUrl);
+  }
 }
 
 class _Response {

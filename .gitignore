@@ -54,3 +54,5 @@ app.*.map.json
 /macos/librust.a
 /ios/rust.h
 /ios/librust.a
+
+/lib/assets/version.txt

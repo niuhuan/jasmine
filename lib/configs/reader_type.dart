@@ -5,6 +5,7 @@ import 'package:jasmine/basic/methods.dart';
 enum ReaderType {
   webtoon,
   gallery,
+  webToonFreeZoom,
 }
 
 const _propertyName = "readerType";
@@ -31,6 +32,8 @@ String readerTypeName(ReaderType type, BuildContext context) {
       return "WebToon";
     case ReaderType.gallery:
       return "相册";
+    case ReaderType.webToonFreeZoom:
+      return "自由放大滚动 无法翻页";
   }
 }
 
