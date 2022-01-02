@@ -27,6 +27,14 @@ class Jasmine extends StatelessWidget {
           unselectedLabelColor: Colors.white,
         ),
         dividerColor: Colors.grey.shade200,
+        textSelectionTheme: const TextSelectionThemeData().copyWith(
+          cursorColor: Colors.pink.shade200,
+          selectionColor: Colors.pink.shade300.withAlpha(150),
+          selectionHandleColor: Colors.pink.shade300.withAlpha(200),
+        ),
+        colorScheme: const ColorScheme.light().copyWith(
+          secondary: Colors.pink.shade200,
+        ),
       ),
       home: const InitScreen(),
     );

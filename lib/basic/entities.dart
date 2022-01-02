@@ -68,42 +68,33 @@ class ComicsResponse extends SearchPage {
   }
 }
 
-class ComicSimple {
+class ComicSimple extends ComicBasic {
   ComicSimple({
-    required this.id,
-    required this.author,
-    required this.description,
-    required this.name,
-    required this.image,
+    required int id,
+    required String author,
+    required String description,
+    required String name,
+    required String image,
     required this.category,
     required this.categorySub,
-  });
+  }) : super(
+            id: id,
+            author: author,
+            description: description,
+            name: name,
+            image: image);
 
-  late final int id;
-  late final String author;
-  late final String description;
-  late final String name;
-  late final String image;
   late final ComicSimpleCategory category;
   late final ComicSimpleCategory categorySub;
 
-  ComicSimple.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    author = json['author'];
-    description = json['description'];
-    name = json['name'];
-    image = json['image'];
+  ComicSimple.fromJson(Map<String, dynamic> json):super.fromJson(json) {
     category = ComicSimpleCategory.fromJson(json['category']);
     categorySub = ComicSimpleCategory.fromJson(json['category_sub']);
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['author'] = author;
-    _data['description'] = description;
-    _data['name'] = name;
-    _data['image'] = image;
+    final _data = super.toJson();
     _data['category'] = category.toJson();
     _data['category_sub'] = categorySub.toJson();
     return _data;
@@ -208,6 +199,208 @@ class Blocks {
     final _data = <String, dynamic>{};
     _data['title'] = title;
     _data['content'] = content;
+    return _data;
+  }
+}
+
+class AlbumResponse {
+  AlbumResponse({
+    required this.id,
+    required this.name,
+    required this.author,
+    required this.images,
+    required this.description,
+    required this.totalViews,
+    required this.likes,
+    required this.series,
+    required this.seriesId,
+    required this.commentTotal,
+    required this.tags,
+    required this.works,
+    required this.relatedList,
+    required this.liked,
+    required this.isFavorite,
+  });
+
+  late final int id;
+  late final String name;
+  late final List<String> author;
+  late final List<String> images;
+  late final String description;
+  late final int totalViews;
+  late final int likes;
+  late final List<Series> series;
+  late final int seriesId;
+  late final int commentTotal;
+  late final List<String> tags;
+  late final List<String> works;
+  late final List<ComicBasic> relatedList;
+  late final bool liked;
+  late final bool isFavorite;
+
+  AlbumResponse.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    author = List.castFrom<dynamic, String>(json['author']);
+    images = List.castFrom<dynamic, String>(json['images']);
+    description = json['description'];
+    totalViews = json['total_views'];
+    likes = json['likes'];
+    series = List.from(json['series']).map((e) => Series.fromJson(e)).toList();
+    seriesId = json['series_id'];
+    commentTotal = json['comment_total'];
+    tags = List.castFrom<dynamic, String>(json['tags']);
+    works = List.castFrom<dynamic, String>(json['works']);
+    relatedList = List.from(json['related_list'])
+        .map((e) => ComicBasic.fromJson(e))
+        .toList();
+    liked = json['liked'];
+    isFavorite = json['is_favorite'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['name'] = name;
+    _data['author'] = author;
+    _data['images'] = images;
+    _data['description'] = description;
+    _data['total_views'] = totalViews;
+    _data['likes'] = likes;
+    _data['series'] = series.map((e) => e.toJson()).toList();
+    _data['series_id'] = seriesId;
+    _data['comment_total'] = commentTotal;
+    _data['tags'] = tags;
+    _data['works'] = works;
+    _data['related_list'] = relatedList.map((e) => e.toJson()).toList();
+    _data['liked'] = liked;
+    _data['is_favorite'] = isFavorite;
+    return _data;
+  }
+}
+
+class Series {
+  Series({
+    required this.id,
+    required this.name,
+    required this.sort,
+  });
+
+  late final int id;
+  late final String name;
+  late final String sort;
+
+  Series.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    sort = json['sort'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['name'] = name;
+    _data['sort'] = sort;
+    return _data;
+  }
+}
+
+class ComicBasic {
+  ComicBasic({
+    required this.id,
+    required this.author,
+    required this.description,
+    required this.name,
+    required this.image,
+  });
+
+  late final int id;
+  late final String author;
+  late final String description;
+  late final String name;
+  late final String image;
+
+  ComicBasic.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    author = json['author'];
+    description = json['description'];
+    name = json['name'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['author'] = author;
+    _data['description'] = description;
+    _data['name'] = name;
+    _data['image'] = image;
+    return _data;
+  }
+}
+
+class ChapterResponse {
+  ChapterResponse({
+    required this.id,
+    required this.series,
+    required this.tags,
+    required this.name,
+    required this.images,
+    required this.seriesId,
+    required this.isFavorite,
+    required this.liked,
+  });
+  late final int id;
+  late final List<Series> series;
+  late final String tags;
+  late final String name;
+  late final List<String> images;
+  late final String seriesId;
+  late final bool isFavorite;
+  late final bool liked;
+
+  ChapterResponse.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    series = List.from(json['series']).map((e)=>Series.fromJson(e)).toList();
+    tags = json['tags'];
+    name = json['name'];
+    images = List.castFrom<dynamic, String>(json['images']);
+    seriesId = json['series_id'];
+    isFavorite = json['is_favorite'];
+    liked = json['liked'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['series'] = series.map((e)=>e.toJson()).toList();
+    _data['tags'] = tags;
+    _data['name'] = name;
+    _data['images'] = images;
+    _data['series_id'] = seriesId;
+    _data['is_favorite'] = isFavorite;
+    _data['liked'] = liked;
+    return _data;
+  }
+}
+
+class ImageSize {
+  ImageSize({
+    required this.h,
+    required this.w,
+  });
+  late final int h;
+  late final int w;
+
+  ImageSize.fromJson(Map<String, dynamic> json){
+    h = json['h'];
+    w = json['w'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['h'] = h;
+    _data['w'] = w;
     return _data;
   }
 }

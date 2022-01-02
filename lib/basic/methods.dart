@@ -44,16 +44,36 @@ class Methods {
         jsonDecode(await _invoke("categories", "")));
   }
 
-  Future<String> jm3x4Cover(int comicId) {
-    return _invoke("jm3x4_cover", comicId);
-  }
-
   Future saveImageFileToGallery(String path) {
     return _channel.invokeMethod("saveImageFileToGallery", path);
   }
 
   Future saveProperty(String key, String v) {
     return _invoke("save_property", {"k": key, "v": v});
+  }
+
+  Future<AlbumResponse> album(int id) async {
+    return AlbumResponse.fromJson(jsonDecode(await _invoke("album", id)));
+  }
+
+  Future<ChapterResponse> chapter(int id) async {
+    return ChapterResponse.fromJson(jsonDecode(await _invoke("chapter", id)));
+  }
+
+  Future saveViewIndex(String seriesId, int id, int index) async {
+    // todo
+  }
+
+  Future<String> jm3x4Cover(int comicId) {
+    return _invoke("jm_3x4_cover", comicId);
+  }
+
+  Future<String> jmPageImage(int id, String imageName) {
+    return _invoke("jm_page_image", {"id": id, "image_name": imageName});
+  }
+
+  Future<ImageSize> imageSize(String path) async {
+    return ImageSize.fromJson(jsonDecode(await _invoke("image_size", path)));
   }
 }
 

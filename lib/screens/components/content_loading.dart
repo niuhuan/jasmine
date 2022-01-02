@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ContentLoading extends StatelessWidget {
   final String label;
 
-  const ContentLoading({Key? key, required this.label}) : super(key: key);
+  const ContentLoading({Key? key, this.label = "加载中"}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

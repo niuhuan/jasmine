@@ -11,8 +11,6 @@ import 'package:jasmine/basic/methods.dart';
 import '../file_photo_view_screen.dart';
 
 //JM3x4Cover
-
-// 从本地加载图片
 class JM3x4ImageProvider extends ImageProvider<JM3x4ImageProvider> {
   final int comicId;
   final double scale;
@@ -56,6 +54,54 @@ class JM3x4ImageProvider extends ImageProvider<JM3x4ImageProvider> {
       ')';
 }
 
+//JM3x4Cover
+class PageImageProvider extends ImageProvider<PageImageProvider> {
+  final int id;
+  final String imageName;
+  final double scale;
+
+  PageImageProvider(this.id, this.imageName, {this.scale = 1.0});
+
+  @override
+  ImageStreamCompleter load(PageImageProvider key, DecoderCallback decode) {
+    return MultiFrameImageStreamCompleter(
+      codec: _loadAsync(key),
+      scale: key.scale,
+    );
+  }
+
+  @override
+  Future<PageImageProvider> obtainKey(ImageConfiguration configuration) {
+    return SynchronousFuture<PageImageProvider>(this);
+  }
+
+  Future<ui.Codec> _loadAsync(PageImageProvider key) async {
+    assert(key == this);
+    return PaintingBinding.instance!.instantiateImageCodec(
+      await File(await methods.jmPageImage(id, imageName)).readAsBytes(),
+    );
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other.runtimeType != runtimeType) return false;
+    final PageImageProvider typedOther = other;
+    return id == typedOther.id &&
+        imageName == typedOther.imageName &&
+        scale == typedOther.scale;
+  }
+
+  @override
+  int get hashCode => hashValues(id, imageName, scale);
+
+  @override
+  String toString() => '$runtimeType('
+      ' id: ${describeIdentity(id)},'
+      ' imageName: ${describeIdentity(imageName)},'
+      ' scale: $scale'
+      ')';
+}
+
 // 远端图片
 class JM3x4Cover extends StatefulWidget {
   final int comicId;
@@ -93,6 +139,46 @@ class _JM3x4CoverState extends State<JM3x4Cover> {
       fit: widget.fit,
       context: context,
     );
+  }
+}
+
+//
+class JMPageImage extends StatefulWidget {
+  final int id;
+  final String imageName;
+  final double? width;
+  final double? height;
+  final Function(Size size)? onTrueSize;
+
+  const JMPageImage(this.id, this.imageName,
+      {Key? key, this.width, this.height, this.onTrueSize})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _JMPageImageState();
+}
+
+class _JMPageImageState extends State<JMPageImage> {
+  late Future<String> _future;
+
+  @override
+  void initState() {
+    _future = _init();
+    super.initState();
+  }
+
+  Future<String> _init() async {
+    final _path = await methods.jmPageImage(widget.id, widget.imageName);
+    if (widget.onTrueSize != null) {
+      ImageSize size = await methods.imageSize(_path);
+      widget.onTrueSize!(Size(size.w.toDouble(), size.h.toDouble()));
+    }
+    return _path;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return pathFutureImage(_future, widget.width, widget.height);
   }
 }
 
@@ -169,7 +255,7 @@ Widget buildLoading(double? width, double? height) {
   if (width != null && height != null) {
     size = width < height ? width : height;
   }
-  return Container(
+  return SizedBox(
     width: width,
     height: height,
     child: Center(
