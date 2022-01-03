@@ -38,7 +38,7 @@ PagerControllerMode _parse(String string) {
       return value;
     }
   }
-  return PagerControllerMode.pager;
+  return PagerControllerMode.stream;
 }
 
 Future initPagerControllerMode() async {
