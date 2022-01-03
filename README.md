@@ -5,5 +5,13 @@ Jasmine Comic
 
 ## 软件截图
 
+#### 浏览器
+
+![](images/app_screen.png)
+
+#### 阅读器
+
+![](images/reader_screen.png)
+
 ## 实现功能
 
