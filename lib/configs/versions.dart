@@ -86,6 +86,7 @@ Future _versionCheck() async {
     }
   } // else dirtyVersion
   versionEvent.broadcast();
+  print("$_latestVersion");
 }
 
 String _periodText() {

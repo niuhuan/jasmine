@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/configs/versions.dart';
+import 'package:jasmine/screens/components/badge.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -19,14 +20,26 @@ class _UserScreenState extends State<UserScreen>
     super.build(context);
     return Scaffold(
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           openUrl("https://github.com/niuhuan/jasmine/releases/");
         },
-        child: Center(
-          child: Text(
-            latestVersion == null ? "没有检测到新版本" : "检测到新版本 : $latestVersion",
-          ),
-        ),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return Container(
+              color: Colors.grey.shade50,
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              child: Center(
+                child: VersionBadged(
+                  child: Text(
+                    latestVersion == null
+                        ? "没有检测到新版本"
+                        : "检测到新版本 : $latestVersion",
+                  ),
+                ),
+              ),
+            );
+          },),
       ),
     );
   }

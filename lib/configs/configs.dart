@@ -9,6 +9,7 @@ import 'pager_view_mode.dart';
 
 Future initConfigs() async {
   await initVersion();
+  autoCheckNewVersion();
   await initPagerControllerMode();
   await initPagerViewMode();
   await initReaderType();
