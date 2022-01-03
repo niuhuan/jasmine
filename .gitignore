@@ -56,3 +56,9 @@ app.*.map.json
 /ios/librust.a
 
 /lib/assets/version.txt
+
+cmake-build-*/
+windows/rust.h
+windows/rust.lib
+
+
