@@ -1,3 +1,5 @@
+import 'package:jasmine/basic/commons.dart';
+import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
 import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -66,6 +68,22 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
               title: currentPagerControllerModeName,
               onPressed: () async {
                 await choosePagerControllerMode(context);
+                setState(() {});
+              },
+            ),
+            Expanded(child: Container()),
+            _bottomIcon(
+              icon: Icons.cleaning_services_rounded,
+              title: "清除所有图片缓存",
+              onPressed: () async {
+                defaultToast(context, "清理中");
+                try {
+                  await methods.cleanAllImageCache();
+                  defaultToast(context, "清理成功");
+                } catch (e) {
+                  print("$e");
+                  defaultToast(context, "清理失败");
+                }
                 setState(() {});
               },
             ),

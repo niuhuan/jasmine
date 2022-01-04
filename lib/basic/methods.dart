@@ -64,6 +64,10 @@ class Methods {
     // todo
   }
 
+  Future cleanAllImageCache() async {
+    return _invoke("clean_all_image_cache", "params");
+  }
+
   Future<String> jm3x4Cover(int comicId) {
     return _invoke("jm_3x4_cover", comicId);
   }
