@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/screens/browser_screen.dart';
+import 'package:jasmine/screens/comic_search_screen.dart';
 import 'package:jasmine/screens/components/badge.dart';
+import 'package:jasmine/screens/components/floating_search_bar.dart';
 import 'package:jasmine/screens/user_screen.dart';
+
+import 'components/comic_floating_search_bar.dart';
 
 class AppScreen extends StatefulWidget {
   const AppScreen({Key? key}) : super(key: key);
@@ -10,7 +14,24 @@ class AppScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _AppScreenState();
 }
 
-class _AppScreenState extends State<AppScreen>  {
+class _AppScreenState extends State<AppScreen> {
+  final _searchBarController = FloatingSearchBarController();
+
+  late final List<AppScreenData> _screens = [
+    AppScreenData(
+      BrowserScreen(searchBarController: _searchBarController),
+      '浏览',
+      const Icon(Icons.menu_book_outlined),
+      const Icon(Icons.menu_book),
+    ),
+    const AppScreenData(
+      UserScreen(),
+      '书架',
+      VersionBadged(child: Icon(Icons.image_outlined)),
+      VersionBadged(child: Icon(Icons.image)),
+    ),
+  ];
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -31,51 +52,44 @@ class _AppScreenState extends State<AppScreen>  {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        allowImplicitScrolling: false,
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        children: _screens.map((e) => e.screen).toList(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: _screens
-            .map((e) => BottomNavigationBarItem(
-                  label: e.title,
-                  icon: e.icon,
-                  activeIcon: e.activeIcon,
-                ))
-            .toList(),
-        currentIndex: _selectedIndex,
-        iconSize: 20,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black.withAlpha(120),
+    return ComicFloatingSearchBarScreen(
+      onQuery: (value) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return ComicSearchScreen(initKeywords: value);
+        }));
+      },
+      controller: _searchBarController,
+      child: Scaffold(
+        body: PageView(
+          allowImplicitScrolling: false,
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          children: _screens.map((e) => e.screen).toList(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: _screens
+              .map((e) => BottomNavigationBarItem(
+                    label: e.title,
+                    icon: e.icon,
+                    activeIcon: e.activeIcon,
+                  ))
+              .toList(),
+          currentIndex: _selectedIndex,
+          iconSize: 20,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          onTap: _onItemTapped,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.black.withAlpha(120),
+        ),
       ),
     );
   }
 }
-
-const List<AppScreenData> _screens = [
-  AppScreenData(
-    BrowserScreen(),
-    '浏览',
-    Icon(Icons.menu_book_outlined),
-    Icon(Icons.menu_book),
-  ),
-  AppScreenData(
-    UserScreen(),
-    '书架',
-    VersionBadged(child: Icon(Icons.image_outlined)),
-    VersionBadged(child: Icon(Icons.image)),
-  ),
-];
 
 class AppScreenData {
   final Widget screen;

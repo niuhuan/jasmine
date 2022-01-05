@@ -39,6 +39,15 @@ class Methods {
     return ComicsResponse.fromJson(jsonDecode(rsp));
   }
 
+  Future<ComicsResponse> comicSearch(String searchQuery, SortBy sortBy, int page) async {
+    final rsp = await _invoke("comic_search", {
+      "search_query": searchQuery,
+      "sort_by": sortBy.value,
+      "page": page,
+    });
+    return ComicsResponse.fromJson(jsonDecode(rsp));
+  }
+
   Future<CategoriesResponse> categories() async {
     return CategoriesResponse.fromJson(
         jsonDecode(await _invoke("categories", "")));

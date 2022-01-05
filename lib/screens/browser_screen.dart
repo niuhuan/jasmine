@@ -5,11 +5,16 @@ import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/comic_pager.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
+import 'package:jasmine/screens/components/floating_search_bar.dart';
 
 import 'components/browser_bottom_sheet.dart';
+import 'components/actions.dart';
 
 class BrowserScreen extends StatefulWidget {
-  const BrowserScreen({Key? key}) : super(key: key);
+  final FloatingSearchBarController searchBarController;
+
+  const BrowserScreen({Key? key, required this.searchBarController})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _BrowserScreenState();
@@ -41,14 +46,21 @@ class _BrowserScreenState extends State<BrowserScreen>
             _future = methods.categories();
           });
         },
-        successBuilder:
-            (BuildContext context, AsyncSnapshot<CategoriesResponse> snapshot) {
+        successBuilder: (
+          BuildContext context,
+          AsyncSnapshot<CategoriesResponse> snapshot,
+        ) {
           final categories = snapshot.requireData.categories;
           return Scaffold(
             appBar: AppBar(
               title: const Text("浏览"),
               actions: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+                IconButton(
+                  onPressed: () {
+                    widget.searchBarController.display(modifyInput: "");
+                  },
+                  icon: const Icon(Icons.search),
+                ),
                 const BrowserBottomSheetAction(),
               ],
             ),
@@ -74,7 +86,11 @@ class _BrowserScreenState extends State<BrowserScreen>
                           },
                         ),
                       ),
-                      _buildOrderSwitch(),
+                      buildOrderSwitch(context,_sortBy,(value){
+                        setState(() {
+                          _sortBy = value;
+                        });
+                      }),
                     ],
                   ),
                 ),
@@ -95,31 +111,6 @@ class _BrowserScreenState extends State<BrowserScreen>
     );
   }
 
-  Widget _buildOrderSwitch() {
-    final iconColor = Theme.of(context).appBarTheme.iconTheme?.color;
-    return MaterialButton(
-      onPressed: () async {
-        final target = await chooseSortBy(context);
-        if (target != null) {
-          setState(() {
-            _sortBy = target;
-          });
-        }
-      },
-      child: Column(
-        children: [
-          Expanded(child: Container()),
-          Icon(
-            Icons.sort,
-            color: iconColor,
-          ),
-          Expanded(child: Container()),
-          Text(_sortBy.toString(), style: TextStyle(color: iconColor)),
-          Expanded(child: Container()),
-        ],
-      ),
-    );
-  }
 }
 
 class _MTabBar extends StatefulWidget {
