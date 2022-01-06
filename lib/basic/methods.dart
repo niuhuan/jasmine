@@ -39,7 +39,8 @@ class Methods {
     return ComicsResponse.fromJson(jsonDecode(rsp));
   }
 
-  Future<ComicsResponse> comicSearch(String searchQuery, SortBy sortBy, int page) async {
+  Future<ComicsResponse> comicSearch(
+      String searchQuery, SortBy sortBy, int page) async {
     final rsp = await _invoke("comic_search", {
       "search_query": searchQuery,
       "sort_by": sortBy.value,
@@ -69,6 +70,14 @@ class Methods {
     return ChapterResponse.fromJson(jsonDecode(await _invoke("chapter", id)));
   }
 
+  Future<CommentPage> forum(String mode, int aid, int page) async {
+    return CommentPage.fromJson(jsonDecode(await _invoke("forum", {
+      "mode": mode,
+      "aid": aid,
+      "page": page,
+    })));
+  }
+
   Future saveViewIndex(String seriesId, int id, int index) async {
     // todo
   }
@@ -83,6 +92,10 @@ class Methods {
 
   Future<String> jmPageImage(int id, String imageName) {
     return _invoke("jm_page_image", {"id": id, "image_name": imageName});
+  }
+
+  Future<String> jmPhotoImage(String imageName) {
+    return _invoke("jm_photo_image", imageName);
   }
 
   Future<ImageSize> imageSize(String path) async {

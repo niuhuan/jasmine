@@ -58,7 +58,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> {
 
               final _views = [
                 _ComicSerials(widget.simple, album),
-                ComicCommentsList(widget.simple.id),
+                ComicCommentsList(mode: "manhua", aid: widget.simple.id),
                 _ComicRelatedList(album.relatedList),
               ];
 

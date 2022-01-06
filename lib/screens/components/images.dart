@@ -142,6 +142,46 @@ class _JM3x4CoverState extends State<JM3x4Cover> {
   }
 }
 
+class JMPhotoImage extends StatefulWidget {
+  final String photoName;
+
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+
+  const JMPhotoImage({
+    Key? key,
+    required this.photoName,
+    this.width,
+    this.height,
+    this.fit = BoxFit.cover,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _JMPhotoImageState();
+}
+
+class _JMPhotoImageState extends State<JMPhotoImage> {
+  late Future<String> _future;
+
+  @override
+  void initState() {
+    _future = methods.jmPhotoImage(widget.photoName);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return pathFutureImage(
+      _future,
+      widget.width,
+      widget.height,
+      fit: widget.fit,
+      context: context,
+    );
+  }
+}
+
 //
 class JMPageImage extends StatefulWidget {
   final int id;

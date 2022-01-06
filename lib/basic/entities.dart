@@ -30,6 +30,11 @@ const sorts = [
   sortByViewMonth,
 ];
 
+class Page<T> {
+  late final List<T> list;
+  late final int total;
+}
+
 class SearchPage {
   SearchPage({
     required this.searchQuery,
@@ -87,7 +92,7 @@ class ComicSimple extends ComicBasic {
   late final ComicSimpleCategory category;
   late final ComicSimpleCategory categorySub;
 
-  ComicSimple.fromJson(Map<String, dynamic> json):super.fromJson(json) {
+  ComicSimple.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     category = ComicSimpleCategory.fromJson(json['category']);
     categorySub = ComicSimpleCategory.fromJson(json['category_sub']);
   }
@@ -350,6 +355,7 @@ class ChapterResponse {
     required this.isFavorite,
     required this.liked,
   });
+
   late final int id;
   late final List<Series> series;
   late final String tags;
@@ -359,9 +365,9 @@ class ChapterResponse {
   late final bool isFavorite;
   late final bool liked;
 
-  ChapterResponse.fromJson(Map<String, dynamic> json){
+  ChapterResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    series = List.from(json['series']).map((e)=>Series.fromJson(e)).toList();
+    series = List.from(json['series']).map((e) => Series.fromJson(e)).toList();
     tags = json['tags'];
     name = json['name'];
     images = List.castFrom<dynamic, String>(json['images']);
@@ -373,7 +379,7 @@ class ChapterResponse {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
-    _data['series'] = series.map((e)=>e.toJson()).toList();
+    _data['series'] = series.map((e) => e.toJson()).toList();
     _data['tags'] = tags;
     _data['name'] = name;
     _data['images'] = images;
@@ -389,10 +395,11 @@ class ImageSize {
     required this.h,
     required this.w,
   });
+
   late final int h;
   late final int w;
 
-  ImageSize.fromJson(Map<String, dynamic> json){
+  ImageSize.fromJson(Map<String, dynamic> json) {
     h = json['h'];
     w = json['w'];
   }
@@ -402,5 +409,162 @@ class ImageSize {
     _data['h'] = h;
     _data['w'] = w;
     return _data;
+  }
+}
+
+class Comment {
+  Comment({
+    required this.AID,
+    required this.CID,
+    required this.UID,
+    required this.username,
+    required this.nickname,
+    required this.likes,
+    required this.gender,
+    required this.updateAt,
+    required this.addtime,
+    required this.parentCID,
+    required this.expinfo,
+    required this.name,
+    required this.content,
+    required this.photo,
+    required this.spoiler,
+    required this.replys,
+  });
+
+  late final int? AID;
+  late final int CID;
+  late final int UID;
+  late final String username;
+  late final String nickname;
+  late final int likes;
+  late final String gender;
+  late final String updateAt;
+  late final String addtime;
+  late final int parentCID;
+  late final Expinfo expinfo;
+  late final String name;
+  late final String content;
+  late final String photo;
+  late final int spoiler;
+  late final List<Comment> replys;
+
+  Comment.fromJson(Map<String, dynamic> json) {
+    AID = json['AID'];
+    CID = json['CID'];
+    UID = json['UID'];
+    username = json['username'];
+    nickname = json['nickname'];
+    likes = json['likes'];
+    gender = json['gender'];
+    updateAt = json['update_at'];
+    addtime = json['addtime'];
+    parentCID = json['parent_CID'];
+    expinfo = Expinfo.fromJson(json['expinfo']);
+    name = json['name'];
+    content = json['content'];
+    photo = json['photo'];
+    spoiler = json['spoiler'];
+    replys = List.from(json['replys'])
+        .map((e) => Comment.fromJson(e))
+        .cast<Comment>()
+        .toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['AID'] = AID;
+    _data['CID'] = CID;
+    _data['UID'] = UID;
+    _data['username'] = username;
+    _data['nickname'] = nickname;
+    _data['likes'] = likes;
+    _data['gender'] = gender;
+    _data['update_at'] = updateAt;
+    _data['addtime'] = addtime;
+    _data['parent_CID'] = parentCID;
+    _data['expinfo'] = expinfo.toJson();
+    _data['name'] = name;
+    _data['content'] = content;
+    _data['photo'] = photo;
+    _data['spoiler'] = spoiler;
+    _data['replys'] = replys.map((e) => e.toJson()).toList();
+    return _data;
+  }
+}
+
+class Expinfo {
+  Expinfo({
+    required this.levelName,
+    required this.level,
+    required this.nextLevelExp,
+    required this.exp,
+    required this.expPercent,
+    required this.uid,
+    required this.badges,
+  });
+
+  late final String levelName;
+  late final int level;
+  late final int nextLevelExp;
+  late final String exp;
+  late final double expPercent;
+  late final String uid;
+  late final List<Badge> badges;
+
+  Expinfo.fromJson(Map<String, dynamic> json) {
+    levelName = json['level_name'];
+    level = json['level'];
+    nextLevelExp = json['nextLevelExp'];
+    exp = json['exp'];
+    expPercent = json['expPercent'];
+    uid = json['uid'];
+    badges = List.from(json['badges']).map((e) => Badge.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['level_name'] = levelName;
+    _data['level'] = level;
+    _data['nextLevelExp'] = nextLevelExp;
+    _data['exp'] = exp;
+    _data['expPercent'] = expPercent;
+    _data['uid'] = uid;
+    _data['badges'] = badges.map((e) => e.toJson()).toList();
+    return _data;
+  }
+}
+
+class Badge {
+  Badge({
+    required this.content,
+    required this.name,
+    required this.id,
+  });
+
+  late final String content;
+  late final String name;
+  late final String id;
+
+  Badge.fromJson(Map<String, dynamic> json) {
+    content = json['content'];
+    name = json['name'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['content'] = content;
+    _data['name'] = name;
+    _data['id'] = id;
+    return _data;
+  }
+}
+
+class CommentPage extends Page<Comment> {
+  CommentPage.fromJson(Map<String, dynamic> json) {
+    list =
+        List.from(json['list']).map((e) => Comment.fromJson(e)).toList();
+    total = json['total'];
   }
 }
