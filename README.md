@@ -6,6 +6,12 @@ Jasmine Comic
 
 一个简单易用的漫画二次元客户端, 同时支持支持 Android / iOS / MacOS / Windows.
 
+此APP内容存在限制级别内容(露骨/血腥/暴力), 存在请您在遵守当地法律法规的情况下使用。
+
+如果您觉得此软件对您有帮助，可以star进行支持。同时欢迎您issue，一起让软件变得更好。
+
+仓库地址 [https://github.com/niuhuan/nhentai-cross](https://github.com/niuhuan/nhentai-cross)
+
 ## 软件截图
 
 #### 浏览器

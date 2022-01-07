@@ -563,8 +563,7 @@ class Badge {
 
 class CommentPage extends Page<Comment> {
   CommentPage.fromJson(Map<String, dynamic> json) {
-    list =
-        List.from(json['list']).map((e) => Comment.fromJson(e)).toList();
+    list = List.from(json['list']).map((e) => Comment.fromJson(e)).toList();
     total = json['total'];
   }
 }

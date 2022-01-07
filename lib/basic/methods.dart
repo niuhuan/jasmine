@@ -105,6 +105,22 @@ class Methods {
   Future httpGet(String versionUrl) {
     return _invoke("http_get", versionUrl);
   }
+
+  Future<String> loadApiHost() {
+    return _invoke("load_api_host", "");
+  }
+
+  Future<String> loadCdnHost() {
+    return _invoke("load_cdn_host", "");
+  }
+
+  Future saveApiHost(String choose) {
+    return _invoke("save_api_host", choose);
+  }
+
+  Future saveCdnHost(String choose) {
+    return _invoke("save_cdn_host", choose);
+  }
 }
 
 class _Response {
