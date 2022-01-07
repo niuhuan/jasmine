@@ -1,5 +1,7 @@
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/network_api_host.dart';
+import 'package:jasmine/configs/network_cdn_host.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
 import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -73,8 +75,17 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
             ),
             Expanded(child: Container()),
             _bottomIcon(
+              icon: Icons.view_quilt,
+              title: currentPagerViewModeName,
+              onPressed: () async {
+                await choosePagerViewMode(context);
+                setState(() {});
+              },
+            ),
+            Expanded(child: Container()),
+            _bottomIcon(
               icon: Icons.cleaning_services_rounded,
-              title: "清除所有图片缓存",
+              title: "清理",
               onPressed: () async {
                 defaultToast(context, "清理中");
                 try {
@@ -88,11 +99,25 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
               },
             ),
             Expanded(child: Container()),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(child: Container()),
             _bottomIcon(
-              icon: Icons.view_quilt,
-              title: currentPagerViewModeName,
+              icon: Icons.shuffle,
+              title: currentApiHostName,
               onPressed: () async {
-                await choosePagerViewMode(context);
+                await chooseApiHost(context);
+                setState(() {});
+              },
+            ),
+            Expanded(child: Container()),
+            _bottomIcon(
+              icon: Icons.repeat_one,
+              title: currentCdnHostName,
+              onPressed: () async {
+                await chooseCdnHost(context);
                 setState(() {});
               },
             ),

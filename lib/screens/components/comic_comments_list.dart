@@ -60,8 +60,8 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
           children: [
             _buildPrePage(),
             ...snapshot.requireData.list.map((e) => _buildComment(e)),
-            _buildPostComment(),
             _buildNextPage(),
+            _buildPostComment(),
           ],
         );
       },

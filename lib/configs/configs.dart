@@ -1,11 +1,11 @@
-import 'package:jasmine/configs/network_api_host.dart';
-import 'package:jasmine/configs/network_cdn_host.dart';
-import 'package:jasmine/configs/reader_controller_type.dart';
-import 'package:jasmine/configs/reader_direction.dart';
-import 'package:jasmine/configs/reader_slider_position.dart';
-import 'package:jasmine/configs/reader_type.dart';
-import 'package:jasmine/configs/versions.dart';
-
+import 'network_api_host.dart';
+import 'network_cdn_host.dart';
+import 'reader_controller_type.dart';
+import 'reader_direction.dart';
+import 'reader_slider_position.dart';
+import 'reader_type.dart';
+import 'versions.dart';
+import 'login.dart';
 import 'pager_controller_mode.dart';
 import 'pager_view_mode.dart';
 
@@ -20,4 +20,5 @@ Future initConfigs() async {
   await initReaderDirection();
   await initReaderControllerType();
   await initReaderSliderPosition();
+  initLogin();
 }

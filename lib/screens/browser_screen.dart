@@ -39,6 +39,18 @@ class _BrowserScreenState extends State<BrowserScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("浏览"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              widget.searchBarController.display(modifyInput: "");
+            },
+            icon: const Icon(Icons.search),
+          ),
+          const BrowserBottomSheetAction(),
+        ],
+      ),
       body: ContentBuilder(
         future: _future,
         onRefresh: () async {
@@ -51,66 +63,51 @@ class _BrowserScreenState extends State<BrowserScreen>
           AsyncSnapshot<CategoriesResponse> snapshot,
         ) {
           final categories = snapshot.requireData.categories;
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text("浏览"),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    widget.searchBarController.display(modifyInput: "");
-                  },
-                  icon: const Icon(Icons.search),
+          return Column(children: [
+            SizedBox(
+              height: 56,
+              child: Container(
+                padding: const EdgeInsets.only(top: 5),
+                color: Color.alphaBlend(
+                  Colors.grey.shade500.withOpacity(.05),
+                  Theme.of(context).appBarTheme.backgroundColor ??
+                      Colors.transparent,
                 ),
-                const BrowserBottomSheetAction(),
-              ],
-            ),
-            body: Column(children: [
-              SizedBox(
-                height: 56,
-                child: Container(
-                  padding: const EdgeInsets.only(top: 5),
-                  color: Color.alphaBlend(
-                    Colors.grey.shade500.withOpacity(.05),
-                    Theme.of(context).appBarTheme.backgroundColor ??
-                        Colors.transparent,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _MTabBar(
-                          categories,
-                          (index) {
-                            setState(() {
-                              _slug = categories[index].slug;
-                            });
-                          },
-                        ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _MTabBar(
+                        categories,
+                        (index) {
+                          setState(() {
+                            _slug = categories[index].slug;
+                          });
+                        },
                       ),
-                      buildOrderSwitch(context,_sortBy,(value){
-                        setState(() {
-                          _sortBy = value;
-                        });
-                      }),
-                    ],
-                  ),
+                    ),
+                    buildOrderSwitch(context, _sortBy, (value) {
+                      setState(() {
+                        _sortBy = value;
+                      });
+                    }),
+                  ],
                 ),
               ),
-              Expanded(
-                child: ComicPager(
-                  key: Key("$_slug:$_sortBy"),
-                  onPage: (int page) async {
-                    final response = await methods.comics(_slug, _sortBy, page);
-                    return response;
-                  },
-                ),
+            ),
+            Expanded(
+              child: ComicPager(
+                key: Key("$_slug:$_sortBy"),
+                onPage: (int page) async {
+                  final response = await methods.comics(_slug, _sortBy, page);
+                  return response;
+                },
               ),
-            ]),
-          );
+            ),
+          ]);
         },
       ),
     );
   }
-
 }
 
 class _MTabBar extends StatefulWidget {

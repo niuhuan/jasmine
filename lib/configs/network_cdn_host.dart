@@ -8,6 +8,8 @@ const _cdnHostMap = {
   "分流2": "\"cdn-msp.jmcdnproxy2.cc\"",
 };
 
+late String _cdnHost;
+
 String _cdnHostName(String value) {
   if (value == "") {
     value = "null";
@@ -15,10 +17,22 @@ String _cdnHostName(String value) {
   return _cdnHostMap.map((key, value) => MapEntry(value, key))[value] ?? "";
 }
 
-late String _cdnHost;
+String get currentCdnHostName => _cdnHostName(_cdnHost);
 
 Future<void> initCdnHost() async {
   _cdnHost = await methods.loadCdnHost();
+}
+
+Future chooseCdnHost(BuildContext context) async {
+  final choose = await chooseMapDialog(
+    context,
+    title: "API分流",
+    values: _cdnHostMap,
+  );
+  if (choose != null) {
+    await methods.saveCdnHost(choose);
+    _cdnHost = choose;
+  }
 }
 
 Widget cdnHostSetting() {
@@ -26,16 +40,8 @@ Widget cdnHostSetting() {
     builder: (BuildContext context, void Function(void Function()) setState) {
       return ListTile(
         onTap: () async {
-          final choose = await chooseMapDialog(
-            context,
-            title: "API分流",
-            values: _cdnHostMap,
-          );
-          if (choose != null) {
-            await methods.saveCdnHost(choose);
-            _cdnHost = choose;
-            setState(() {});
-          }
+          await chooseCdnHost(context);
+          setState(() {});
         },
         title: const Text("图片分流"),
         subtitle: Text(_cdnHostName(_cdnHost)),

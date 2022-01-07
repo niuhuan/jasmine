@@ -567,3 +567,123 @@ class CommentPage extends Page<Comment> {
     total = json['total'];
   }
 }
+
+class PreLoginResponse {
+  PreLoginResponse({
+    required this.preSet,
+    required this.preLogin,
+    required this.selfInfo,
+  });
+
+  late final bool preSet;
+  late final bool preLogin;
+  late final SelfInfo? selfInfo;
+
+  PreLoginResponse.fromJson(Map<String, dynamic> json) {
+    preSet = json['pre_set'];
+    preLogin = json['pre_login'];
+    if (json['self_info'] != null) {
+      selfInfo = SelfInfo.fromJson(json['self_info']);
+    } else {
+      selfInfo = null;
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['pre_set'] = preSet;
+    _data['pre_login'] = preLogin;
+    _data['self_info'] = selfInfo?.toJson();
+    return _data;
+  }
+}
+
+class SelfInfo {
+  SelfInfo({
+    required this.uid,
+    required this.username,
+    required this.email,
+    required this.emailverified,
+    required this.photo,
+    required this.fname,
+    required this.gender,
+    required this.message,
+    required this.coin,
+    required this.albumFavorites,
+    required this.s,
+    required this.favoriteList,
+    required this.levelName,
+    required this.level,
+    required this.nextLevelExp,
+    required this.exp,
+    required this.expPercent,
+    required this.badges,
+    required this.albumFavoritesMax,
+  });
+
+  late final String uid;
+  late final String username;
+  late final String email;
+  late final String emailverified;
+  late final String photo;
+  late final String fname;
+  late final String gender;
+  late final String message;
+  late final String coin;
+  late final int albumFavorites;
+  late final String s;
+  late final List<dynamic> favoriteList;
+  late final String levelName;
+  late final int level;
+  late final int nextLevelExp;
+  late final String exp;
+  late final double expPercent;
+  late final List<dynamic> badges;
+  late final int albumFavoritesMax;
+
+  SelfInfo.fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
+    username = json['username'];
+    email = json['email'];
+    emailverified = json['emailverified'];
+    photo = json['photo'];
+    fname = json['fname'];
+    gender = json['gender'];
+    message = json['message'];
+    coin = json['coin'];
+    albumFavorites = json['album_favorites'];
+    s = json['s'];
+    favoriteList = List.castFrom<dynamic, dynamic>(json['favorite_list']);
+    levelName = json['level_name'];
+    level = json['level'];
+    nextLevelExp = json['nextLevelExp'];
+    exp = json['exp'];
+    expPercent = json['expPercent'];
+    badges = List.castFrom<dynamic, dynamic>(json['badges']);
+    albumFavoritesMax = json['album_favorites_max'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['uid'] = uid;
+    _data['username'] = username;
+    _data['email'] = email;
+    _data['emailverified'] = emailverified;
+    _data['photo'] = photo;
+    _data['fname'] = fname;
+    _data['gender'] = gender;
+    _data['message'] = message;
+    _data['coin'] = coin;
+    _data['album_favorites'] = albumFavorites;
+    _data['s'] = s;
+    _data['favorite_list'] = favoriteList;
+    _data['level_name'] = levelName;
+    _data['level'] = level;
+    _data['nextLevelExp'] = nextLevelExp;
+    _data['exp'] = exp;
+    _data['expPercent'] = expPercent;
+    _data['badges'] = badges;
+    _data['album_favorites_max'] = albumFavoritesMax;
+    return _data;
+  }
+}

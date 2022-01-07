@@ -10,6 +10,8 @@ const _apiHostMap = {
   "分流3": "\"www.jmapibranch3.cc\"",
 };
 
+late String _apiHost;
+
 String _apiHostName(String value) {
   if (value == "") {
     value = "null";
@@ -17,10 +19,22 @@ String _apiHostName(String value) {
   return _apiHostMap.map((key, value) => MapEntry(value, key))[value] ?? "";
 }
 
-late String _apiHost;
+String get currentApiHostName => _apiHostName(_apiHost);
 
 Future<void> initApiHost() async {
   _apiHost = await methods.loadApiHost();
+}
+
+Future chooseApiHost(BuildContext context) async {
+  final choose = await chooseMapDialog(
+    context,
+    title: "API分流",
+    values: _apiHostMap,
+  );
+  if (choose != null) {
+    await methods.saveApiHost(choose);
+    _apiHost = choose;
+  }
 }
 
 Widget apiHostSetting() {
@@ -28,16 +42,8 @@ Widget apiHostSetting() {
     builder: (BuildContext context, void Function(void Function()) setState) {
       return ListTile(
         onTap: () async {
-          final choose = await chooseMapDialog(
-            context,
-            title: "API分流",
-            values: _apiHostMap,
-          );
-          if (choose != null) {
-            await methods.saveApiHost(choose);
-            _apiHost = choose;
-            setState(() {});
-          }
+          await chooseApiHost(context);
+          setState(() {});
         },
         title: const Text("API分流"),
         subtitle: Text(_apiHostName(_apiHost)),

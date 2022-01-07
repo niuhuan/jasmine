@@ -121,6 +121,12 @@ class Methods {
   Future saveCdnHost(String choose) {
     return _invoke("save_cdn_host", choose);
   }
+
+  Future<PreLoginResponse> preLogin() async {
+    return PreLoginResponse.fromJson(
+      jsonDecode(await _invoke("pre_login", "")),
+    );
+  }
 }
 
 class _Response {
