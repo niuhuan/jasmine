@@ -26,6 +26,10 @@ class Methods {
     return response.responseData;
   }
 
+  Future init() {
+    return _invoke("init", "");
+  }
+
   Future<String> loadProperty(String propertyKey) {
     return _invoke("load_property", propertyKey);
   }
@@ -78,12 +82,24 @@ class Methods {
     })));
   }
 
+  Future<FavoritesResponse> favorites(int page) async {
+    return FavoritesResponse.fromJson(
+      jsonDecode(await _invoke("favorites", page)),
+    );
+  }
+
+  Future<ActionResponse> setFavorite(int aid) async {
+    return ActionResponse.fromJson(
+      jsonDecode(await _invoke("set_favorite", aid)),
+    );
+  }
+
   Future saveViewIndex(String seriesId, int id, int index) async {
     // todo
   }
 
-  Future cleanAllImageCache() async {
-    return _invoke("clean_all_image_cache", "params");
+  Future cleanAllCache() async {
+    return _invoke("clean_all_cache", "params");
   }
 
   Future<String> jm3x4Cover(int comicId) {
@@ -125,6 +141,15 @@ class Methods {
   Future<PreLoginResponse> preLogin() async {
     return PreLoginResponse.fromJson(
       jsonDecode(await _invoke("pre_login", "")),
+    );
+  }
+
+  Future<SelfInfo> login(String username, String password) async {
+    return SelfInfo.fromJson(
+      jsonDecode(await _invoke("login", {
+        "username": username,
+        "password": password,
+      })),
     );
   }
 }

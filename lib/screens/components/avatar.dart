@@ -25,11 +25,17 @@ class Avatar extends StatelessWidget {
           )),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(size)),
-        child: JMPhotoImage(
-          photoName: photoName,
-          width: size,
-          height: size,
-        ),
+        child: photoName == "?v=0?v="
+            ? Icon(
+                Icons.query_builder_sharp,
+                color: Colors.white,
+                size: size,
+              )
+            : JMPhotoImage(
+                photoName: photoName,
+                width: size,
+                height: size,
+              ),
       ),
     );
   }

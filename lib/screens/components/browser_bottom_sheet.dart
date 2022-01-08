@@ -89,7 +89,7 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
               onPressed: () async {
                 defaultToast(context, "清理中");
                 try {
-                  await methods.cleanAllImageCache();
+                  await methods.cleanAllCache();
                   defaultToast(context, "清理成功");
                 } catch (e) {
                   print("$e");

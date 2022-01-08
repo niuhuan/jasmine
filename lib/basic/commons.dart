@@ -107,3 +107,65 @@ Future<dynamic> openUrl(String url) async {
     );
   }
 }
+
+final _controller = TextEditingController();
+
+Future<String?> displayTextInputDialog(BuildContext context,
+    {String? title,
+    String src = "",
+    String? hint,
+    String? desc,
+    bool isPasswd = false}) {
+  _controller.text = src;
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: title == null ? null : Text(title),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(hintText: hint),
+                obscureText: isPasswd,
+                obscuringCharacter: '\u2022',
+              ),
+              ...(desc == null
+                  ? []
+                  : [
+                      Container(
+                        padding: EdgeInsets.only(top: 20, bottom: 10),
+                        child: Text(
+                          desc,
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.color
+                                  ?.withOpacity(.5)),
+                        ),
+                      )
+                    ]),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          MaterialButton(
+            child: Text('取消'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          MaterialButton(
+            child: Text('确认'),
+            onPressed: () {
+              Navigator.of(context).pop(_controller.text);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}

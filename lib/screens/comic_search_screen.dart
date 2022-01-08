@@ -57,7 +57,10 @@ class _ComicSearchScreenState extends State<ComicSearchScreen> {
               _sortBy,
               page,
             );
-            return response;
+            return InnerComicPage(
+              total: response.total,
+              list: response.content,
+            );
           },
         ),
       ),

@@ -61,6 +61,7 @@ class _AppScreenState extends State<AppScreen> {
       controller: _searchBarController,
       child: Scaffold(
         body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           allowImplicitScrolling: false,
           controller: _pageController,
           onPageChanged: (index) {

@@ -13,7 +13,7 @@ import 'comic_list.dart';
 import 'images.dart';
 
 class ComicPager extends StatefulWidget {
-  final Future<ComicsResponse> Function(int page) onPage;
+  final Future<InnerComicPage> Function(int page) onPage;
 
   const ComicPager({required this.onPage, Key? key}) : super(key: key);
 
@@ -50,7 +50,7 @@ class _ComicPagerState extends State<ComicPager> {
 }
 
 class _StreamPager extends StatefulWidget {
-  final Future<ComicsResponse> Function(int page) onPage;
+  final Future<InnerComicPage> Function(int page) onPage;
 
   const _StreamPager({Key? key, required this.onPage}) : super(key: key);
 
@@ -68,8 +68,8 @@ class _StreamPagerState extends State<_StreamPager> {
   Future<List<ComicSimple>> _next() async {
     var response = await widget.onPage(_nextPage);
     _nextPage++;
-    _over = response.content.isEmpty;
-    return response.content;
+    _over = response.list.isEmpty;
+    return response.list;
   }
 
   Future _join() async {
@@ -169,7 +169,7 @@ class _StreamPagerState extends State<_StreamPager> {
 }
 
 class _PagerPager extends StatefulWidget {
-  final Future<ComicsResponse> Function(int page) onPage;
+  final Future<InnerComicPage> Function(int page) onPage;
 
   const _PagerPager({Key? key, required this.onPage}) : super(key: key);
 
@@ -192,11 +192,11 @@ class _PagerPagerState extends State<_PagerPager> {
         if (response.total == 0) {
           _maxPage = 1;
         } else {
-          _maxPage = (response.total / response.content.length).ceil();
+          _maxPage = (response.total / response.list.length).ceil();
         }
       }
       _data.clear();
-      _data.addAll(response.content);
+      _data.addAll(response.list);
     });
   }
 

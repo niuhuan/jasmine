@@ -99,7 +99,10 @@ class _BrowserScreenState extends State<BrowserScreen>
                 key: Key("$_slug:$_sortBy"),
                 onPage: (int page) async {
                   final response = await methods.comics(_slug, _sortBy, page);
-                  return response;
+                  return InnerComicPage(
+                    total: response.total,
+                    list: response.content,
+                  );
                 },
               ),
             ),

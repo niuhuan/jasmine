@@ -989,7 +989,7 @@ class _ComicReaderWebToonState extends _ComicReaderState {
         },
         textColor: Colors.white,
         child: Container(
-          padding: EdgeInsets.only(top: 40, bottom: 40),
+          padding: const EdgeInsets.only(top: 40, bottom: 40),
           child: Text(super._hasNextEp() ? '下一章' : '结束阅读'),
         ),
       ),

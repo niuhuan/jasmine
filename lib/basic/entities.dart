@@ -35,6 +35,24 @@ class Page<T> {
   late final int total;
 }
 
+class CountPage<T> {
+  late final List<T> list;
+  late final int total;
+  late final int count;
+
+  CountPage.fromJson(Map<String, dynamic> json) {
+    total = json["total"];
+    count = json["count"];
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    json["total"] = total;
+    json["count"] = count;
+    return json;
+  }
+}
+
 class SearchPage {
   SearchPage({
     required this.searchQuery,
@@ -241,7 +259,7 @@ class AlbumResponse {
   late final List<String> works;
   late final List<ComicBasic> relatedList;
   late final bool liked;
-  late final bool isFavorite;
+  late bool isFavorite;
 
   AlbumResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -509,7 +527,7 @@ class Expinfo {
   late final int nextLevelExp;
   late final String exp;
   late final double expPercent;
-  late final String uid;
+  late final int uid;
   late final List<Badge> badges;
 
   Expinfo.fromJson(Map<String, dynamic> json) {
@@ -611,7 +629,6 @@ class SelfInfo {
     required this.coin,
     required this.albumFavorites,
     required this.s,
-    required this.favoriteList,
     required this.levelName,
     required this.level,
     required this.nextLevelExp,
@@ -621,7 +638,7 @@ class SelfInfo {
     required this.albumFavoritesMax,
   });
 
-  late final String uid;
+  late final int uid;
   late final String username;
   late final String email;
   late final String emailverified;
@@ -632,7 +649,6 @@ class SelfInfo {
   late final String coin;
   late final int albumFavorites;
   late final String s;
-  late final List<dynamic> favoriteList;
   late final String levelName;
   late final int level;
   late final int nextLevelExp;
@@ -653,7 +669,6 @@ class SelfInfo {
     coin = json['coin'];
     albumFavorites = json['album_favorites'];
     s = json['s'];
-    favoriteList = List.castFrom<dynamic, dynamic>(json['favorite_list']);
     levelName = json['level_name'];
     level = json['level'];
     nextLevelExp = json['nextLevelExp'];
@@ -676,7 +691,6 @@ class SelfInfo {
     _data['coin'] = coin;
     _data['album_favorites'] = albumFavorites;
     _data['s'] = s;
-    _data['favorite_list'] = favoriteList;
     _data['level_name'] = levelName;
     _data['level'] = level;
     _data['nextLevelExp'] = nextLevelExp;
@@ -686,4 +700,53 @@ class SelfInfo {
     _data['album_favorites_max'] = albumFavoritesMax;
     return _data;
   }
+}
+
+class FavoritesResponse extends CountPage<ComicSimple> {
+  FavoritesResponse.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    list = List.from(json['list']).map((e) => ComicSimple.fromJson(e)).toList();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final _data = super.toJson();
+    _data['list'] = list;
+    return _data;
+  }
+}
+
+class ActionResponse {
+  ActionResponse({
+    required this.status,
+    required this.msg,
+    required this.type,
+  });
+
+  late final String status;
+  late final String msg;
+  late final String type;
+
+  ActionResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    msg = json['msg'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['status'] = status;
+    _data['msg'] = msg;
+    _data['type'] = type;
+    return _data;
+  }
+}
+
+class InnerComicPage {
+  final int total;
+  final List<ComicSimple> list;
+
+  InnerComicPage({
+    required this.total,
+    required this.list,
+  });
 }

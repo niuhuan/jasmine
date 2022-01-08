@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/configs/login.dart';
 import 'package:jasmine/configs/versions.dart';
+import 'package:jasmine/screens/components/avatar.dart';
 import 'package:jasmine/screens/components/badge.dart';
+
+import 'favorites_screen.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -43,6 +46,9 @@ class _UserScreenState extends State<UserScreen>
         child: ListView(
           children: [
             _buildCard(),
+            const Divider(),
+            _buildFavorites(),
+            const Divider(),
             _buildVersion(),
           ],
         ),
@@ -80,7 +86,9 @@ class _UserScreenState extends State<UserScreen>
 
   Widget _buildLoginButton(String title) {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () async {
+        await loginDialog(context);
+      },
       child: Container(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
         decoration: BoxDecoration(
@@ -95,7 +103,7 @@ class _UserScreenState extends State<UserScreen>
         child: Text(
           title,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             color: Colors.white,
             fontWeight: FontWeight.normal,
           ),
@@ -117,7 +125,41 @@ class _UserScreenState extends State<UserScreen>
   }
 
   Widget _buildSelfInfoCard() {
-    return Container();
+    return Column(
+      children: [
+        Expanded(child: Container()),
+        Center(
+          child: Avatar(selfInfo.photo),
+        ),
+        Container(height: 10),
+        Center(
+          child: Text(
+            selfInfo.username,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        Expanded(child: Container()),
+      ],
+    );
+  }
+
+  Widget _buildFavorites() {
+    return ListTile(
+      onTap: () async {
+        if (LoginStatus.loginSuccess == loginStatus) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) {
+              return const FavoritesScreen();
+            },
+          ));
+        } else {
+          defaultToast(context, "登录之后才能使用收藏夹喔");
+        }
+      },
+      title: const Text("收藏夹"),
+    );
   }
 
   Widget _buildVersion() {

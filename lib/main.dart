@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/screens/init_screen.dart';
 
-void main() {
+import 'basic/methods.dart';
+
+void main() async {
   runApp(const Jasmine());
 }
 
