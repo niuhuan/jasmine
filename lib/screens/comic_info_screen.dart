@@ -67,7 +67,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> {
       body: ListView(
         shrinkWrap: true,
         children: [
-          ComicInfoCard(widget.simple),
+          ComicInfoCard(widget.simple,link: true),
           ItemBuilder(
             future: _albumFuture,
             onRefresh: () async {

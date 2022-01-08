@@ -59,7 +59,7 @@ class _StreamPager extends StatefulWidget {
 }
 
 class _StreamPagerState extends State<_StreamPager> {
-  bool _over = false;
+  int _maxPage = 1;
   int _nextPage = 1;
 
   var _joining = false;
@@ -67,8 +67,14 @@ class _StreamPagerState extends State<_StreamPager> {
 
   Future<List<ComicSimple>> _next() async {
     var response = await widget.onPage(_nextPage);
+    if (_nextPage == 1) {
+      if (response.total == 0) {
+        _maxPage = 1;
+      } else {
+        _maxPage = (response.total / response.list.length).ceil();
+      }
+    }
     _nextPage++;
-    _over = response.list.isEmpty;
     return response.list;
   }
 
@@ -82,7 +88,8 @@ class _StreamPagerState extends State<_StreamPager> {
         _joinSuccess = true;
         _joining = false;
       });
-    } catch (_) {
+    } catch (e,st) {
+      print("$e\n$st");
       setState(() {
         _joinSuccess = false;
         _joining = false;
@@ -111,7 +118,7 @@ class _StreamPagerState extends State<_StreamPager> {
   }
 
   void _onScroll() {
-    if (_joining || _over) {
+    if (_joining || _nextPage > _maxPage) {
       return;
     }
     if (_controller.position.pixels + 100 <

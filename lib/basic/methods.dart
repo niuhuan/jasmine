@@ -152,6 +152,32 @@ class Methods {
       })),
     );
   }
+
+  Future<CommentResponse> commentResponse(int aid, String comment) async {
+    return CommentResponse.fromJson(jsonDecode(await _invoke("comment", {
+      "aid": aid,
+      "comment": comment,
+    })));
+  }
+
+  Future<CommentResponse> comment(int aid, String comment) async {
+    return CommentResponse.fromJson(jsonDecode(await _invoke("comment", {
+      "aid": aid,
+      "comment": comment,
+    })));
+  }
+
+  Future<CommentResponse> childComment(
+    int aid,
+    String comment,
+    int? commentId,
+  ) async {
+    return CommentResponse.fromJson(jsonDecode(await _invoke("child_comment", {
+      "aid": aid,
+      "comment": comment,
+      "comment_id": commentId,
+    })));
+  }
 }
 
 class _Response {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/item_builder.dart';
 
@@ -132,24 +133,23 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
   Widget _buildPostComment() {
     return InkWell(
       onTap: () async {
-        // String? text = await inputString(context, '请输入评论内容');
-        // if (text != null && text.isNotEmpty) {
-        //   try {
-        //     switch (widget.mainType) {
-        //       case CommentMainType.COMIC:
-        //         await method.postComment(widget.mainId, text);
-        //         break;
-        //       case CommentMainType.GAME:
-        //         await method.postGameComment(widget.mainId, text);
-        //         break;
-        //     }
-        //     setState(() {
-        //       _future = _loadPage();
-        //     });
-        //   } catch (e) {
-        //     defaultToast(context, "评论失败");
-        //   }
-        //   }
+        String? text = await displayTextInputDialog(context, title: '请输入评论内容');
+        if (text != null && text.isNotEmpty) {
+          try {
+            final data = await methods.comment(widget.aid, text);
+            if (data.status == "fail") {
+              defaultToast(context, data.msg);
+            } else {
+              defaultToast(context, "评论成功");
+              setState(() {
+                _future = _loadPage();
+              });
+            }
+          } catch (e,st) {
+            print("$e\n$st");
+            defaultToast(context, "评论失败");
+          }
+        }
       },
       child: Container(
         decoration: BoxDecoration(

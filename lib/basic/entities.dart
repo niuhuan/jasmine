@@ -750,3 +750,36 @@ class InnerComicPage {
     required this.list,
   });
 }
+
+class CommentResponse {
+  CommentResponse({
+    required this.msg,
+    required this.status,
+    required this.aid,
+    required this.cid,
+    required this.spoiler,
+  });
+  late final String msg;
+  late final String status;
+  late final int aid;
+  late final int cid;
+  late final String spoiler;
+
+  CommentResponse.fromJson(Map<String, dynamic> json){
+    msg = json['msg'];
+    status = json['status'];
+    aid = json['aid'];
+    cid = json['cid'];
+    spoiler = json['spoiler'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['msg'] = msg;
+    _data['status'] = status;
+    _data['aid'] = aid;
+    _data['cid'] = cid;
+    _data['spoiler'] = spoiler;
+    return _data;
+  }
+}

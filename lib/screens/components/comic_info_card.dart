@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/entities.dart';
+import 'package:jasmine/screens/comic_search_screen.dart';
 
 import 'images.dart';
 
 class ComicInfoCard extends StatelessWidget {
+  final bool link;
   final ComicBasic comic;
 
-  const ComicInfoCard(this.comic,{Key? key}) : super(key: key);
+  const ComicInfoCard(
+    this.comic, {
+    this.link = false,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,20 @@ class ComicInfoCard extends StatelessWidget {
               children: [
                 Text(comic.name, style: titleStyle),
                 Container(height: 4),
-                Text(comic.author, style: authorStyle),
+                link
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return ComicSearchScreen(
+                                initKeywords: comic.author,
+                              );
+                            },
+                          ));
+                        },
+                        child: Text(comic.author, style: authorStyle),
+                      )
+                    : Text(comic.author, style: authorStyle),
                 Container(height: 4),
                 _buildCategoryRow(),
               ],
