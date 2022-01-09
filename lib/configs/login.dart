@@ -81,12 +81,21 @@ class _LoginDialogState extends State<_LoginDialog> {
   var _password = "";
 
   @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      _username = await methods.loadUsername();
+      _password = await methods.loadPassword();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 250,
       width: MediaQuery.of(context).size.width - 90,
-      margin: EdgeInsets.all(30),
-      decoration: BoxDecoration(
+      margin: const EdgeInsets.all(30),
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         color: Colors.white,
       ),
@@ -168,8 +177,8 @@ class _LoginDialogState extends State<_LoginDialog> {
                       _login(_username, _password);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
                         "保存",
                         style: TextStyle(color: Colors.white),
                       ),

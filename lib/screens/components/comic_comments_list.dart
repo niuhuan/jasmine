@@ -8,10 +8,12 @@ import 'avatar.dart';
 class ComicCommentsList extends StatefulWidget {
   final String mode;
   final int aid;
+  final int? parentId;
 
   const ComicCommentsList({
     required this.mode,
     required this.aid,
+    this.parentId,
     Key? key,
   }) : super(key: key);
 
@@ -72,15 +74,18 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
   Widget _buildComment(Comment comment) {
     return InkWell(
       onTap: () {
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => CommentScreen(
-        //       widget.mainType,
-        //       widget.mainId,
-        //       comment,
-        //     ),
-        //   ),
-        // );
+        if (widget.parentId != null) {
+          return;
+        }
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => _CommentChildrenScreen(
+              aid: widget.aid,
+              mode: widget.mode,
+              comment: comment,
+            ),
+          ),
+        );
       },
       child: _ComicCommentItem(
         mode: widget.mode,
@@ -136,7 +141,9 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
         String? text = await displayTextInputDialog(context, title: '请输入评论内容');
         if (text != null && text.isNotEmpty) {
           try {
-            final data = await methods.comment(widget.aid, text);
+            final data = await (widget.parentId == null
+                ? methods.comment(widget.aid, text)
+                : methods.childComment(widget.aid, text, widget.parentId));
             if (data.status == "fail") {
               defaultToast(context, data.msg);
             } else {
@@ -145,7 +152,7 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
                 _future = _loadPage();
               });
             }
-          } catch (e,st) {
+          } catch (e, st) {
             print("$e\n$st");
             defaultToast(context, "评论失败");
           }
@@ -238,7 +245,7 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         alignment: WrapAlignment.spaceBetween,
                         children: [
-                          Text(comment.name, style: nameStyle),
+                          Text(comment.nickname, style: nameStyle),
                           Text(
                             comment.addtime,
                             style: datetimeStyle,
@@ -350,6 +357,51 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CommentChildrenScreen extends StatefulWidget {
+  final String mode;
+  final int aid;
+  final Comment comment;
+
+  const _CommentChildrenScreen({
+    required this.mode,
+    required this.aid,
+    required this.comment,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _CommentChildrenScreenState();
+}
+
+class _CommentChildrenScreenState extends State<_CommentChildrenScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          _ComicCommentItem(
+            mode: widget.mode,
+            aid: widget.aid,
+            comment: widget.comment,
+          ),
+          const Divider(),
+          Expanded(
+              child: ListView(
+            children: [
+              ComicCommentsList(
+                mode: widget.mode,
+                aid: widget.aid,
+                parentId: widget.comment.CID,
+              )
+            ],
+          )),
         ],
       ),
     );

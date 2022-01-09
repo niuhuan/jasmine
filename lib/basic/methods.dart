@@ -178,6 +178,14 @@ class Methods {
       "comment_id": commentId,
     })));
   }
+
+  Future<String> loadUsername() {
+    return _invoke("load_username", "");
+  }
+
+  Future<String> loadPassword() {
+    return _invoke("load_password", "");
+  }
 }
 
 class _Response {
