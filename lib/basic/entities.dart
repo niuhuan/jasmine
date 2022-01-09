@@ -379,7 +379,7 @@ class ChapterResponse {
   late final String tags;
   late final String name;
   late final List<String> images;
-  late final String seriesId;
+  late final int seriesId;
   late final bool isFavorite;
   late final bool liked;
 
@@ -780,6 +780,47 @@ class CommentResponse {
     _data['aid'] = aid;
     _data['cid'] = cid;
     _data['spoiler'] = spoiler;
+    return _data;
+  }
+}
+
+class ViewLog {
+  ViewLog({
+    required this.id,
+    required this.author,
+    required this.description,
+    required this.name,
+    required this.lastViewTime,
+    required this.lastViewChapterId,
+    required this.lastViewPage,
+  });
+  late final int id;
+  late final String author;
+  late final String description;
+  late final String name;
+  late final int lastViewTime;
+  late final int lastViewChapterId;
+  late final int lastViewPage;
+
+  ViewLog.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    author = json['author'];
+    description = json['description'];
+    name = json['name'];
+    lastViewTime = json['last_view_time'];
+    lastViewChapterId = json['last_view_chapter_id'];
+    lastViewPage = json['last_view_page'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['author'] = author;
+    _data['description'] = description;
+    _data['name'] = name;
+    _data['last_view_time'] = lastViewTime;
+    _data['last_view_chapter_id'] = lastViewChapterId;
+    _data['last_view_page'] = lastViewPage;
     return _data;
   }
 }

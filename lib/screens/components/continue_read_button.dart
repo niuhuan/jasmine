@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-
-class ViewLog {
-
-}
+import 'package:jasmine/basic/entities.dart';
+import 'package:jasmine/basic/methods.dart';
 
 // 继续阅读按钮
 class ContinueReadButton extends StatefulWidget {
-  final Future<ViewLog?> viewFuture;
-  final Function(int? epOrder, int? pictureRank) onChoose;
+  final AlbumResponse album;
+  final Function(int epOrder, int pictureRank) onChoose;
+  final ContinueReadButtonController controller;
 
   const ContinueReadButton({
     Key? key,
-    required this.viewFuture,
+    required this.album,
     required this.onChoose,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -20,37 +20,62 @@ class ContinueReadButton extends StatefulWidget {
 }
 
 class _ContinueReadButtonState extends State<ContinueReadButton> {
+  late Future<ViewLog?> _viewFuture = methods.findViewLog(widget.album.id);
+
+  void _reload() {
+    setState(() {
+      _viewFuture = methods.findViewLog(widget.album.id);
+    });
+  }
+
+  @override
+  void initState() {
+    widget.controller._state = this;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         var width = constraints.maxWidth;
         return FutureBuilder(
-          future: widget.viewFuture,
+          future: _viewFuture,
           builder: (BuildContext context, AsyncSnapshot<ViewLog?> snapshot) {
             late void Function() onPressed;
             late String text;
-
-            onPressed = (){};
-            text = '加载中';
-            // if (snapshot.connectionState != ConnectionState.done) {
-            //   onPressed = () {};
-            //   text = '加载中';
-            // }
-            // if (snapshot.data != null && snapshot.data!.lastViewEpOrder > 0) {
-            //   onPressed = () => widget.onChoose(
-            //         snapshot.data?.lastViewEpOrder,
-            //         snapshot.data?.lastViewPictureRank,
-            //       );
-            //   text =
-            //       '继续阅读 ${snapshot.data?.lastViewEpTitle} P. ${(snapshot.data?.lastViewPictureRank ?? 0) + 1}';
-            // } else {
-            //   onPressed = () => widget.onChoose(null, null);
-            //   text = '开始阅读';
-            // }
+            if (snapshot.connectionState != ConnectionState.done) {
+              onPressed = () {};
+              text = '加载中';
+            } else {
+              ViewLog? viewLog = snapshot.data;
+              if (viewLog == null || viewLog.lastViewChapterId == 0) {
+                if (widget.album.series.isEmpty) {
+                  return Container();
+                }
+                onPressed = () {
+                  if (widget.album.series.isEmpty) {
+                    widget.onChoose(widget.album.id, 0);
+                  } else {
+                    widget.album.series
+                        .sort((a, b) => a.sort.compareTo(b.sort));
+                    widget.onChoose(widget.album.series[0].id, 0);
+                  }
+                };
+                text = '从头开始';
+              } else {
+                onPressed = () {
+                  widget.onChoose(
+                    viewLog.lastViewChapterId,
+                    viewLog.lastViewPage,
+                  );
+                };
+                text = '继续阅读'; // todo names and pages
+              }
+            }
             return Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              margin: EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              margin: const EdgeInsets.only(bottom: 10),
               width: width,
               child: MaterialButton(
                 onPressed: onPressed,
@@ -63,7 +88,7 @@ class _ContinueReadButtonState extends State<ContinueReadButton> {
                             .bodyText1!
                             .color!
                             .withOpacity(.05),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Text(
                           text,
                           textAlign: TextAlign.center,
@@ -79,4 +104,10 @@ class _ContinueReadButtonState extends State<ContinueReadButton> {
       },
     );
   }
+}
+
+class ContinueReadButtonController {
+  _ContinueReadButtonState? _state;
+
+  reload() => _state?._reload();
 }

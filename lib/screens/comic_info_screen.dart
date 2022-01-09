@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/entities.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/basic/navigatior.dart';
 import 'package:jasmine/screens/comic_search_screen.dart';
 import 'package:jasmine/screens/components/comic_info_card.dart';
 import 'package:jasmine/screens/components/comic_list.dart';
@@ -19,10 +20,28 @@ class ComicInfoScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _ComicInfoScreenState();
 }
 
-class _ComicInfoScreenState extends State<ComicInfoScreen> {
+class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
+  final _continueReadButtonController = ContinueReadButtonController();
   var _favouriteLoading = false;
   var _tabIndex = 0;
   late Future<AlbumResponse> _albumFuture = methods.album(widget.simple.id);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPopNext() {
+    _continueReadButtonController.reload();
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +70,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> {
                 );
               }
               return IconButton(
-                onPressed: (){
+                onPressed: () {
                   _changeFavourite(snapshot.requireData);
                 },
                 icon: Icon(
@@ -67,7 +86,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> {
       body: ListView(
         shrinkWrap: true,
         children: [
-          ComicInfoCard(widget.simple,link: true),
+          ComicInfoCard(widget.simple, link: true),
           ItemBuilder(
             future: _albumFuture,
             onRefresh: () async {
@@ -88,7 +107,11 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> {
               ];
 
               final _views = [
-                _ComicSerials(widget.simple, album),
+                _ComicSerials(
+                  widget.simple,
+                  album,
+                  _continueReadButtonController,
+                ),
                 ComicCommentsList(mode: "manhua", aid: widget.simple.id),
                 _ComicRelatedList(album.relatedList),
               ];
@@ -138,7 +161,6 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> {
   }
 
   Widget _buildTags(List<String> tags) {
-    var theme = Theme.of(context);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Container(
@@ -214,21 +236,25 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> {
 class _ComicSerials extends StatefulWidget {
   final ComicBasic comicSimple;
   final AlbumResponse album;
+  final ContinueReadButtonController continueReadButtonController;
 
-  const _ComicSerials(this.comicSimple, this.album);
+  const _ComicSerials(this.comicSimple, this.album, this.continueReadButtonController);
 
   @override
   State<StatefulWidget> createState() => _ComicSerialsState();
 }
 
 class _ComicSerialsState extends State<_ComicSerials> {
-  final Future<ViewLog?> _viewFuture =
-      Future.delayed(Duration.zero, () => null);
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(height: 20),
+        ContinueReadButton(
+          controller:  widget.continueReadButtonController,
+          album: widget.album,
+          onChoose: _onChoose,
+        ),
         widget.album.series.isEmpty ? _buildOneButton() : _buildSeriesWrap(),
       ],
     );
@@ -263,7 +289,7 @@ class _ComicSerialsState extends State<_ComicSerials> {
 
   Widget _buildSeriesWrap() {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Wrap(
         spacing: 10,
         runSpacing: 10,
@@ -302,6 +328,15 @@ class _ComicSerialsState extends State<_ComicSerials> {
           initRank: initRank,
         ),
       ),
+    );
+  }
+
+  void _onChoose(int epOrder, int pictureRank) {
+    _push(
+      widget.comicSimple,
+      widget.album.series,
+      epOrder,
+      pictureRank,
     );
   }
 }

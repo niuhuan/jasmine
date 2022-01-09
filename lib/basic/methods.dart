@@ -94,8 +94,20 @@ class Methods {
     );
   }
 
-  Future saveViewIndex(String seriesId, int id, int index) async {
-    // todo
+  Future updateViewLog(int id, int lastViewChapterId, int lastViewPage) {
+    return _invoke("update_view_log", {
+      "id": id,
+      "last_view_chapter_id": lastViewChapterId,
+      "last_view_page": lastViewPage,
+    });
+  }
+
+  Future<ViewLog?> findViewLog(int id) async {
+    final map = jsonDecode(await _invoke("find_view_log", id));
+    if (map == null) {
+      return null;
+    }
+    return ViewLog.fromJson(map);
   }
 
   Future cleanAllCache() async {

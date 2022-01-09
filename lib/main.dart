@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/screens/init_screen.dart';
 
 import 'basic/methods.dart';
+import 'basic/navigatior.dart';
 
 void main() async {
   runApp(const Jasmine());
@@ -38,6 +39,7 @@ class Jasmine extends StatelessWidget {
           secondary: Colors.pink.shade200,
         ),
       ),
+      navigatorObservers: [routeObserver],
       home: const InitScreen(),
     );
   }

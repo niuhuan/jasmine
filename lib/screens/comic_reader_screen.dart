@@ -52,6 +52,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
 
   @override
   void initState() {
+    methods.updateViewLog(widget.comic.id, widget.seriesId, widget.initRank);
     _load();
     super.initState();
   }
@@ -105,7 +106,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
                   return ComicReaderScreen(
                     comic: widget.comic,
                     series: widget.series,
-                    seriesId: widget.seriesId,
+                    seriesId: id,
                     initRank: 0,
                   );
                 }),
@@ -220,7 +221,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
       setState(() {
         _current = index;
         _slider = index;
-        var _ = methods.saveViewIndex(
+        var _ = methods.updateViewLog(
           widget.chapter.seriesId,
           widget.chapter.id,
           index,
