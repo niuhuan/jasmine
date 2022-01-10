@@ -4,6 +4,7 @@ import 'package:jasmine/configs/login.dart';
 import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/components/avatar.dart';
 import 'package:jasmine/screens/components/badge.dart';
+import 'package:jasmine/screens/view_log_screen.dart';
 
 import 'favorites_screen.dart';
 
@@ -48,6 +49,8 @@ class _UserScreenState extends State<UserScreen>
             _buildCard(),
             const Divider(),
             _buildFavorites(),
+            const Divider(),
+            _buildViewLog(),
             const Divider(),
             _buildVersion(),
           ],
@@ -159,6 +162,19 @@ class _UserScreenState extends State<UserScreen>
         }
       },
       title: const Text("收藏夹"),
+    );
+  }
+
+  Widget _buildViewLog() {
+    return ListTile(
+      onTap: () async {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+            return const ViewLogScreen();
+          },
+        ));
+      },
+      title: const Text("浏览记录"),
     );
   }
 
