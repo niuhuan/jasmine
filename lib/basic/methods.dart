@@ -206,6 +206,10 @@ class Methods {
   Future<String> loadPassword() {
     return _invoke("load_password", "");
   }
+
+  Future clearViewLog(){
+    return _invoke("clear_view_log", "");
+  }
 }
 
 class _Response {

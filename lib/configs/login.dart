@@ -83,8 +83,12 @@ class _LoginDialogState extends State<_LoginDialog> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      _username = await methods.loadUsername();
-      _password = await methods.loadPassword();
+      final username = await methods.loadUsername();
+      final password = await methods.loadPassword();
+      setState(() {
+        _username = username;
+        _password = password;
+      });
     });
     super.initState();
   }

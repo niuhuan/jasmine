@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/floating_search_bar.dart';
 
@@ -20,7 +21,27 @@ class _ViewLogScreenState extends State<ViewLogScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("浏览记录"),
-        actions: const [BrowserBottomSheetAction()],
+        actions: [
+          IconButton(
+            onPressed: () async {
+              String? choose = await chooseListDialog(
+                context,
+                items: ["是", "否"],
+                title: "清除所有历史记录?",
+              );
+              if ("是" == choose) {
+                await methods.clearViewLog();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const ViewLogScreen();
+                  },
+                ));
+              }
+            },
+            icon: const Icon(Icons.auto_delete),
+          ),
+          const BrowserBottomSheetAction(),
+        ],
       ),
       body: ComicPager(
         key: const Key("HISTORY"),
