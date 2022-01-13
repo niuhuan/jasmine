@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 
@@ -11,14 +12,26 @@ class Methods {
   const Methods._();
 
   static const _channel = MethodChannel("methods");
+  static HttpClient httpClient = HttpClient();
 
   Future<String> _invoke(String method, dynamic params) async {
-    String resp = await _channel.invokeMethod(
-        "invoke",
-        jsonEncode({
-          "method": method,
-          "params": params is String ? params : jsonEncode(params),
-        }));
+    late String resp;
+    if (Platform.isWindows) {
+      var req = await httpClient.post("127.0.0.1", 52764, "invoke");
+      req.add(utf8.encode(jsonEncode({
+        "method": method,
+        "params": params is String ? params : jsonEncode(params),
+      })));
+      var rsp = await req.close();
+      resp = await rsp.transform(utf8.decoder).join();
+    }else{
+      resp = await _channel.invokeMethod(
+          "invoke",
+          jsonEncode({
+            "method": method,
+            "params": params is String ? params : jsonEncode(params),
+          }));
+    }
     var response = _Response.fromJson(jsonDecode(resp));
     if (response.errorMessage.isNotEmpty) {
       throw StateError(response.errorMessage);
@@ -207,7 +220,7 @@ class Methods {
     return _invoke("load_password", "");
   }
 
-  Future clearViewLog(){
+  Future clearViewLog() {
     return _invoke("clear_view_log", "");
   }
 }

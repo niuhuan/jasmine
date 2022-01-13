@@ -1,9 +1,7 @@
 #include "methods_plugin.h"
 #include <iostream>
-#include <thread>
 
 namespace {
-
 
     class MethodsPlugin : public flutter::Plugin {
     public:
@@ -44,14 +42,10 @@ namespace {
 
     void MethodsPlugin::HandleMethodCall(
             const flutter::MethodCall<flutter::EncodableValue> &method_call,
-            std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result
-            ) {
+            std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
 
-        if (method_call.method_name().compare("invoke") == 0) {
-            const auto *title = std::get_if<std::string>(method_call.arguments());
-            auto* rspFlag = invoke_ffi((title)->c_str());
-            result->Success(flutter::EncodableValue(std::string(rspFlag)));
-            free_str_ffi(rspFlag);
+        if (method_call.method_name().compare("windows_test") == 0) {
+            result->Success(flutter::EncodableValue(std::string("hello")));
         } else {
             result->NotImplemented();
         }
