@@ -4,6 +4,7 @@ import 'package:jasmine/configs/network_api_host.dart';
 import 'package:jasmine/configs/network_cdn_host.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
+import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -67,10 +68,10 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
           children: [
             Expanded(child: Container()),
             _bottomIcon(
-              icon: Icons.view_column_sharp,
-              title: "$pagerColumnNumber 列",
+              icon: Icons.view_quilt,
+              title: currentPagerViewModeName,
               onPressed: () async {
-                await choosePagerColumnCount(context);
+                await choosePagerViewMode(context);
                 setState(() {});
               },
             ),
@@ -85,10 +86,19 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
             ),
             Expanded(child: Container()),
             _bottomIcon(
-              icon: Icons.view_quilt,
-              title: currentPagerViewModeName,
+              icon: Icons.grid_on_sharp,
+              title: pagerCoverRateName(currentPagerCoverRate),
               onPressed: () async {
-                await choosePagerViewMode(context);
+                await choosePagerCoverRate(context);
+                setState(() {});
+              },
+            ),
+            Expanded(child: Container()),
+            _bottomIcon(
+              icon: Icons.view_column_sharp,
+              title: "$pagerColumnNumber 列",
+              onPressed: () async {
+                await choosePagerColumnCount(context);
                 setState(() {});
               },
             ),

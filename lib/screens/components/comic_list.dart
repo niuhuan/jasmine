@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/entities.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
+import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:jasmine/screens/comic_info_screen.dart';
 import 'comic_info_card.dart';
@@ -29,6 +30,7 @@ class _ComicListState extends State<ComicList> {
   void initState() {
     currentPagerViewModeEvent.subscribe(_setState);
     pageColumnEvent.subscribe(_setState);
+    pagerCoverRateEvent.subscribe(_setState);
     super.initState();
   }
 
@@ -36,6 +38,7 @@ class _ComicListState extends State<ComicList> {
   void dispose() {
     currentPagerViewModeEvent.unsubscribe(_setState);
     pageColumnEvent.unsubscribe(_setState);
+    pagerCoverRateEvent.unsubscribe(_setState);
     super.dispose();
   }
 
@@ -63,11 +66,20 @@ class _ComicListState extends State<ComicList> {
         child: Card(
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              return JM3x4Cover(
-                comicId: widget.data[i].id,
-                width: constraints.maxWidth,
-                height: constraints.maxHeight,
-              );
+              switch (currentPagerCoverRate) {
+                case PagerCoverRate.rate3x4:
+                  return JM3x4Cover(
+                    comicId: widget.data[i].id,
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                  );
+                case PagerCoverRate.rateSquare:
+                  return JMSquareCover(
+                    comicId: widget.data[i].id,
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                  );
+              }
             },
           ),
         ),
@@ -79,14 +91,33 @@ class _ComicListState extends State<ComicList> {
     if (widget.inScroll) {
       final mq = MediaQuery.of(context);
       final width = (mq.size.width - 20) / pagerColumnNumber;
-      final height = width * 4 / 3;
+      late final double height;
+      switch (currentPagerCoverRate) {
+        case PagerCoverRate.rate3x4:
+          height = width * 4 / 3;
+          break;
+        case PagerCoverRate.rateSquare:
+          height = width;
+          break;
+      }
       return Wrap(
-        children: widgets.map((e) => SizedBox(
-          width: width,
-          height: height,
-          child: e,
-        )).toList(),
+        children: widgets
+            .map((e) => SizedBox(
+                  width: width,
+                  height: height,
+                  child: e,
+                ))
+            .toList(),
       );
+    }
+    late final double childAspectRatio;
+    switch (currentPagerCoverRate) {
+      case PagerCoverRate.rate3x4:
+        childAspectRatio = 3 / 4;
+        break;
+      case PagerCoverRate.rateSquare:
+        childAspectRatio = 1;
+        break;
     }
     return GridView.count(
       controller: widget.controller,
@@ -95,7 +126,7 @@ class _ComicListState extends State<ComicList> {
       mainAxisSpacing: 5,
       crossAxisSpacing: 5,
       crossAxisCount: pagerColumnNumber,
-      childAspectRatio: 3 / 4,
+      childAspectRatio: childAspectRatio,
       children: widgets,
     );
   }

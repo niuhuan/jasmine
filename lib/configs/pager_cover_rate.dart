@@ -27,7 +27,7 @@ PagerCoverRate _fromString(String valueForm) {
   return PagerCoverRate.values.first;
 }
 
-String pagerCoverRateName(PagerCoverRate type, BuildContext context) {
+String pagerCoverRateName(PagerCoverRate type) {
   switch (type) {
     case PagerCoverRate.rate3x4:
       return "3X4";
@@ -39,7 +39,7 @@ String pagerCoverRateName(PagerCoverRate type, BuildContext context) {
 Future choosePagerCoverRate(BuildContext context) async {
   final Map<String, PagerCoverRate> map = {};
   for (var element in PagerCoverRate.values) {
-    map[pagerCoverRateName(element, context)] = element;
+    map[pagerCoverRateName(element)] = element;
   }
   final newPagerCoverRate = await chooseMapDialog(
     context,

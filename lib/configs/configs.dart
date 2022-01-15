@@ -1,4 +1,5 @@
 import 'package:jasmine/configs/pager_column_number.dart';
+import 'package:jasmine/configs/pager_cover_rate.dart';
 
 import 'network_api_host.dart';
 import 'network_cdn_host.dart';
@@ -23,5 +24,6 @@ Future initConfigs() async {
   await initReaderControllerType();
   await initReaderSliderPosition();
   await initPagerColumnCount();
+  await initPagerCoverRate();
   initLogin();
 }
