@@ -3,14 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
-import 'package:jasmine/configs/pager_view_mode.dart';
-import 'package:jasmine/screens/components/comic_cover_card.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
-
-import '../comic_info_screen.dart';
-import 'comic_info_card.dart';
 import 'comic_list.dart';
-import 'images.dart';
 
 class ComicPager extends StatefulWidget {
   final Future<InnerComicPage> Function(int page) onPage;

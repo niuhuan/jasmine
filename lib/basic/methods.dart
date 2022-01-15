@@ -139,6 +139,10 @@ class Methods {
     return _invoke("jm_3x4_cover", comicId);
   }
 
+  Future<String> jmSquareCover(int comicId) {
+    return _invoke("jm_square_cover", comicId);
+  }
+
   Future<String> jmPageImage(int id, String imageName) {
     return _invoke("jm_page_image", {"id": id, "image_name": imageName});
   }

@@ -2,6 +2,7 @@ import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/network_api_host.dart';
 import 'package:jasmine/configs/network_cdn_host.dart';
+import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
 import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -66,6 +67,15 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
           children: [
             Expanded(child: Container()),
             _bottomIcon(
+              icon: Icons.view_column_sharp,
+              title: "$pagerColumnNumber 列",
+              onPressed: () async {
+                await choosePagerColumnCount(context);
+                setState(() {});
+              },
+            ),
+            Expanded(child: Container()),
+            _bottomIcon(
               icon: Icons.view_day_outlined,
               title: currentPagerControllerModeName,
               onPressed: () async {
@@ -83,6 +93,11 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
               },
             ),
             Expanded(child: Container()),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(child: Container()),
             _bottomIcon(
               icon: Icons.cleaning_services_rounded,
               title: "清理",
@@ -98,11 +113,6 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
                 setState(() {});
               },
             ),
-            Expanded(child: Container()),
-          ],
-        ),
-        Row(
-          children: [
             Expanded(child: Container()),
             _bottomIcon(
               icon: Icons.shuffle,

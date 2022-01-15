@@ -19,7 +19,7 @@ class FilePhotoViewScreen extends StatelessWidget {
                 String? choose = await chooseListDialog(
                   context,
                   title: '请选择',
-                  items: ['保存图片'],
+                  values: ['保存图片'],
                 );
                 switch (choose) {
                   case '保存图片':

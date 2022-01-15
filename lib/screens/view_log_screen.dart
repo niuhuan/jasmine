@@ -26,7 +26,7 @@ class _ViewLogScreenState extends State<ViewLogScreen> {
             onPressed: () async {
               String? choose = await chooseListDialog(
                 context,
-                items: ["是", "否"],
+                values: ["是", "否"],
                 title: "清除所有历史记录?",
               );
               if ("是" == choose) {

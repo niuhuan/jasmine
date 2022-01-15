@@ -106,7 +106,7 @@ Future _choosePeriod(BuildContext context) async {
   var result = await chooseListDialog(
     context,
     title: "自动检查更新",
-    items: ["开启", "一周后", "一个月后", "一年后", "关闭"],
+    values: ["开启", "一周后", "一个月后", "一年后", "关闭"],
     tips: "重启后红点会消失",
   );
   switch (result) {

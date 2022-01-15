@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/entities.dart';
+import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:jasmine/screens/comic_info_screen.dart';
-
-import 'comic_cover_card.dart';
 import 'comic_info_card.dart';
+import 'images.dart';
 
 class ComicList extends StatefulWidget {
   final bool inScroll;
@@ -28,12 +28,14 @@ class _ComicListState extends State<ComicList> {
   @override
   void initState() {
     currentPagerViewModeEvent.subscribe(_setState);
+    pageColumnEvent.subscribe(_setState);
     super.initState();
   }
 
   @override
   void dispose() {
     currentPagerViewModeEvent.unsubscribe(_setState);
+    pageColumnEvent.unsubscribe(_setState);
     super.dispose();
   }
 
@@ -58,7 +60,17 @@ class _ComicListState extends State<ComicList> {
         onTap: () {
           _pushToComicInfo(widget.data[i]);
         },
-        child: ComicCoverCard(widget.data[i]),
+        child: Card(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return JM3x4Cover(
+                comicId: widget.data[i].id,
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+              );
+            },
+          ),
+        ),
       ));
     }
     if (widget.append != null) {
@@ -66,7 +78,7 @@ class _ComicListState extends State<ComicList> {
     }
     if (widget.inScroll) {
       final mq = MediaQuery.of(context);
-      final width = (mq.size.width - 20) / 4;
+      final width = (mq.size.width - 20) / pagerColumnNumber;
       final height = width * 4 / 3;
       return Wrap(
         children: widgets.map((e) => SizedBox(
@@ -82,7 +94,7 @@ class _ComicListState extends State<ComicList> {
       padding: const EdgeInsets.all(10.0),
       mainAxisSpacing: 5,
       crossAxisSpacing: 5,
-      crossAxisCount: 4,
+      crossAxisCount: pagerColumnNumber,
       childAspectRatio: 3 / 4,
       children: widgets,
     );

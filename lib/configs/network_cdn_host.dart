@@ -26,7 +26,7 @@ Future<void> initCdnHost() async {
 Future chooseCdnHost(BuildContext context) async {
   final choose = await chooseMapDialog(
     context,
-    title: "API分流",
+    title: "图片分流",
     values: _cdnHostMap,
   );
   if (choose != null) {

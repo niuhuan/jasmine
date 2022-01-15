@@ -22,7 +22,7 @@ void defaultToast(BuildContext context, String title) {
 }
 
 Future<T?> chooseListDialog<T>(BuildContext context,
-    {required List<T> items, required String title, String? tips}) async {
+    {required List<T> values, required String title, String? tips}) async {
   List<Widget> widgets = [];
   if (tips != null) {
     widgets.add(Container(
@@ -30,7 +30,7 @@ Future<T?> chooseListDialog<T>(BuildContext context,
       child: Text(tips),
     ));
   }
-  widgets.addAll(items.map((e) => SimpleDialogOption(
+  widgets.addAll(values.map((e) => SimpleDialogOption(
         onPressed: () {
           Navigator.of(context).pop(e);
         },
@@ -86,7 +86,7 @@ Future saveImageFileToGallery(BuildContext context, String path) async {
 }
 
 Future<SortBy?> chooseSortBy(BuildContext context) async {
-  return await chooseListDialog(context, title: "请选择排序方式", items: sorts);
+  return await chooseListDialog(context, title: "请选择排序方式", values: sorts);
 }
 
 /// 将字符串前面加0直至满足len位

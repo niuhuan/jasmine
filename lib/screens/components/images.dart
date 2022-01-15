@@ -142,6 +142,46 @@ class _JM3x4CoverState extends State<JM3x4Cover> {
   }
 }
 
+// 远端图片
+class JMSquareCover extends StatefulWidget {
+  final int comicId;
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+
+  const JMSquareCover({
+    Key? key,
+    required this.comicId,
+    this.width,
+    this.height,
+    this.fit = BoxFit.cover,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _JMSquareCoverState();
+}
+
+class _JMSquareCoverState extends State<JMSquareCover> {
+  late Future<String> _future;
+
+  @override
+  void initState() {
+    _future = methods.jmSquareCover(widget.comicId);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return pathFutureImage(
+      _future,
+      widget.width,
+      widget.height,
+      fit: widget.fit,
+      context: context,
+    );
+  }
+}
+
 class JMPhotoImage extends StatefulWidget {
   final String photoName;
 
@@ -327,7 +367,7 @@ Widget buildFile(String file, double? width, double? height,
       String? choose = await chooseListDialog(
         context,
         title: '请选择',
-        items: ['预览图片', '保存图片'],
+        values: ['预览图片', '保存图片'],
       );
       switch (choose) {
         case '预览图片':
