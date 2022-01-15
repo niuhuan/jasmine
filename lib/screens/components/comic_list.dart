@@ -55,6 +55,8 @@ class _ComicListState extends State<ComicList> {
         return _buildInfoMode();
       case PagerViewMode.titleInCover:
         return _buildTitleInCoverMode();
+      case PagerViewMode.titleAndCover:
+        return _buildTitleAndCoverMode();
     }
   }
 
@@ -257,6 +259,91 @@ class _ComicListState extends State<ComicList> {
       crossAxisCount: pagerColumnNumber,
       childAspectRatio: childAspectRatio,
       children: widgets,
+    );
+  }
+
+  Widget _buildTitleAndCoverMode() {
+    final mq = MediaQuery.of(context);
+    final width = (mq.size.width - 20) / pagerColumnNumber;
+    late final double height;
+    switch (currentPagerCoverRate) {
+      case PagerCoverRate.rate3x4:
+        height = width * 4 / 3;
+        break;
+      case PagerCoverRate.rateSquare:
+        height = width;
+        break;
+    }
+    List<Widget> widgets = [];
+    for (var i = 0; i < widget.data.length; i++) {
+      widgets.add(GestureDetector(
+        onTap: () {
+          _pushToComicInfo(widget.data[i]);
+        },
+        child: Column(
+          children: [
+            SizedBox(
+              width: width,
+              height: height,
+              child: Card(
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    late final Widget image;
+                    switch (currentPagerCoverRate) {
+                      case PagerCoverRate.rate3x4:
+                        image = JM3x4Cover(
+                          comicId: widget.data[i].id,
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                        );
+                        break;
+                      case PagerCoverRate.rateSquare:
+                        image = JMSquareCover(
+                          comicId: widget.data[i].id,
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                        );
+                        break;
+                    }
+                    return image;
+                  },
+                ),
+              ),
+            ),
+            Container(
+              width: width,
+              height: 50,
+              padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
+              child: Text(
+                "${widget.data[i].name}\n",
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  height: 1.3,
+                ),
+                strutStyle: const StrutStyle(
+                  height: 1.3,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ));
+    }
+    if (widget.append != null) {
+      widgets.add(widget.append!);
+    }
+    final wrap = Wrap(
+      children: widgets,
+    );
+    if (widget.inScroll) {
+      return wrap;
+    }
+    return ListView(
+      controller: widget.controller,
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(10.0),
+      children: [wrap],
     );
   }
 
