@@ -12,11 +12,13 @@ PagerViewMode get currentPagerViewMode => _value;
 enum PagerViewMode {
   cover,
   info,
+  titleInCover,
 }
 
 Map<PagerViewMode, String> _nameMap = {
   PagerViewMode.cover: "封面",
   PagerViewMode.info: "详情",
+  PagerViewMode.titleInCover: "图文",
 };
 
 String get currentPagerViewModeName => _nameMap[_value]!;

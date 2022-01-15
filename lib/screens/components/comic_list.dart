@@ -53,6 +53,8 @@ class _ComicListState extends State<ComicList> {
         return _buildCoverMode();
       case PagerViewMode.info:
         return _buildInfoMode();
+      case PagerViewMode.titleInCover:
+        return _buildTitleInCoverMode();
     }
   }
 
@@ -151,6 +153,109 @@ class _ComicListState extends State<ComicList> {
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
+      children: widgets,
+    );
+  }
+
+  Widget _buildTitleInCoverMode() {
+    List<Widget> widgets = [];
+    for (var i = 0; i < widget.data.length; i++) {
+      widgets.add(GestureDetector(
+        onTap: () {
+          _pushToComicInfo(widget.data[i]);
+        },
+        child: Card(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              late final Widget image;
+              switch (currentPagerCoverRate) {
+                case PagerCoverRate.rate3x4:
+                  image = JM3x4Cover(
+                    comicId: widget.data[i].id,
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                  );
+                  break;
+                case PagerCoverRate.rateSquare:
+                  image = JMSquareCover(
+                    comicId: widget.data[i].id,
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                  );
+                  break;
+              }
+              return Stack(
+                children: [
+                  image,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: const EdgeInsets.all(3),
+                      color: Colors.black.withAlpha(180),
+                      width: constraints.maxWidth,
+                      child: Text(
+                        "${widget.data[i].name}\n",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          height: 1.3,
+                        ),
+                        strutStyle: const StrutStyle(
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ));
+    }
+    if (widget.append != null) {
+      widgets.add(widget.append!);
+    }
+    if (widget.inScroll) {
+      final mq = MediaQuery.of(context);
+      final width = (mq.size.width - 20) / pagerColumnNumber;
+      late final double height;
+      switch (currentPagerCoverRate) {
+        case PagerCoverRate.rate3x4:
+          height = width * 4 / 3;
+          break;
+        case PagerCoverRate.rateSquare:
+          height = width;
+          break;
+      }
+      return Wrap(
+        children: widgets
+            .map((e) => SizedBox(
+                  width: width,
+                  height: height,
+                  child: e,
+                ))
+            .toList(),
+      );
+    }
+    late final double childAspectRatio;
+    switch (currentPagerCoverRate) {
+      case PagerCoverRate.rate3x4:
+        childAspectRatio = 3 / 4;
+        break;
+      case PagerCoverRate.rateSquare:
+        childAspectRatio = 1;
+        break;
+    }
+    return GridView.count(
+      controller: widget.controller,
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(10.0),
+      mainAxisSpacing: 5,
+      crossAxisSpacing: 5,
+      crossAxisCount: pagerColumnNumber,
+      childAspectRatio: childAspectRatio,
       children: widgets,
     );
   }
