@@ -759,13 +759,14 @@ class CommentResponse {
     required this.cid,
     required this.spoiler,
   });
+
   late final String msg;
   late final String status;
   late final int aid;
   late final int cid;
   late final String spoiler;
 
-  CommentResponse.fromJson(Map<String, dynamic> json){
+  CommentResponse.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     status = json['status'];
     aid = json['aid'];
@@ -794,6 +795,7 @@ class ViewLog {
     required this.lastViewChapterId,
     required this.lastViewPage,
   });
+
   late final int id;
   late final String author;
   late final String description;
@@ -802,7 +804,7 @@ class ViewLog {
   late final int lastViewChapterId;
   late final int lastViewPage;
 
-  ViewLog.fromJson(Map<String, dynamic> json){
+  ViewLog.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     author = json['author'];
     description = json['description'];
@@ -821,6 +823,131 @@ class ViewLog {
     _data['last_view_time'] = lastViewTime;
     _data['last_view_chapter_id'] = lastViewChapterId;
     _data['last_view_page'] = lastViewPage;
+    return _data;
+  }
+}
+
+class GamePage {
+  GamePage({
+    required this.games,
+    required this.gamesTotal,
+    required this.categories,
+    required this.hotGames,
+  });
+
+  late final List<Game> games;
+  late final String gamesTotal;
+  late final List<GameCategory> categories;
+  late final List<Game> hotGames;
+
+  GamePage.fromJson(Map<String, dynamic> json) {
+    games = List.from(json['games']).map((e) => Game.fromJson(e)).toList();
+    gamesTotal = json['games_total'];
+    categories = List.from(json['categories'])
+        .map((e) => GameCategory.fromJson(e))
+        .toList();
+    hotGames =
+        List.from(json['hot_games']).map((e) => Game.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['games'] = games.map((e) => e.toJson()).toList();
+    _data['games_total'] = gamesTotal;
+    _data['categories'] = categories.map((e) => e.toJson()).toList();
+    _data['hot_games'] = hotGames.map((e) => e.toJson()).toList();
+    return _data;
+  }
+}
+
+class Game {
+  Game({
+    required this.gid,
+    required this.title,
+    required this.description,
+    required this.tags,
+    required this.link,
+    required this.linkTitle,
+    required this.photo,
+    required this.type,
+    required this.categories,
+    required this.updateAt,
+    required this.totalClicks,
+    required this.orderRank,
+    required this.status,
+    required this.showLang,
+  });
+
+  late final int gid;
+  late final String title;
+  late final String description;
+  late final String tags;
+  late final String link;
+  late final String linkTitle;
+  late final String photo;
+  late final List<String> type;
+  late final GameCategory categories;
+  late final int updateAt;
+  late final int totalClicks;
+  late final int orderRank;
+  late final int status;
+  late final List<String> showLang;
+
+  Game.fromJson(Map<String, dynamic> json) {
+    gid = json['gid'];
+    title = json['title'];
+    description = json['description'];
+    tags = json['tags'];
+    link = json['link'];
+    linkTitle = json['link_title'];
+    photo = json['photo'];
+    type = List.castFrom<dynamic, String>(json['type']);
+    categories = GameCategory.fromJson(json['categories']);
+    updateAt = json['update_at'];
+    totalClicks = json['total_clicks'];
+    orderRank = json['order_rank'];
+    status = json['status'];
+    showLang = List.castFrom<dynamic, String>(json['show_lang']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['gid'] = gid;
+    _data['title'] = title;
+    _data['description'] = description;
+    _data['tags'] = tags;
+    _data['link'] = link;
+    _data['link_title'] = linkTitle;
+    _data['photo'] = photo;
+    _data['type'] = type;
+    _data['categories'] = categories.toJson();
+    _data['update_at'] = updateAt;
+    _data['total_clicks'] = totalClicks;
+    _data['order_rank'] = orderRank;
+    _data['status'] = status;
+    _data['show_lang'] = showLang;
+    return _data;
+  }
+}
+
+class GameCategory {
+  GameCategory({
+    this.name,
+    this.slug,
+  });
+
+  late final String? name;
+  late final String? slug;
+
+  GameCategory.fromJson(Map<String, dynamic> json) {
+    name = null;
+    slug = null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['name'] = name;
+    _data['slug'] = slug;
     return _data;
   }
 }

@@ -115,6 +115,12 @@ class Methods {
     );
   }
 
+  Future<GamePage> games(int page) async {
+    return GamePage.fromJson(
+      jsonDecode(await _invoke("games", page)),
+    );
+  }
+
   Future updateViewLog(int id, int lastViewChapterId, int lastViewPage) {
     return _invoke("update_view_log", {
       "id": id,

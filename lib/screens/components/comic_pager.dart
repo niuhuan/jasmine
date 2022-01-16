@@ -55,6 +55,7 @@ class _StreamPager extends StatefulWidget {
 class _StreamPagerState extends State<_StreamPager> {
   int _maxPage = 1;
   int _nextPage = 1;
+  int _total = 0;
 
   var _joining = false;
   var _joinSuccess = true;
@@ -67,6 +68,7 @@ class _StreamPagerState extends State<_StreamPager> {
       } else {
         _maxPage = (response.total / response.list.length).ceil();
       }
+      _total = response.total;
     }
     _nextPage++;
     return response.list;
@@ -82,7 +84,7 @@ class _StreamPagerState extends State<_StreamPager> {
         _joinSuccess = true;
         _joining = false;
       });
-    } catch (e,st) {
+    } catch (e, st) {
       print("$e\n$st");
       setState(() {
         _joinSuccess = false;
