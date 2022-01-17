@@ -153,13 +153,13 @@ class CategoriesResponse {
   });
 
   late final List<Categories> categories;
-  late final List<Blocks> blocks;
+  late final List<Block> blocks;
 
   CategoriesResponse.fromJson(Map<String, dynamic> json) {
     categories = List.from(json['categories'])
         .map((e) => Categories.fromJson(e))
         .toList();
-    blocks = List.from(json['blocks']).map((e) => Blocks.fromJson(e)).toList();
+    blocks = List.from(json['blocks']).map((e) => Block.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -204,8 +204,8 @@ class Categories {
   }
 }
 
-class Blocks {
-  Blocks({
+class Block {
+  Block({
     required this.title,
     required this.content,
   });
@@ -213,7 +213,7 @@ class Blocks {
   late final String title;
   late final List<String> content;
 
-  Blocks.fromJson(Map<String, dynamic> json) {
+  Block.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     content = List.castFrom<dynamic, String>(json['content']);
   }

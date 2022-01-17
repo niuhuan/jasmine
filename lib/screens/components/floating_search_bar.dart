@@ -7,6 +7,7 @@ class FloatingSearchBarScreen extends StatefulWidget {
   final String? hint;
   final bool showCursor;
   final bool autocorrect;
+  final Widget? panel;
 
   const FloatingSearchBarScreen({
     required this.controller,
@@ -15,6 +16,7 @@ class FloatingSearchBarScreen extends StatefulWidget {
     this.showCursor = true,
     this.autocorrect = true,
     this.onSubmitted,
+    this.panel,
     Key? key,
   }) : super(key: key);
 
@@ -100,35 +102,62 @@ class _FloatingSearchBarScreenState extends State<FloatingSearchBarScreen>
   }
 
   Widget _buildSearchBar() {
-    double statusBarHeight = MediaQuery.of(context).padding.top;
+    final mq = MediaQuery.of(context);
+    double statusBarHeight = mq.padding.top;
     double finalHeight = 80 + statusBarHeight;
     return AnimatedBuilder(
       animation: _in,
       builder: (BuildContext context, Widget? child) {
-        return Container(
-          padding: EdgeInsets.only(top: statusBarHeight),
-          child: Transform.translate(
-            offset: Offset(0, (_in.value * finalHeight) - finalHeight),
-            child: Column(
-              children: [
-                _SearchBarContainer(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: _hideSearchBar,
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.grey.shade800,
+        return Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: statusBarHeight),
+              child: Transform.translate(
+                offset: Offset(0, (_in.value * finalHeight) - finalHeight),
+                child: Column(
+                  children: [
+                    _SearchBarContainer(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: _hideSearchBar,
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: Colors.grey.shade800,
+                            ),
+                          ),
+                          Expanded(child: _buildTextField()),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ...(widget.panel == null
+                ? []
+                : [
+                    Expanded(
+                      child: Transform.translate(
+                        offset: Offset(
+                          (_in.value * mq.size.width) - mq.size.width,
+                          0,
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            top: 5,
+                            left: 10,
+                            right: 10,
+                            bottom: 150,
+                          ),
+                          decoration: _sharp,
+                          child: widget.panel,
                         ),
                       ),
-                      Expanded(child: _buildTextField()),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+                    ),
+                  ]),
+          ],
         );
       },
     );
@@ -187,21 +216,7 @@ class _SearchBarContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
       height: 50,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.shade500.withOpacity(.3),
-          width: .1,
-        ),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: .2,
-            spreadRadius: .3,
-            color: Colors.grey.shade500.withOpacity(.3),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(5),
-      ),
+      decoration: _sharp,
       child: child,
     );
   }
@@ -215,3 +230,19 @@ class FloatingSearchBarController {
   void display({String? modifyInput}) =>
       _state?._displayFloatingSearchBar(modifyInput: modifyInput);
 }
+
+final _sharp = BoxDecoration(
+  border: Border.all(
+    color: Colors.grey.shade500.withOpacity(.3),
+    width: .1,
+  ),
+  color: Colors.white,
+  boxShadow: [
+    BoxShadow(
+      blurRadius: .2,
+      spreadRadius: .3,
+      color: Colors.grey.shade500.withOpacity(.3),
+    ),
+  ],
+  borderRadius: BorderRadius.circular(5),
+);

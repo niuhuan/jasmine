@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/comic_pager.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
@@ -9,6 +8,7 @@ import 'package:jasmine/screens/components/floating_search_bar.dart';
 
 import 'components/browser_bottom_sheet.dart';
 import 'components/actions.dart';
+import 'components/comic_floating_search_bar.dart';
 
 class BrowserScreen extends StatefulWidget {
   final FloatingSearchBarController searchBarController;
@@ -29,9 +29,15 @@ class _BrowserScreenState extends State<BrowserScreen>
   String _slug = "";
   SortBy _sortBy = sortByDefault;
 
+  Future<CategoriesResponse> _categories() async {
+    final rsp = await methods.categories();
+    blockStore = rsp.blocks;
+    return rsp;
+  }
+
   @override
   void initState() {
-    _future = methods.categories();
+    _future = _categories();
     super.initState();
   }
 
@@ -55,7 +61,7 @@ class _BrowserScreenState extends State<BrowserScreen>
         future: _future,
         onRefresh: () async {
           setState(() {
-            _future = methods.categories();
+            _future = _categories();
           });
         },
         successBuilder: (

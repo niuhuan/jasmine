@@ -121,11 +121,15 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildTags(album.tags),
-                  const Divider(),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    child: SelectableText(widget.simple.description),
-                  ),
+                  ...(widget.simple.description.isEmpty
+                      ? []
+                      : [
+                          const Divider(),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: SelectableText(widget.simple.description),
+                          ),
+                        ]),
                   const Divider(),
                   DefaultTabController(
                     length: _tabs.length,
@@ -238,7 +242,8 @@ class _ComicSerials extends StatefulWidget {
   final AlbumResponse album;
   final ContinueReadButtonController continueReadButtonController;
 
-  const _ComicSerials(this.comicSimple, this.album, this.continueReadButtonController);
+  const _ComicSerials(
+      this.comicSimple, this.album, this.continueReadButtonController);
 
   @override
   State<StatefulWidget> createState() => _ComicSerialsState();
@@ -251,7 +256,7 @@ class _ComicSerialsState extends State<_ComicSerials> {
       children: [
         Container(height: 20),
         ContinueReadButton(
-          controller:  widget.continueReadButtonController,
+          controller: widget.continueReadButtonController,
           album: widget.album,
           onChoose: _onChoose,
         ),
