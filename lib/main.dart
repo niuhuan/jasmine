@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/screens/components/mouse_and_touch_scroll_behavior.dart';
 import 'package:jasmine/screens/init_screen.dart';
 
 import 'basic/methods.dart';
@@ -14,6 +15,7 @@ class Jasmine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: mouseAndTouchScrollBehavior,
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         appBarTheme: const AppBarTheme().copyWith(
