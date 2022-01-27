@@ -83,7 +83,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
           );
         }
         final chapter = snapshot.requireData;
-        return Scaffold(
+        final screen = Scaffold(
           backgroundColor: Colors.black,
           body: _ComicReader(
             chapter: chapter,
@@ -116,6 +116,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
             readerDirection: _readerDirection,
           ),
         );
+        return readerKeyboardHolder(screen);
       },
     );
   }
@@ -152,6 +153,28 @@ void delVolumeListen() {
   if (_volumeListenCount == 0) {
     volumeS?.cancel();
   }
+}
+
+Widget readerKeyboardHolder(Widget widget) {
+  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    widget = RawKeyboardListener(
+      focusNode: FocusNode(),
+      child: widget,
+      autofocus: true,
+      onKey: (event) {
+        if (event is RawKeyDownEvent) {
+          if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+            _readerControllerEvent.broadcast(_ReaderControllerEventArgs("UP"));
+          }
+          if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+            _readerControllerEvent
+                .broadcast(_ReaderControllerEventArgs("DOWN"));
+          }
+        }
+      },
+    );
+  }
+  return widget;
 }
 
 ////////////////////////////////
