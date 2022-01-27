@@ -1,5 +1,6 @@
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/auto_clean.dart';
 import 'package:jasmine/configs/network_api_host.dart';
 import 'package:jasmine/configs/network_cdn_host.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
@@ -120,6 +121,15 @@ class _BrowserBottomSheetState extends State<_BrowserBottomSheet> {
                   print("$e");
                   defaultToast(context, "清理失败");
                 }
+                setState(() {});
+              },
+            ),
+            Expanded(child: Container()),
+            _bottomIcon(
+              icon: Icons.auto_delete_outlined,
+              title: autoCleanName(),
+              onPressed: () async {
+                await chooseAutoClean(context);
                 setState(() {});
               },
             ),
