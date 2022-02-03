@@ -3,7 +3,7 @@ import 'package:jasmine/screens/components/mouse_and_touch_scroll_behavior.dart'
 import 'package:jasmine/screens/init_screen.dart';
 
 import 'basic/methods.dart';
-import 'basic/navigatior.dart';
+import 'basic/navigator.dart';
 
 void main() async {
   runApp(const Jasmine());

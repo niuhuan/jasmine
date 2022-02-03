@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/entities.dart';
 import 'package:jasmine/screens/comic_search_screen.dart';
 
@@ -44,7 +45,14 @@ class ComicInfoCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(comic.name, style: titleStyle),
+                link
+                    ? GestureDetector(
+                        onLongPress: () {
+                          confirmCopy(context, comic.name);
+                        },
+                        child: Text(comic.name, style: titleStyle),
+                      )
+                    : Text(comic.name, style: titleStyle),
                 Container(height: 4),
                 link
                     ? GestureDetector(
@@ -56,6 +64,9 @@ class ComicInfoCard extends StatelessWidget {
                               );
                             },
                           ));
+                        },
+                        onLongPress: () {
+                          confirmCopy(context, comic.author);
                         },
                         child: Text(comic.author, style: authorStyle),
                       )

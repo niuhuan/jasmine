@@ -5,6 +5,7 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:clipboard/clipboard.dart';
 
 /// 显示一个toast
 void defaultToast(BuildContext context, String title) {
@@ -168,4 +169,49 @@ Future<String?> displayTextInputDialog(BuildContext context,
       );
     },
   );
+}
+
+/// 复制内容到剪切板
+void copyToClipBoard(BuildContext context, String string) {
+  FlutterClipboard.copy(string);
+  defaultToast(context, "已复制到剪切板");
+}
+
+/// 显示一个确认框, 用户关闭弹窗以及选择否都会返回false, 仅当用户选择确定时返回true
+Future<bool> confirmDialog(
+    BuildContext context, String title, String content) async {
+  return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new Text(content),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          new MaterialButton(
+            child: new Text('取消'),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          ),
+          new MaterialButton(
+            child: new Text('确定'),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+        ],
+      )) ??
+      false;
+}
+
+/// 复制对话框
+void confirmCopy(BuildContext context, String content) async {
+  if (await confirmDialog(context, "复制", content)) {
+    copyToClipBoard(context, content);
+  }
 }

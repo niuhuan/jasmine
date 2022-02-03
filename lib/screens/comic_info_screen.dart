@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jasmine/basic/entities.dart';
 import 'package:jasmine/basic/methods.dart';
-import 'package:jasmine/basic/navigatior.dart';
+import 'package:jasmine/basic/navigator.dart';
 import 'package:jasmine/screens/comic_search_screen.dart';
 import 'package:jasmine/screens/components/comic_info_card.dart';
 import 'package:jasmine/screens/components/comic_list.dart';
