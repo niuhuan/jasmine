@@ -52,7 +52,10 @@ class _UserScreenState extends State<UserScreen>
             const Divider(),
             _buildViewLog(),
             const Divider(),
+            Container(height: 30),
             _buildVersion(),
+            Container(height: 30),
+            _buildVersionText(),
           ],
         ),
       ),
@@ -179,28 +182,46 @@ class _UserScreenState extends State<UserScreen>
   }
 
   Widget _buildVersion() {
-    return GestureDetector(
-      onTap: () {
-        openUrl("https://github.com/niuhuan/jasmine/releases/");
-      },
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return Container(
-            color: Colors.grey.shade50,
-            width: constraints.maxWidth,
-            height: 80,
-            child: Center(
-              child: VersionBadged(
-                child: Text(
-                  latestVersion == null
-                      ? "没有检测到新版本"
-                      : "检测到新版本 : $latestVersion",
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Center(
+          child: VersionBadged(
+            child: MaterialButton(
+              color: Colors.grey.shade200,
+              onPressed: () {
+                openUrl("https://github.com/niuhuan/jasmine/releases/");
+              },
+              child: SizedBox(
+                width: constraints.maxWidth - 30,
+                height: 80,
+                child: Center(
+                  child: Text(
+                    (latestVersion == null
+                        ? "没有检测到新版本"
+                        : "检测到新版本 : $latestVersion") +
+                        "\n(点击这里去下载页面)",
+                  ),
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
+    );
+  }
+  Widget _buildVersionText() {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Center(
+          child: SizedBox(
+            width: constraints.maxWidth - 30,
+            height: 80,
+            child: Center(
+              child: Text(latestVersionInfo() ?? ""),
+            ),
+          ),
+        );
+      },
     );
   }
 }
