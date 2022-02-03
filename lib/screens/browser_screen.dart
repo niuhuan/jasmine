@@ -49,7 +49,8 @@ class _BrowserScreenState extends State<BrowserScreen>
         title: const Text("浏览"),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              searchHistories = await methods.lastSearchHistories(20);
               widget.searchBarController.display(modifyInput: "");
             },
             icon: const Icon(Icons.search),

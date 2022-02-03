@@ -5,10 +5,17 @@ import 'floating_search_bar.dart';
 
 final _event = Event();
 final List<Block> _blockStore = [];
+final List<SearchHistory> _histories = [];
 
 set blockStore(List<Block> values) {
   _blockStore.clear();
   _blockStore.addAll(values);
+  _event.broadcast();
+}
+
+set searchHistories(List<SearchHistory> values) {
+  _histories.clear();
+  _histories.addAll(values);
   _event.broadcast();
 }
 
@@ -30,7 +37,6 @@ class ComicFloatingSearchBarScreen extends StatefulWidget {
 
 class _ComicFloatingSearchBarScreenState
     extends State<ComicFloatingSearchBarScreen> {
-
   final _panelController = ScrollController();
 
   @override
@@ -72,9 +78,57 @@ class _ComicFloatingSearchBarScreenState
       controller: _panelController,
       padding: const EdgeInsets.all(10),
       children: [
+        ..._buildHistory(),
         ..._buildTags(),
       ],
     );
+  }
+
+  List<Widget> _buildHistory() {
+    final List<Widget> widgets = [];
+    widgets.add(_buildTitle("历史记录"));
+    widgets.add(Wrap(
+      children: _histories.map((e) {
+        return InkWell(
+          onTap: () {
+            _onSubmitted(e.searchQuery);
+          },
+          child: Container(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              top: 3,
+              bottom: 3,
+            ),
+            margin: const EdgeInsets.only(
+              left: 5,
+              right: 5,
+              top: 3,
+              bottom: 3,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.pink.shade100,
+              border: Border.all(
+                style: BorderStyle.solid,
+                color: Colors.pink.shade400,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+            ),
+            child: Text(
+              e.searchQuery,
+              style: TextStyle(
+                color: Colors.pink.shade500,
+                height: 1.4,
+              ),
+              strutStyle: const StrutStyle(
+                height: 1.4,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    ));
+    return widgets;
   }
 
   List<Widget> _buildTags() {

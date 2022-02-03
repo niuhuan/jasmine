@@ -24,7 +24,7 @@ class Methods {
       })));
       var rsp = await req.close();
       resp = await rsp.transform(utf8.decoder).join();
-    }else{
+    } else {
       resp = await _channel.invokeMethod(
           "invoke",
           jsonEncode({
@@ -232,6 +232,13 @@ class Methods {
 
   Future clearViewLog() {
     return _invoke("clear_view_log", "");
+  }
+
+  Future<List<SearchHistory>> lastSearchHistories(int count) async {
+    return List.of(jsonDecode(await _invoke("last_search_histories", "$count")))
+        .map((e) => SearchHistory.fromJson(e))
+        .toList()
+        .cast<SearchHistory>();
   }
 }
 

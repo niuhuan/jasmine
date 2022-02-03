@@ -951,3 +951,24 @@ class GameCategory {
     return _data;
   }
 }
+
+class SearchHistory {
+  SearchHistory({
+    required this.searchQuery,
+    required this.lastSearchTime,
+  });
+  late final String searchQuery;
+  late final int lastSearchTime;
+
+  SearchHistory.fromJson(Map<String, dynamic> json){
+    searchQuery = json['search_query'];
+    lastSearchTime = json['last_search_time'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['search_query'] = searchQuery;
+    _data['last_search_time'] = lastSearchTime;
+    return _data;
+  }
+}
