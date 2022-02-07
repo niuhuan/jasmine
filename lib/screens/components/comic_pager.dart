@@ -163,10 +163,42 @@ class _StreamPagerState extends State<_StreamPager> {
 
   @override
   Widget build(BuildContext context) {
-    return ComicList(
-      controller: _controller,
-      data: _data,
-      append: _buildLoadingCard(),
+    return Scaffold(
+      appBar: _buildPagerBar(),
+      body: ComicList(
+        controller: _controller,
+        data: _data,
+        append: _buildLoadingCard(),
+      ),
+    );
+  }
+
+  PreferredSize _buildPagerBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(30),
+      child: Container(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: .5,
+              style: BorderStyle.solid,
+              color: Colors.grey[200]!,
+            ),
+          ),
+        ),
+        child: SizedBox(
+          height: 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("已加载 ${_nextPage - 1} / $_maxPage 页"),
+              Text("已加载 ${_data.length} / $_total 项"),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -248,93 +280,96 @@ class _PagerPagerState extends State<_PagerPager> {
             ),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () {
-                _textEditController.clear();
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: Card(
-                        child: TextField(
-                          controller: _textEditController,
-                          decoration: const InputDecoration(
-                            labelText: "请输入页数：",
+        child: SizedBox(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  _textEditController.clear();
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Card(
+                          child: TextField(
+                            controller: _textEditController,
+                            decoration: const InputDecoration(
+                              labelText: "请输入页数：",
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(r'\d+')),
+                            ],
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'\d+')),
-                          ],
                         ),
-                      ),
-                      actions: <Widget>[
-                        MaterialButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('取消'),
-                        ),
-                        MaterialButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            var text = _textEditController.text;
-                            if (text.isEmpty || text.length > 5) {
-                              return;
-                            }
-                            var num = int.parse(text);
-                            if (num == 0 || num > _maxPage) {
-                              return;
-                            }
-                            setState(() {
-                              _currentPage = num;
-                              _pageFuture = _load();
-                            });
-                          },
-                          child: const Text('确定'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Row(
+                        actions: <Widget>[
+                          MaterialButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('取消'),
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              var text = _textEditController.text;
+                              if (text.isEmpty || text.length > 5) {
+                                return;
+                              }
+                              var num = int.parse(text);
+                              if (num == 0 || num > _maxPage) {
+                                return;
+                              }
+                              setState(() {
+                                _currentPage = num;
+                                _pageFuture = _load();
+                              });
+                            },
+                            child: const Text('确定'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Row(
+                  children: [
+                    Text("第 $_currentPage / $_maxPage 页"),
+                  ],
+                ),
+              ),
+              Row(
                 children: [
-                  Text("第 $_currentPage / $_maxPage 页"),
+                  MaterialButton(
+                    minWidth: 0,
+                    onPressed: () {
+                      if (_currentPage > 1) {
+                        setState(() {
+                          _currentPage = _currentPage - 1;
+                          _pageFuture = _load();
+                        });
+                      }
+                    },
+                    child: const Text('上一页'),
+                  ),
+                  MaterialButton(
+                    minWidth: 0,
+                    onPressed: () {
+                      if (_currentPage < _maxPage) {
+                        setState(() {
+                          _currentPage = _currentPage + 1;
+                          _pageFuture = _load();
+                        });
+                      }
+                    },
+                    child: const Text('下一页'),
+                  )
                 ],
               ),
-            ),
-            Row(
-              children: [
-                MaterialButton(
-                  minWidth: 0,
-                  onPressed: () {
-                    if (_currentPage > 1) {
-                      setState(() {
-                        _currentPage = _currentPage - 1;
-                        _pageFuture = _load();
-                      });
-                    }
-                  },
-                  child: const Text('上一页'),
-                ),
-                MaterialButton(
-                  minWidth: 0,
-                  onPressed: () {
-                    if (_currentPage < _maxPage) {
-                      setState(() {
-                        _currentPage = _currentPage + 1;
-                        _pageFuture = _load();
-                      });
-                    }
-                  },
-                  child: const Text('下一页'),
-                )
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
