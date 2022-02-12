@@ -149,7 +149,7 @@ class _FloatingSearchBarScreenState extends State<FloatingSearchBarScreen>
                             top: 5,
                             left: 10,
                             right: 10,
-                            bottom: 150,
+                            bottom: 15,
                           ),
                           decoration: _sharp,
                           child: widget.panel,

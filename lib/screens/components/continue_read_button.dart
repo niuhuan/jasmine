@@ -4,15 +4,15 @@ import 'package:jasmine/basic/methods.dart';
 
 // 继续阅读按钮
 class ContinueReadButton extends StatefulWidget {
+  final Future<ViewLog?> viewFuture;
   final AlbumResponse album;
   final Function(int epOrder, int pictureRank) onChoose;
-  final ContinueReadButtonController controller;
 
   const ContinueReadButton({
     Key? key,
     required this.album,
     required this.onChoose,
-    required this.controller,
+    required this.viewFuture,
   }) : super(key: key);
 
   @override
@@ -20,19 +20,6 @@ class ContinueReadButton extends StatefulWidget {
 }
 
 class _ContinueReadButtonState extends State<ContinueReadButton> {
-  late Future<ViewLog?> _viewFuture = methods.findViewLog(widget.album.id);
-
-  void _reload() {
-    setState(() {
-      _viewFuture = methods.findViewLog(widget.album.id);
-    });
-  }
-
-  @override
-  void initState() {
-    widget.controller._state = this;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +27,7 @@ class _ContinueReadButtonState extends State<ContinueReadButton> {
       builder: (BuildContext context, BoxConstraints constraints) {
         var width = constraints.maxWidth;
         return FutureBuilder(
-          future: _viewFuture,
+          future: widget.viewFuture,
           builder: (BuildContext context, AsyncSnapshot<ViewLog?> snapshot) {
             late void Function() onPressed;
             late String text;
@@ -104,10 +91,4 @@ class _ContinueReadButtonState extends State<ContinueReadButton> {
       },
     );
   }
-}
-
-class ContinueReadButtonController {
-  _ContinueReadButtonState? _state;
-
-  reload() => _state?._reload();
 }

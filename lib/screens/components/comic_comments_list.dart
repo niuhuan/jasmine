@@ -8,12 +8,10 @@ import 'avatar.dart';
 class ComicCommentsList extends StatefulWidget {
   final String mode;
   final int aid;
-  final int? parentId;
 
   const ComicCommentsList({
     required this.mode,
     required this.aid,
-    this.parentId,
     Key? key,
   }) : super(key: key);
 
@@ -62,36 +60,27 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildPrePage(),
-            ...snapshot.requireData.list.map((e) => _buildComment(e)),
+            ...snapshot.requireData.list.map((e) => _buildComment(
+                  context,
+                  e,
+                  widget.aid,
+                  widget.mode,
+                  true,
+                )),
             _buildNextPage(),
-            _buildPostComment(),
+            _buildPostComment(
+              context,
+              null,
+              widget.aid,
+              () {
+                setState(() {
+                  _future = _loadPage();
+                });
+              },
+            ),
           ],
         );
       },
-    );
-  }
-
-  Widget _buildComment(Comment comment) {
-    return InkWell(
-      onTap: () {
-        if (widget.parentId != null) {
-          return;
-        }
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => _CommentChildrenScreen(
-              aid: widget.aid,
-              mode: widget.mode,
-              comment: comment,
-            ),
-          ),
-        );
-      },
-      child: _ComicCommentItem(
-        mode: widget.mode,
-        aid: widget.aid,
-        comment: comment,
-      ),
     );
   }
 
@@ -134,52 +123,81 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
     }
     return Container();
   }
+}
 
-  Widget _buildPostComment() {
-    return InkWell(
-      onTap: () async {
-        String? text = await displayTextInputDialog(context, title: '请输入评论内容');
-        if (text != null && text.isNotEmpty) {
-          try {
-            final data = await (widget.parentId == null
-                ? methods.comment(widget.aid, text)
-                : methods.childComment(widget.aid, text, widget.parentId));
-            if (data.status == "fail") {
-              defaultToast(context, data.msg);
-            } else {
-              defaultToast(context, "评论成功");
-              setState(() {
-                _future = _loadPage();
-              });
-            }
-          } catch (e, st) {
-            print("$e\n$st");
-            defaultToast(context, "评论失败");
-          }
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              width: .25,
-              style: BorderStyle.solid,
-              color: Colors.grey.shade500.withOpacity(.5),
-            ),
-            bottom: BorderSide(
-              width: .25,
-              style: BorderStyle.solid,
-              color: Colors.grey.shade500.withOpacity(.5),
-            ),
+Widget _buildComment(
+  BuildContext context,
+  Comment comment,
+  int aid,
+  String mode,
+  bool jumpList,
+) {
+  return InkWell(
+    onTap: () {
+      if (!jumpList) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => _CommentChildrenScreen(
+            aid: aid,
+            mode: mode,
+            comment: comment,
           ),
         ),
-        padding: const EdgeInsets.all(30),
-        child: const Center(
-          child: Text('我有话要讲'),
+      );
+    },
+    child: _ComicCommentItem(
+      aid: aid,
+      mode: mode,
+      comment: comment,
+    ),
+  );
+}
+
+Widget _buildPostComment(
+    BuildContext context, int? parentId, int aid, Function? f) {
+  return InkWell(
+    onTap: () async {
+      String? text = await displayTextInputDialog(context, title: '请输入评论内容');
+      if (text != null && text.isNotEmpty) {
+        try {
+          final data = await (parentId == null
+              ? methods.comment(aid, text)
+              : methods.childComment(aid, text, parentId));
+          if (data.status == "fail") {
+            defaultToast(context, data.msg);
+          } else {
+            defaultToast(context, "评论成功");
+            f?.call();
+          }
+        } catch (e, st) {
+          print("$e\n$st");
+          defaultToast(context, "评论失败");
+        }
+      }
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            width: .25,
+            style: BorderStyle.solid,
+            color: Colors.grey.shade500.withOpacity(.5),
+          ),
+          bottom: BorderSide(
+            width: .25,
+            style: BorderStyle.solid,
+            color: Colors.grey.shade500.withOpacity(.5),
+          ),
         ),
       ),
-    );
-  }
+      padding: const EdgeInsets.all(30),
+      child: const Center(
+        child: Text('我有话要讲'),
+      ),
+    ),
+  );
 }
 
 class _ComicCommentItem extends StatefulWidget {
@@ -393,15 +411,28 @@ class _CommentChildrenScreenState extends State<_CommentChildrenScreen> {
           ),
           const Divider(),
           Expanded(
-              child: ListView(
-            children: [
-              ComicCommentsList(
-                mode: widget.mode,
-                aid: widget.aid,
-                parentId: widget.comment.CID,
-              )
-            ],
-          )),
+            child: ListView(
+              children: [
+                ...widget.comment.replys.map((e) => _buildComment(
+                      context,
+                      e,
+                      widget.aid,
+                      widget.mode,
+                      false,
+                    )),
+                _buildPostComment(
+                  context,
+                  widget.comment.CID,
+                  widget.aid,
+                  () {
+                    // setState(() {
+                    //   _future = _loadPage();
+                    // });
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

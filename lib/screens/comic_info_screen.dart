@@ -20,10 +20,10 @@ class ComicInfoScreen extends StatefulWidget {
 }
 
 class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
-  final _continueReadButtonController = ContinueReadButtonController();
   var _favouriteLoading = false;
   var _tabIndex = 0;
   late Future<AlbumResponse> _albumFuture = methods.album(widget.simple.id);
+  late Future<ViewLog?> _viewFuture = methods.findViewLog(widget.simple.id);
 
   @override
   void didChangeDependencies() {
@@ -33,7 +33,9 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
 
   @override
   void didPopNext() {
-    _continueReadButtonController.reload();
+    setState(() {
+      _viewFuture = methods.findViewLog(widget.simple.id);
+    });
   }
 
   @override
@@ -52,10 +54,8 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
         actions: [
           FutureBuilder(
             future: _albumFuture,
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<AlbumResponse> snapshot,
-            ) {
+            builder: (BuildContext context,
+                AsyncSnapshot<AlbumResponse> snapshot,) {
               if (snapshot.hasError ||
                   snapshot.connectionState != ConnectionState.done) {
                 return Container();
@@ -93,10 +93,8 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                 _albumFuture = methods.album(widget.simple.id);
               });
             },
-            successBuilder: (
-              BuildContext context,
-              AsyncSnapshot<AlbumResponse> snapshot,
-            ) {
+            successBuilder: (BuildContext context,
+                AsyncSnapshot<AlbumResponse> snapshot,) {
               AlbumResponse album = snapshot.requireData;
 
               var _tabs = <Widget>[
@@ -109,7 +107,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                 _ComicSerials(
                   widget.simple,
                   album,
-                  _continueReadButtonController,
+                  _viewFuture,
                 ),
                 ComicCommentsList(mode: "manhua", aid: widget.simple.id),
                 _ComicRelatedList(album.relatedList),
@@ -123,12 +121,12 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                   ...(widget.simple.description.isEmpty
                       ? []
                       : [
-                          const Divider(),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            child: SelectableText(widget.simple.description),
-                          ),
-                        ]),
+                    const Divider(),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: SelectableText(widget.simple.description),
+                    ),
+                  ]),
                   const Divider(),
                   DefaultTabController(
                     length: _tabs.length,
@@ -142,7 +140,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                             indicatorColor: theme.colorScheme.secondary,
                             labelColor: theme.colorScheme.secondary,
                             unselectedLabelColor:
-                                theme.textTheme.bodyText1?.color,
+                            theme.textTheme.bodyText1?.color,
                             onTap: (val) async {
                               setState(() {
                                 _tabIndex = val;
@@ -239,10 +237,9 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
 class _ComicSerials extends StatefulWidget {
   final ComicBasic comicSimple;
   final AlbumResponse album;
-  final ContinueReadButtonController continueReadButtonController;
+  final Future<ViewLog?> viewFuture;
 
-  const _ComicSerials(
-      this.comicSimple, this.album, this.continueReadButtonController);
+  const _ComicSerials(this.comicSimple, this.album, this.viewFuture);
 
   @override
   State<StatefulWidget> createState() => _ComicSerialsState();
@@ -255,7 +252,7 @@ class _ComicSerialsState extends State<_ComicSerials> {
       children: [
         Container(height: 20),
         ContinueReadButton(
-          controller: widget.continueReadButtonController,
+          viewFuture: widget.viewFuture,
           album: widget.album,
           onChoose: _onChoose,
         ),
@@ -316,21 +313,20 @@ class _ComicSerialsState extends State<_ComicSerials> {
     );
   }
 
-  void _push(
-    ComicBasic comic,
-    List<Series> series,
-    int seriesId,
-    int initRank,
-  ) {
+  void _push(ComicBasic comic,
+      List<Series> series,
+      int seriesId,
+      int initRank,) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ComicReaderScreen(
-          comic: comic,
-          series: series,
-          seriesId: seriesId,
-          initRank: initRank,
-        ),
+        builder: (context) =>
+            ComicReaderScreen(
+              comic: comic,
+              series: series,
+              seriesId: seriesId,
+              initRank: initRank,
+            ),
       ),
     );
   }
