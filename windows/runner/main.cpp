@@ -16,7 +16,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
     if (awBuffer[wcslen(awBuffer) - 1] != L'\\') {
         wcscat_s(awBuffer, 2048, L"\\");
     }
-    wcscat_s(awBuffer, 2048, L"data");
+    wcscat_s(awBuffer, 2048, L"data/application");
     char buffer[4096];
     size_t i;
     wcstombs_s(&i,buffer,4096, awBuffer,2048 );
