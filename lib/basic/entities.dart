@@ -957,10 +957,11 @@ class SearchHistory {
     required this.searchQuery,
     required this.lastSearchTime,
   });
+
   late final String searchQuery;
   late final int lastSearchTime;
 
-  SearchHistory.fromJson(Map<String, dynamic> json){
+  SearchHistory.fromJson(Map<String, dynamic> json) {
     searchQuery = json['search_query'];
     lastSearchTime = json['last_search_time'];
   }
@@ -969,6 +970,94 @@ class SearchHistory {
     final _data = <String, dynamic>{};
     _data['search_query'] = searchQuery;
     _data['last_search_time'] = lastSearchTime;
+    return _data;
+  }
+}
+
+class DownloadCreate {
+  DownloadCreate({
+    required this.album,
+    required this.chapters,
+  });
+
+  late final DownloadCreateAlbum album;
+  late final List<DownloadCreateChapter> chapters;
+
+  DownloadCreate.fromJson(Map<String, dynamic> json) {
+    album = DownloadCreateAlbum.fromJson(json['album']);
+    chapters = List.from(json['chapters'])
+        .map((e) => DownloadCreateChapter.fromJson(e))
+        .toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['album'] = album.toJson();
+    _data['chapters'] = chapters.map((e) => e.toJson()).toList();
+    return _data;
+  }
+}
+
+class DownloadCreateAlbum {
+  DownloadCreateAlbum({
+    required this.id,
+    required this.name,
+    required this.author,
+    required this.tags,
+    required this.works,
+    required this.description,
+  });
+
+  late final int id;
+  late final String name;
+  late final List<String> author;
+  late final List<String> tags;
+  late final String works;
+  late final String description;
+
+  DownloadCreateAlbum.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    author = List.castFrom<dynamic, String>(json['author']);
+    tags = List.castFrom<dynamic, String>(json['tags']);
+    works = json['works'];
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['name'] = name;
+    _data['author'] = author;
+    _data['tags'] = tags;
+    _data['works'] = works;
+    _data['description'] = description;
+    return _data;
+  }
+}
+
+class DownloadCreateChapter {
+  DownloadCreateChapter({
+    required this.id,
+    required this.name,
+    required this.sort,
+  });
+
+  late final int id;
+  late final String name;
+  late final String sort;
+
+  DownloadCreateChapter.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    sort = json['sort'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['name'] = name;
+    _data['sort'] = sort;
     return _data;
   }
 }

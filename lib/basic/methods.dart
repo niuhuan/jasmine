@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 import 'entities.dart';
+
 export 'entities.dart';
 
 const methods = Methods._();
@@ -240,6 +241,31 @@ class Methods {
         .toList()
         .cast<SearchHistory>();
   }
+
+  /// 下载列表
+  Future<List<DownloadCreate>> allDownloads() async {
+    return List.of(jsonDecode(await _invoke("all_downloads", "")))
+        .map((e) => DownloadCreate.fromJson(e))
+        .toList()
+        .cast<DownloadCreate>();
+  }
+
+  /// 寻找下载
+  Future<DownloadCreate?> downloadById(int id) async {
+    var map = jsonDecode(await _invoke("download_by_id", "$id"));
+    if (map == null) {
+      return map;
+    }
+    return DownloadCreate.fromJson(map);
+  }
+
+  /// 创建下载
+  Future<dynamic> createDownload(DownloadCreate create) async {
+    return _invoke("create_download", create);
+  }
+
+
+
 }
 
 class _Response {
