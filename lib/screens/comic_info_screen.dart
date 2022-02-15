@@ -326,20 +326,18 @@ class _ComicSerialsState extends State<_ComicSerials> {
         spacing: 10,
         runSpacing: 10,
         alignment: WrapAlignment.spaceAround,
-        children: [
-          ...widget.album.series.map((e) {
-            return MaterialButton(
-              onPressed: () {
-                _push(widget.comicSimple, widget.album.series, e.id, 0);
-              },
-              color: Colors.white,
-              child: Text(
-                e.sort + (e.name == "" ? "" : (" - ${e.name}")),
-                style: const TextStyle(color: Colors.black),
-              ),
-            );
-          }),
-        ],
+        children: widget.album.series.map((e) {
+          return MaterialButton(
+            onPressed: () {
+              _push(widget.comicSimple, widget.album.series, e.id, 0);
+            },
+            color: Colors.white,
+            child: Text(
+              e.sort + (e.name == "" ? "" : (" - ${e.name}")),
+              style: const TextStyle(color: Colors.black),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

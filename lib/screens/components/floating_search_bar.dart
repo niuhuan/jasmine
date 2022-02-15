@@ -55,9 +55,13 @@ class _FloatingSearchBarScreenState extends State<FloatingSearchBarScreen>
       body: Stack(
         children: [
           widget.child,
-          _buildBackdrop(),
-          _buildSearchBar(),
-          _buildOnPop(),
+          ..._animationController.isDismissed
+              ? []
+              : [
+                  _buildBackdrop(),
+                  _buildSearchBar(),
+                  _buildOnPop(),
+                ],
         ],
       ),
     );

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 
+import 'components/comic_download_card.dart';
+import 'download_album_screen.dart';
+
 class DownloadsScreen extends StatefulWidget {
   const DownloadsScreen({Key? key}) : super(key: key);
 
@@ -35,7 +38,20 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
           BuildContext context,
           AsyncSnapshot<List<DownloadAlbum>> snapshot,
         ) {
-          return ListView();
+          return ListView(
+            children: snapshot.requireData
+                .map((e) => GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                            return DownloadAlbumScreen(e);
+                          }),
+                        );
+                      },
+                      child: ComicDownloadCard(e),
+                    ))
+                .toList(),
+          );
         },
       ),
     );
