@@ -1012,7 +1012,7 @@ class DownloadCreateAlbum {
   late final String name;
   late final List<String> author;
   late final List<String> tags;
-  late final String works;
+  late final List<String> works;
   late final String description;
 
   DownloadCreateAlbum.fromJson(Map<String, dynamic> json) {
@@ -1020,7 +1020,7 @@ class DownloadCreateAlbum {
     name = json['name'];
     author = List.castFrom<dynamic, String>(json['author']);
     tags = List.castFrom<dynamic, String>(json['tags']);
-    works = json['works'];
+    works = List.castFrom<dynamic, String>(json['works']);
     description = json['description'];
   }
 

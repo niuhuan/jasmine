@@ -6,6 +6,7 @@ import 'package:jasmine/screens/components/comic_info_card.dart';
 import 'package:jasmine/screens/components/comic_list.dart';
 import 'package:jasmine/screens/components/item_builder.dart';
 
+import 'comic_download_screen.dart';
 import 'comic_reader_screen.dart';
 import 'components/comic_comments_list.dart';
 import 'components/continue_read_button.dart';
@@ -54,8 +55,36 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
         actions: [
           FutureBuilder(
             future: _albumFuture,
-            builder: (BuildContext context,
-                AsyncSnapshot<AlbumResponse> snapshot,) {
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<AlbumResponse> snapshot,
+            ) {
+              if (snapshot.connectionState != ConnectionState.done ||
+                  snapshot.hasError) {
+                return Container();
+              }
+              return IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                      return ComicDownloadScreen(
+                        widget.simple,
+                        snapshot.requireData,
+                      );
+                    }),
+                  );
+                },
+                icon: const Icon(Icons.download),
+              );
+            },
+          ),
+          FutureBuilder(
+            future: _albumFuture,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<AlbumResponse> snapshot,
+            ) {
               if (snapshot.hasError ||
                   snapshot.connectionState != ConnectionState.done) {
                 return Container();
@@ -93,8 +122,10 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                 _albumFuture = methods.album(widget.simple.id);
               });
             },
-            successBuilder: (BuildContext context,
-                AsyncSnapshot<AlbumResponse> snapshot,) {
+            successBuilder: (
+              BuildContext context,
+              AsyncSnapshot<AlbumResponse> snapshot,
+            ) {
               AlbumResponse album = snapshot.requireData;
 
               var _tabs = <Widget>[
@@ -121,12 +152,12 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                   ...(widget.simple.description.isEmpty
                       ? []
                       : [
-                    const Divider(),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: SelectableText(widget.simple.description),
-                    ),
-                  ]),
+                          const Divider(),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: SelectableText(widget.simple.description),
+                          ),
+                        ]),
                   const Divider(),
                   DefaultTabController(
                     length: _tabs.length,
@@ -140,7 +171,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                             indicatorColor: theme.colorScheme.secondary,
                             labelColor: theme.colorScheme.secondary,
                             unselectedLabelColor:
-                            theme.textTheme.bodyText1?.color,
+                                theme.textTheme.bodyText1?.color,
                             onTap: (val) async {
                               setState(() {
                                 _tabIndex = val;
@@ -313,20 +344,21 @@ class _ComicSerialsState extends State<_ComicSerials> {
     );
   }
 
-  void _push(ComicBasic comic,
-      List<Series> series,
-      int seriesId,
-      int initRank,) {
+  void _push(
+    ComicBasic comic,
+    List<Series> series,
+    int seriesId,
+    int initRank,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            ComicReaderScreen(
-              comic: comic,
-              series: series,
-              seriesId: seriesId,
-              initRank: initRank,
-            ),
+        builder: (context) => ComicReaderScreen(
+          comic: comic,
+          series: series,
+          seriesId: seriesId,
+          initRank: initRank,
+        ),
       ),
     );
   }
