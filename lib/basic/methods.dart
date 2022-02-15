@@ -243,11 +243,11 @@ class Methods {
   }
 
   /// 下载列表
-  Future<List<DownloadCreate>> allDownloads() async {
+  Future<List<DownloadAlbum>> allDownloads() async {
     return List.of(jsonDecode(await _invoke("all_downloads", "")))
-        .map((e) => DownloadCreate.fromJson(e))
+        .map((e) => DownloadAlbum.fromJson(e))
         .toList()
-        .cast<DownloadCreate>();
+        .cast<DownloadAlbum>();
   }
 
   /// 寻找下载

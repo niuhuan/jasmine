@@ -6,6 +6,7 @@ import 'package:jasmine/screens/components/avatar.dart';
 import 'package:jasmine/screens/components/badge.dart';
 import 'package:jasmine/screens/view_log_screen.dart';
 
+import 'downloads_screen.dart';
 import 'favorites_screen.dart';
 
 class UserScreen extends StatefulWidget {
@@ -51,6 +52,8 @@ class _UserScreenState extends State<UserScreen>
             _buildFavorites(),
             const Divider(),
             _buildViewLog(),
+            const Divider(),
+            _buildDownloads(),
             const Divider(),
             Container(height: 30),
             _buildVersion(),
@@ -178,6 +181,19 @@ class _UserScreenState extends State<UserScreen>
         ));
       },
       title: const Text("浏览记录"),
+    );
+  }
+
+  Widget _buildDownloads() {
+    return ListTile(
+      onTap: () async {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+            return const DownloadsScreen();
+          },
+        ));
+      },
+      title: const Text("下载列表"),
     );
   }
 

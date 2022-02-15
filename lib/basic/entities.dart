@@ -1061,3 +1061,60 @@ class DownloadCreateChapter {
     return _data;
   }
 }
+
+class DownloadAlbum {
+  DownloadAlbum({
+    required this.id,
+    required this.name,
+    required this.author,
+    required this.tags,
+    required this.works,
+    required this.description,
+    required this.dlSquareCoverStatus,
+    required this.dl_3x4CoverStatus,
+    required this.dlStatus,
+    required this.imageCount,
+    required this.dledImageCount,
+  });
+  late final int id;
+  late final String name;
+  late final String author;
+  late final String tags;
+  late final String works;
+  late final String description;
+  late final int dlSquareCoverStatus;
+  late final int dl_3x4CoverStatus;
+  late final int dlStatus;
+  late final int imageCount;
+  late final int dledImageCount;
+
+  DownloadAlbum.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    name = json['name'];
+    author = json['author'];
+    tags = json['tags'];
+    works = json['works'];
+    description = json['description'];
+    dlSquareCoverStatus = json['dl_square_cover_status'];
+    dl_3x4CoverStatus = json['dl_3x4_cover_status'];
+    dlStatus = json['dl_status'];
+    imageCount = json['image_count'];
+    dledImageCount = json['dled_image_count'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['name'] = name;
+    _data['author'] = author;
+    _data['tags'] = tags;
+    _data['works'] = works;
+    _data['description'] = description;
+    _data['dl_square_cover_status'] = dlSquareCoverStatus;
+    _data['dl_3x4_cover_status'] = dl_3x4CoverStatus;
+    _data['dl_status'] = dlStatus;
+    _data['image_count'] = imageCount;
+    _data['dled_image_count'] = dledImageCount;
+    return _data;
+  }
+}
