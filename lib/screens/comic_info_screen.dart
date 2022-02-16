@@ -356,6 +356,7 @@ class _ComicSerialsState extends State<_ComicSerials> {
           series: series,
           seriesId: seriesId,
           initRank: initRank,
+          loadChapter: methods.chapter,
         ),
       ),
     );

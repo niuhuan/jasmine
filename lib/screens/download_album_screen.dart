@@ -204,8 +204,34 @@ class _DownloadAlbumScreenState extends State<DownloadAlbumScreen> {
               .toList(),
           seriesId: seriesId,
           initRank: initRank,
+          loadChapter: (int seriesId) {
+            return _loadChapter(create, seriesId);
+          },
         ),
       ),
+    );
+  }
+
+  Future<ChapterResponse> _loadChapter(
+      DownloadCreate create, int seriesId) async {
+    var i = await methods.dlImageByChapterId(seriesId);
+    var name = "";
+    for (var element in create.chapters) {
+      if (element.id == seriesId) {
+        name = element.name;
+      }
+    }
+    return ChapterResponse(
+      id: seriesId,
+      series: create.chapters
+          .map((e) => Series(id: e.id, name: e.name, sort: e.sort))
+          .toList(),
+      tags: create.album.tags.join(" / "),
+      name: name,
+      images: i.map((e) => e.name).toList(),
+      seriesId: create.album.id,
+      isFavorite: false,
+      liked: false,
     );
   }
 }

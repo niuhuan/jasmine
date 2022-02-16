@@ -264,8 +264,13 @@ class Methods {
     return _invoke("create_download", create);
   }
 
-
-
+  /// 下载图片列表
+  Future<List<DlImage>> dlImageByChapterId(int id) async {
+    return List.of(jsonDecode(await _invoke("dl_image_by_chapter_id", "$id")))
+        .map((e) => DlImage.fromJson(e))
+        .toList()
+        .cast<DlImage>();
+  }
 }
 
 class _Response {

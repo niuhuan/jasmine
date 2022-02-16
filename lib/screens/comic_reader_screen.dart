@@ -24,6 +24,7 @@ class ComicReaderScreen extends StatefulWidget {
   final List<Series> series;
   final int seriesId;
   final int initRank;
+  final Future<ChapterResponse> Function(int seriesId) loadChapter;
 
   const ComicReaderScreen({
     Key? key,
@@ -31,6 +32,7 @@ class ComicReaderScreen extends StatefulWidget {
     required this.series,
     required this.seriesId,
     required this.initRank,
+    required this.loadChapter,
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
     setState(() {
       _readerType = currentReaderType;
       _readerDirection = currentReaderDirection;
-      _chapterFuture = methods.chapter(widget.seriesId);
+      _chapterFuture = widget.loadChapter(widget.seriesId);
     });
   }
 
@@ -96,6 +98,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
                     series: widget.series,
                     seriesId: widget.seriesId,
                     initRank: index,
+                    loadChapter: widget.loadChapter,
                   );
                 }),
               );
@@ -108,6 +111,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
                     series: widget.series,
                     seriesId: id,
                     initRank: 0,
+                    loadChapter: widget.loadChapter,
                   );
                 }),
               );

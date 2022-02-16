@@ -1118,3 +1118,48 @@ class DownloadAlbum {
     return _data;
   }
 }
+
+class DlImage {
+  DlImage({
+    required this.albumId,
+    required this.chapterId,
+    required this.imageIndex,
+    required this.name,
+    required this.key,
+    required this.dlStatus,
+    required this.width,
+    required this.height,
+  });
+  late final int albumId;
+  late final int chapterId;
+  late final int imageIndex;
+  late final String name;
+  late final String key;
+  late final int dlStatus;
+  late final int width;
+  late final int height;
+
+  DlImage.fromJson(Map<String, dynamic> json){
+    albumId = json['album_id'];
+    chapterId = json['chapter_id'];
+    imageIndex = json['image_index'];
+    name = json['name'];
+    key = json['key'];
+    dlStatus = json['dl_status'];
+    width = json['width'];
+    height = json['height'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['album_id'] = albumId;
+    _data['chapter_id'] = chapterId;
+    _data['image_index'] = imageIndex;
+    _data['name'] = name;
+    _data['key'] = key;
+    _data['dl_status'] = dlStatus;
+    _data['width'] = width;
+    _data['height'] = height;
+    return _data;
+  }
+}
