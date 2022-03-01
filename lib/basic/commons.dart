@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:clipboard/clipboard.dart';
 
 /// 显示一个toast
 void defaultToast(BuildContext context, String title) {
@@ -24,26 +24,27 @@ void defaultToast(BuildContext context, String title) {
 
 Future<T?> chooseListDialog<T>(BuildContext context,
     {required List<T> values, required String title, String? tips}) async {
-  List<Widget> widgets = [];
-  if (tips != null) {
-    widgets.add(Container(
-      padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
-      child: Text(tips),
-    ));
-  }
-  widgets.addAll(values.map((e) => SimpleDialogOption(
-        onPressed: () {
-          Navigator.of(context).pop(e);
-        },
-        child: Text('$e'),
-      )));
-
   return showDialog<T>(
     context: context,
     builder: (BuildContext context) {
       return SimpleDialog(
         title: Text(title),
-        children: widgets,
+        children: [
+          ...values.map((e) => SimpleDialogOption(
+                onPressed: () {
+                  Navigator.of(context).pop(e);
+                },
+                child: Text('$e'),
+              )),
+          ...tips != null
+              ? [
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
+                    child: Text(tips),
+                  ),
+                ]
+              : [],
+        ],
       );
     },
   );
@@ -181,31 +182,31 @@ void copyToClipBoard(BuildContext context, String string) {
 Future<bool> confirmDialog(
     BuildContext context, String title, String content) async {
   return await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: new SingleChildScrollView(
-          child: new ListBody(
-            children: <Widget>[
-              new Text(content),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          new MaterialButton(
-            child: new Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-          ),
-          new MaterialButton(
-            child: new Text('确定'),
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-          ),
-        ],
-      )) ??
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text(title),
+                content: new SingleChildScrollView(
+                  child: new ListBody(
+                    children: <Widget>[
+                      new Text(content),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  new MaterialButton(
+                    child: new Text('取消'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  new MaterialButton(
+                    child: new Text('确定'),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              )) ??
       false;
 }
 
