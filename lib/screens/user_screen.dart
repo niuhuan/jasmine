@@ -231,9 +231,8 @@ class _UserScreenState extends State<UserScreen>
         return Center(
           child: SizedBox(
             width: constraints.maxWidth - 30,
-            height: 80,
             child: Center(
-              child: Text(latestVersionInfo() ?? ""),
+              child: SelectableText(latestVersionInfo() ?? ""),
             ),
           ),
         );
