@@ -3,7 +3,7 @@ import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 
 const _apiHostMap = {
-  "随机": "null",
+  // "随机": "null",
   "原始": "\"www.asjmapihost.cc\"",
   "分流1": "\"www.jmapibranch1.cc\"",
   "分流2": "\"www.jmapibranch2.cc\"",

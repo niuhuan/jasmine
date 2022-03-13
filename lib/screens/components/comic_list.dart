@@ -92,28 +92,6 @@ class _ComicListState extends State<ComicList> {
     if (widget.append != null) {
       widgets.add(widget.append!);
     }
-    if (widget.inScroll) {
-      final mq = MediaQuery.of(context);
-      final width = (mq.size.width - 20) / pagerColumnNumber;
-      late final double height;
-      switch (currentPagerCoverRate) {
-        case PagerCoverRate.rate3x4:
-          height = width * 4 / 3;
-          break;
-        case PagerCoverRate.rateSquare:
-          height = width;
-          break;
-      }
-      return Wrap(
-        children: widgets
-            .map((e) => SizedBox(
-                  width: width,
-                  height: height,
-                  child: e,
-                ))
-            .toList(),
-      );
-    }
     late final double childAspectRatio;
     switch (currentPagerCoverRate) {
       case PagerCoverRate.rate3x4:
@@ -123,15 +101,25 @@ class _ComicListState extends State<ComicList> {
         childAspectRatio = 1;
         break;
     }
-    return GridView.count(
+    var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
+    var wrap = Wrap(
+      children: widgets
+          .map((e) => SizedBox(
+                width: columnWidth,
+                height: columnWidth / childAspectRatio,
+                child: e,
+              ))
+          .toList(),
+    );
+    if (widget.inScroll) {
+      return wrap;
+    }
+    return ListView(
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(10.0),
-      mainAxisSpacing: 5,
-      crossAxisSpacing: 5,
-      crossAxisCount: pagerColumnNumber,
-      childAspectRatio: childAspectRatio,
-      children: widgets,
+      children: [
+        wrap,
+      ],
     );
   }
 
@@ -219,28 +207,6 @@ class _ComicListState extends State<ComicList> {
     if (widget.append != null) {
       widgets.add(widget.append!);
     }
-    if (widget.inScroll) {
-      final mq = MediaQuery.of(context);
-      final width = (mq.size.width - 20) / pagerColumnNumber;
-      late final double height;
-      switch (currentPagerCoverRate) {
-        case PagerCoverRate.rate3x4:
-          height = width * 4 / 3;
-          break;
-        case PagerCoverRate.rateSquare:
-          height = width;
-          break;
-      }
-      return Wrap(
-        children: widgets
-            .map((e) => SizedBox(
-                  width: width,
-                  height: height,
-                  child: e,
-                ))
-            .toList(),
-      );
-    }
     late final double childAspectRatio;
     switch (currentPagerCoverRate) {
       case PagerCoverRate.rate3x4:
@@ -250,15 +216,25 @@ class _ComicListState extends State<ComicList> {
         childAspectRatio = 1;
         break;
     }
-    return GridView.count(
+    var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
+    var wrap = Wrap(
+      children: widgets
+          .map((e) => SizedBox(
+        width: columnWidth,
+        height: columnWidth / childAspectRatio,
+        child: e,
+      ))
+          .toList(),
+    );
+    if (widget.inScroll) {
+      return wrap;
+    }
+    return ListView(
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(10.0),
-      mainAxisSpacing: 5,
-      crossAxisSpacing: 5,
-      crossAxisCount: pagerColumnNumber,
-      childAspectRatio: childAspectRatio,
-      children: widgets,
+      children: [
+        wrap,
+      ],
     );
   }
 
