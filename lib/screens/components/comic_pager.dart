@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
+
 import 'comic_list.dart';
 
 class ComicPager extends StatefulWidget {
@@ -163,13 +164,17 @@ class _StreamPagerState extends State<_StreamPager> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildPagerBar(),
-      body: ComicList(
-        controller: _controller,
-        data: _data,
-        append: _buildLoadingCard(),
-      ),
+    return Column(
+      children: [
+        _buildPagerBar(),
+        Expanded(
+          child: ComicList(
+            controller: _controller,
+            data: _data,
+            append: _buildLoadingCard(),
+          ),
+        ),
+      ],
     );
   }
 

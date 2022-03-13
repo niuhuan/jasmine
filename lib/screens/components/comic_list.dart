@@ -104,9 +104,6 @@ class _ComicListState extends State<ComicList> {
     }
     var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
     var wrap = Wrap(
-      alignment: WrapAlignment.spaceAround,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      runAlignment: WrapAlignment.spaceBetween,
       children: widgets
           .map((e) => SizedBox(
                 width: columnWidth,
@@ -222,9 +219,6 @@ class _ComicListState extends State<ComicList> {
     }
     var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
     var wrap = Wrap(
-      alignment: WrapAlignment.spaceAround,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      runAlignment: WrapAlignment.spaceBetween,
       children: widgets
           .map((e) => SizedBox(
                 width: columnWidth,
@@ -239,7 +233,9 @@ class _ComicListState extends State<ComicList> {
     return ListView(
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
-      children: [wrap],
+      children: [
+        wrap,
+      ],
     );
   }
 
@@ -315,9 +311,6 @@ class _ComicListState extends State<ComicList> {
       widgets.add(widget.append!);
     }
     final wrap = Wrap(
-      alignment: WrapAlignment.spaceAround,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      runAlignment: WrapAlignment.spaceBetween,
       children: widgets,
     );
     if (widget.inScroll) {
