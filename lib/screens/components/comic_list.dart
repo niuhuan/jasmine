@@ -102,25 +102,28 @@ class _ComicListState extends State<ComicList> {
         childAspectRatio = 1;
         break;
     }
-    var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
-    var wrap = Wrap(
-      children: widgets
-          .map((e) => SizedBox(
-                width: columnWidth,
-                height: columnWidth / childAspectRatio,
-                child: e,
-              ))
-          .toList(),
-    );
     if (widget.inScroll) {
+      var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
+      var wrap = Wrap(
+        alignment: WrapAlignment.spaceAround,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        runAlignment: WrapAlignment.spaceBetween,
+        children: widgets
+            .map((e) => SizedBox(
+          width: columnWidth,
+          height: columnWidth / childAspectRatio,
+          child: e,
+        ))
+            .toList(),
+      );
       return wrap;
     }
-    return ListView(
+    return GridView.count(
+      childAspectRatio: childAspectRatio,
+      crossAxisCount: pagerColumnNumber,
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        wrap,
-      ],
+      children: widgets,
     );
   }
 
@@ -217,25 +220,28 @@ class _ComicListState extends State<ComicList> {
         childAspectRatio = 1;
         break;
     }
-    var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
-    var wrap = Wrap(
-      children: widgets
-          .map((e) => SizedBox(
-                width: columnWidth,
-                height: columnWidth / childAspectRatio,
-                child: e,
-              ))
-          .toList(),
-    );
     if (widget.inScroll) {
+      var columnWidth = MediaQuery.of(context).size.width / pagerColumnNumber;
+      var wrap = Wrap(
+        alignment: WrapAlignment.spaceAround,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        runAlignment: WrapAlignment.spaceBetween,
+        children: widgets
+            .map((e) => SizedBox(
+          width: columnWidth,
+          height: columnWidth / childAspectRatio,
+          child: e,
+        ))
+            .toList(),
+      );
       return wrap;
     }
-    return ListView(
+    return GridView.count(
+      childAspectRatio: childAspectRatio,
+      crossAxisCount: pagerColumnNumber,
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        wrap,
-      ],
+      children: widgets,
     );
   }
 
@@ -311,6 +317,9 @@ class _ComicListState extends State<ComicList> {
       widgets.add(widget.append!);
     }
     final wrap = Wrap(
+      alignment: WrapAlignment.spaceAround,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runAlignment: WrapAlignment.spaceBetween,
       children: widgets,
     );
     if (widget.inScroll) {

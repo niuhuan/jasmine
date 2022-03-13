@@ -8,8 +8,6 @@ import 'package:jasmine/configs/configs.dart';
 import 'app_screen.dart';
 import 'network_setting_screen.dart';
 
-bool _hadInit = false;
-
 class InitScreen extends StatefulWidget {
   const InitScreen({Key? key}) : super(key: key);
 
@@ -43,10 +41,7 @@ class _InitScreenState extends State<InitScreen> {
 
   Future _init() async {
     try {
-      if (!_hadInit) {
-        await methods.init();
-        _hadInit = true;
-      }
+      await methods.init();
       await initConfigs();
       Future.delayed(Duration.zero, () {
         Navigator.of(context).pushReplacement(

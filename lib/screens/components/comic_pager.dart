@@ -118,7 +118,7 @@ class _StreamPagerState extends State<_StreamPager> {
     if (_joining || _nextPage > _maxPage) {
       return;
     }
-    if (_controller.position.pixels + 100 <
+    if (_controller.position.pixels + 100 >
         _controller.position.maxScrollExtent) {
       return;
     }
