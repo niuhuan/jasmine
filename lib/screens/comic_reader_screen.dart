@@ -513,14 +513,16 @@ abstract class _ComicReaderState extends State<_ComicReader> {
 
   Widget _buildController() {
     switch (currentReaderControllerType) {
-      case ReaderControllerType.controller:
-        return _buildFullScreenController();
       case ReaderControllerType.touchOnce:
         return _buildTouchOnceController();
+      case ReaderControllerType.controller:
+        return _buildFullScreenController();
+      case ReaderControllerType.touch_double:
+        return _buildTouchDoubleController();
+      case ReaderControllerType.touch_double_once_next:
+        return _buildTouchDoubleOnceNextController();
       case ReaderControllerType.threeArea:
         return _buildThreeAreaController();
-      default:
-        return Container();
     }
   }
 
@@ -563,6 +565,30 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
+        _onFullScreenChange(!_fullScreen);
+      },
+      child: Container(),
+    );
+  }
+
+  Widget _buildTouchDoubleController() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onDoubleTap: () {
+        _onFullScreenChange(!_fullScreen);
+      },
+      child: Container(),
+    );
+  }
+
+  Widget _buildTouchDoubleOnceNextController() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        _readerControllerEvent
+            .broadcast(_ReaderControllerEventArgs("DOWN"));
+      },
+      onDoubleTap: () {
         _onFullScreenChange(!_fullScreen);
       },
       child: Container(),
@@ -677,9 +703,13 @@ abstract class _ComicReaderState extends State<_ComicReader> {
 
   bool _fullscreenController() {
     switch (currentReaderControllerType) {
+      case ReaderControllerType.touchOnce:
+        return true;
       case ReaderControllerType.controller:
         return false;
-      case ReaderControllerType.touchOnce:
+      case ReaderControllerType.touch_double:
+        return true;
+      case ReaderControllerType.touch_double_once_next:
         return true;
       case ReaderControllerType.threeArea:
         return true;
