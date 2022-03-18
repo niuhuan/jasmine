@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../basic/methods.dart';
@@ -8,9 +7,9 @@ class ComicDownloadCard extends StatelessWidget {
   final DownloadAlbum comic;
 
   const ComicDownloadCard(
-      this.comic, {
-        Key? key,
-      }) : super(key: key);
+    this.comic, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +61,11 @@ class ComicDownloadCard extends StatelessWidget {
                     style: const TextStyle(fontSize: 10),
                   ),
                 ])),
+                ...(comic.dlStatus == 3)
+                    ? [
+                        const Text("删除中", style: TextStyle(color: Colors.red)),
+                      ]
+                    : [],
               ],
             ),
           ),

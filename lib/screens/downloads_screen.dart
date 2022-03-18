@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 
@@ -42,11 +43,24 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
             children: snapshot.requireData
                 .map((e) => GestureDetector(
                       onTap: () {
+                        if (e.dlStatus == 3) {
+                          return;
+                        }
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
                             return DownloadAlbumScreen(e);
                           }),
                         );
+                      },
+                      onLongPress: () async {
+                        String? action = await chooseListDialog(context,
+                            values: ["删除"], title: "请选择");
+                        if (action != null && action == "删除") {
+                          await methods.deleteDownload(e.id);
+                          setState(() {
+                            _downloadsFuture = methods.allDownloads();
+                          });
+                        }
                       },
                       child: ComicDownloadCard(e),
                     ))

@@ -271,6 +271,11 @@ class Methods {
         .toList()
         .cast<DlImage>();
   }
+
+  /// 创建下载
+  Future<dynamic> deleteDownload(int id) async {
+    return _invoke("delete_download", id);
+  }
 }
 
 class _Response {
