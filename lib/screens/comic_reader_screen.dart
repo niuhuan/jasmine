@@ -720,7 +720,9 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     if (widget.chapter.series.isEmpty) {
       return false;
     }
-    widget.chapter.series.sort((a, b) => a.sort.compareTo(b.sort));
+    widget.chapter.series.sort(
+          (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
+    );
     int index = widget.chapter.series
         .map((e) => e.id)
         .toList()
@@ -730,7 +732,9 @@ abstract class _ComicReaderState extends State<_ComicReader> {
 
   void _onNextAction() {
     if (_hasNextEp()) {
-      widget.chapter.series.sort((a, b) => a.sort.compareTo(b.sort));
+      widget.chapter.series.sort(
+            (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
+      );
       final ids = widget.chapter.series.map((e) => e.id).toList();
       int index = ids.indexOf(widget.chapter.id);
       index++;
@@ -761,7 +765,9 @@ class _EpChooserState extends State<_EpChooser> {
     }
 
     var entries = widget.chapter.series;
-    entries.sort((a, b) => a.sort.compareTo(b.sort));
+    entries.sort(
+          (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
+    );
     var widgets = [
       Container(height: 20),
       ...entries.map((e) {

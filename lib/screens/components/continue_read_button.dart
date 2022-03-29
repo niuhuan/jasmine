@@ -21,7 +21,6 @@ class ContinueReadButton extends StatefulWidget {
 }
 
 class _ContinueReadButtonState extends State<ContinueReadButton> {
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -42,8 +41,9 @@ class _ContinueReadButtonState extends State<ContinueReadButton> {
               if (widget.album.series.isEmpty) {
                 widget.onChoose(widget.album.id, 0);
               } else {
-                widget.album.series
-                    .sort((a, b) => a.sort.compareTo(b.sort));
+                widget.album.series.sort(
+                  (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
+                );
                 widget.onChoose(widget.album.series[0].id, 0);
               }
             };
