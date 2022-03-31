@@ -212,9 +212,12 @@ class _UserScreenState extends State<UserScreen>
                 height: 80,
                 child: Center(
                   child: Text(
-                    (latestVersion == null
-                        ? "没有检测到新版本"
-                        : "检测到新版本 : $latestVersion") +
+                    "当前版本 " +
+                        currentVersion() +
+                        "\n" +
+                        (latestVersion == null
+                            ? "没有检测到新版本"
+                            : "检测到新版本 : $latestVersion") +
                         "\n(点击这里去下载页面)",
                   ),
                 ),
@@ -225,6 +228,7 @@ class _UserScreenState extends State<UserScreen>
       },
     );
   }
+
   Widget _buildVersionText() {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
