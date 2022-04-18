@@ -63,3 +63,6 @@ windows/rust.lib
 windows/rust1.h
 /data/
 
+pubspec.lock
+Cargo.lock
+target/
