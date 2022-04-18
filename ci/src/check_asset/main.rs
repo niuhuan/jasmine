@@ -31,10 +31,10 @@ async fn main() -> Result<()> {
         un => panic!("unknown target : {}", un),
     };
 
-    let client = reqwest::ClientBuilder::new().user_agent(UA)
-        .header("Authorization", format!("token {}", gh_token)).build()?;
+    let client = reqwest::ClientBuilder::new().user_agent(UA).build()?;
 
     let check_response = client.get(format!("https://api.github.com/repos/{}/{}/releases/tags/{}", OWNER, REPO, code))
+        .header("Authorization", format!("token {}", gh_token))
         .send().await?;
 
     match check_response.status().as_u16() {
