@@ -2,19 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 
-const _cdnHostMap = {
-  "随机": "null",
-  "分流1": "\"cdn-msp.jmcdnproxy1.cc\"",
-  "分流2": "\"cdn-msp.jmcdnproxy2.cc\"",
-};
-
 late String _cdnHost;
 
 String _cdnHostName(String value) {
-  if (value == "") {
-    value = "null";
-  }
-  return _cdnHostMap.map((key, value) => MapEntry(value, key))[value] ?? "";
+  return value == "0" ? "随机" : "分流$value";
 }
 
 String get currentCdnHostName => _cdnHostName(_cdnHost);
@@ -27,7 +18,11 @@ Future chooseCdnHost(BuildContext context) async {
   final choose = await chooseMapDialog(
     context,
     title: "图片分流",
-    values: _cdnHostMap,
+    values: {
+      "随机": "0",
+      "分流1": "1",
+      "分流2": "2",
+    },
   );
   if (choose != null) {
     await methods.saveCdnHost(choose);

@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 
-const _apiHostMap = {
-  "原始": "\"www.asjmapihost.cc\"",
-  "分流1": "\"www.jmapibranch1.cc\"",
-  "分流2": "\"www.jmapibranch2.cc\"",
-  "分流3": "\"www.jmapibranch3.cc\"",
-};
-
 late String _apiHost;
 
 String _apiHostName(String value) {
-  return _apiHostMap.map((key, value) => MapEntry(value, key))[value] ?? "";
+  return value == "0" ? "原始" : "分流$value";
 }
 
 String get currentApiHostName => _apiHostName(_apiHost);
@@ -25,7 +18,12 @@ Future chooseApiHost(BuildContext context) async {
   final choose = await chooseMapDialog(
     context,
     title: "API分流",
-    values: _apiHostMap,
+    values: {
+      "原始": "0",
+      "分流1": "1",
+      "分流2": "2",
+      "分流3": "3",
+    },
   );
   if (choose != null) {
     await methods.saveApiHost(choose);
