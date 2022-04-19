@@ -38,8 +38,6 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - name: Install cargo
-        uses: actions-rs/cargo@v1
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -99,8 +97,6 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - name: Install cargo
-        uses: actions-rs/cargo@v1
 
       - id: check_asset
         name: Check asset
@@ -200,7 +196,6 @@ jobs:
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-x86_64')
         run: |
           rustup target install x86_64-linux-android
-          rustup target install armv7-linux-androideabi
           cd native/jmbackend/platforms/android
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t x86_64 build --release
           cd ../../../..

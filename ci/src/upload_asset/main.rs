@@ -46,6 +46,7 @@ async fn main() -> Result<()> {
             "https://api.github.com/repos/{}/{}/releases/tags/{}",
             OWNER, REPO, code
         ))
+        .header("Authorization", format!("token {}", gh_token))
         .send()
         .await?;
 
