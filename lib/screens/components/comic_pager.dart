@@ -120,9 +120,8 @@ class _StreamPagerState extends State<_StreamPager> {
     }
     if (_controller.position.pixels + 100 >
         _controller.position.maxScrollExtent) {
-      return;
+      _join();
     }
-    _join();
   }
 
   Widget? _buildLoadingCard() {
