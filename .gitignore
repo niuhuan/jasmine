@@ -66,3 +66,7 @@ windows/rust1.h
 pubspec.lock
 Cargo.lock
 target/
+
+linux/librust.a
+linux/rust.h
+linux/rust1.h
