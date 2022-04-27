@@ -1,4 +1,5 @@
 #include "my_application.h"
+#include "methods_plugin.h"
 
 #include <flutter_linux/flutter_linux.h>
 #ifdef GDK_WINDOWING_X11
@@ -58,6 +59,10 @@ static void my_application_activate(GApplication* application) {
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+
+  g_autoptr(FlPluginRegistrar) methods_plugin_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(FL_PLUGIN_REGISTRY(view), "MethodsPlugin");
+  methods_plugin_register_with_registrar(methods_plugin_registrar);
 
   gtk_widget_grab_focus(GTK_WIDGET(view));
 }

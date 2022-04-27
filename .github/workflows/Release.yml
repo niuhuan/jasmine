@@ -211,6 +211,7 @@ jobs:
           cargo build --manifest-path native/jmbackend/platforms/linux/Cargo.toml --features= --lib --release --target=x86_64-unknown-linux-gnu
           cp native/jmbackend/platforms/linux/target/x86_64-unknown-linux-gnu/release/librust.a linux/
           cbindgen native/jmbackend/src/lib.rs -l c++ > linux/rust.h
+          
           cbindgen native/jmbackend/platforms/linux/src/lib.rs -l c++ > linux/rust1.h
 
           flutter config --enable-linux-desktop
