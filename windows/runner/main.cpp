@@ -5,11 +5,9 @@
 #include "flutter_window.h"
 #include "utils.h"
 #include "../rust.h"
-#include "../rust1.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command) {
-
 
     wchar_t awBuffer[2048];
     GetCurrentDirectory(2048, awBuffer) ;
@@ -21,9 +19,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
     size_t i;
     wcstombs_s(&i,buffer,4096, awBuffer,2048 );
     init_ffi(buffer);
-
-    init_http_server();
-
 
   // Attach to console when present (e.g., 'flutter run') or create a
   // new console when running with a debugger.

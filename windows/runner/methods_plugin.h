@@ -9,7 +9,6 @@
 #include <map>
 #include <memory>
 #include <sstream>
-#include "../rust.h"
 
 void MethodsPluginRegisterWithRegistrar(
         FlutterDesktopPluginRegistrarRef registrar);

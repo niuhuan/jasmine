@@ -227,7 +227,6 @@ jobs:
           cargo build --manifest-path native/jmbackend/platforms/windows/Cargo.toml --release --target x86_64-pc-windows-msvc
           cp native/jmbackend/platforms/windows/target/x86_64-pc-windows-msvc/release/rust.lib windows/          
           cbindgen native/jmbackend/src/lib.rs -l c++ > windows/rust.h
-          cbindgen native/jmbackend/platforms/windows/src/lib.rs -l c++ > windows/rust1.h
           flutter config --enable-windows-desktop
           flutter build windows
           cd build/windows/runner/Release

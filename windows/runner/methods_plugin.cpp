@@ -1,5 +1,15 @@
 #include "methods_plugin.h"
 #include <iostream>
+#include <optional>
+#include <thread>
+#include "../rust.h"
+
+
+void InvokeThread(std::string params, std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+    char* result_chars = invoke_ffi(params.c_str());
+    result->Success(flutter::EncodableValue(std::string(result_chars)));
+    free_str_ffi(result_chars);
+}
 
 namespace {
 
@@ -44,8 +54,11 @@ namespace {
             const flutter::MethodCall<flutter::EncodableValue> &method_call,
             std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
 
-        if (method_call.method_name().compare("windows_test") == 0) {
-            result->Success(flutter::EncodableValue(std::string("hello")));
+        if (method_call.method_name().compare("invoke") == 0) {
+            const auto *arguments = std::get_if<std::string>(method_call.arguments());
+            std::thread t(InvokeThread, std::string(*arguments),std::move(result));
+            t.detach();
+            return;
         } else {
             result->NotImplemented();
         }
