@@ -16,8 +16,6 @@ class Methods {
   static HttpClient httpClient = HttpClient();
 
   Future<String> _invoke(String method, dynamic params) async {
-
-
     late String resp;
     if (Platform.isLinux) {
       var req = await httpClient.post("127.0.0.1", 52764, "invoke");
@@ -275,9 +273,12 @@ class Methods {
         .cast<DlImage>();
   }
 
-  /// 创建下载
   Future<dynamic> deleteDownload(int id) async {
     return _invoke("delete_download", id);
+  }
+
+  Future<dynamic> renewAllDownloads() async {
+    return _invoke("renew_all_downloads", "");
   }
 }
 

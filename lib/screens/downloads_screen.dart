@@ -27,6 +27,17 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("下载列表"),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await methods.renewAllDownloads();
+              setState(() {
+                _downloadsFuture = methods.allDownloads();
+              });
+            },
+            icon: const Icon(Icons.autorenew),
+          ),
+        ],
       ),
       body: ContentBuilder(
         future: _downloadsFuture,
