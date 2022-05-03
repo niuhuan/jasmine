@@ -25,6 +25,7 @@ class ComicReaderScreen extends StatefulWidget {
   final int seriesId;
   final int initRank;
   final Future<ChapterResponse> Function(int seriesId) loadChapter;
+  final bool fullScreenOnInit;
 
   const ComicReaderScreen({
     Key? key,
@@ -33,6 +34,7 @@ class ComicReaderScreen extends StatefulWidget {
     required this.seriesId,
     required this.initRank,
     required this.loadChapter,
+    this.fullScreenOnInit = false,
   }) : super(key: key);
 
   @override
@@ -90,7 +92,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
           body: _ComicReader(
             chapter: chapter,
             startIndex: widget.initRank,
-            reload: (int index) async {
+            reload: (int index, bool fullScreen) async {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
                   return ComicReaderScreen(
@@ -99,11 +101,12 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
                     seriesId: widget.seriesId,
                     initRank: index,
                     loadChapter: widget.loadChapter,
+                    fullScreenOnInit: fullScreen,
                   );
                 }),
               );
             },
-            onChangeEp: (int id) async {
+            onChangeEp: (int id, bool fullScreen) async {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (BuildContext context) {
                   return ComicReaderScreen(
@@ -112,12 +115,14 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
                     seriesId: id,
                     initRank: 0,
                     loadChapter: widget.loadChapter,
+                    fullScreenOnInit: fullScreen,
                   );
                 }),
               );
             },
             readerType: _readerType,
             readerDirection: _readerDirection,
+            fullScreenOnInit: widget.fullScreenOnInit,
           ),
         );
         return readerKeyboardHolder(screen);
@@ -196,11 +201,12 @@ class _ReaderControllerEventArgs extends EventArgs {
 
 class _ComicReader extends StatefulWidget {
   final ChapterResponse chapter;
-  final FutureOr Function(int) reload;
-  final FutureOr Function(int) onChangeEp;
+  final FutureOr Function(int, bool) reload;
+  final FutureOr Function(int, bool) onChangeEp;
   final int startIndex;
   final ReaderType readerType;
   final ReaderDirection readerDirection;
+  final bool fullScreenOnInit;
 
   const _ComicReader({
     required this.chapter,
@@ -209,6 +215,7 @@ class _ComicReader extends StatefulWidget {
     required this.startIndex,
     required this.readerType,
     required this.readerDirection,
+    required this.fullScreenOnInit,
     Key? key,
   }) : super(key: key);
 
@@ -259,7 +266,10 @@ abstract class _ComicReaderState extends State<_ComicReader> {
 
   @override
   void initState() {
-    _fullScreen = false;
+    _fullScreen = widget.fullScreenOnInit;
+    if (_fullScreen) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    }
     _current = widget.startIndex;
     _slider = widget.startIndex;
     _readerControllerEvent.subscribe(_onPageControl);
@@ -302,7 +312,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
   @override
   Widget build(BuildContext context) {
     switch (currentReaderControllerType) {
-    // 按钮
+      // 按钮
       case ReaderControllerType.controller:
         return Stack(
           children: [
@@ -352,7 +362,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         color: Colors.transparent,
         child: Container(
           padding:
-          const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+              const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
           margin: const EdgeInsets.only(bottom: 10),
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -482,36 +492,35 @@ abstract class _ComicReaderState extends State<_ComicReader> {
             _fullScreen
                 ? Container()
                 : Container(
-              height: 45,
-              color: const Color(0x88000000),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(width: 15),
-                  IconButton(
-                    icon: const Icon(Icons.fullscreen),
-                    color: Colors.white,
-                    onPressed: () {
-                      _onFullScreenChange(!_fullScreen);
-                    },
+                    height: 45,
+                    color: const Color(0x88000000),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(width: 15),
+                        IconButton(
+                          icon: const Icon(Icons.fullscreen),
+                          color: Colors.white,
+                          onPressed: () {
+                            _onFullScreenChange(!_fullScreen);
+                          },
+                        ),
+                        Container(width: 10),
+                        Expanded(
+                          child: widget.readerType != ReaderType.webToonFreeZoom
+                              ? _buildSliderBottom()
+                              : Container(),
+                        ),
+                        Container(width: 10),
+                        IconButton(
+                          icon: const Icon(Icons.skip_next_outlined),
+                          color: Colors.white,
+                          onPressed: _onNextAction,
+                        ),
+                        Container(width: 15),
+                      ],
+                    ),
                   ),
-                  Container(width: 10),
-                  Expanded(
-                    child:
-                    widget.readerType != ReaderType.webToonFreeZoom
-                        ? _buildSliderBottom()
-                        : Container(),
-                  ),
-                  Container(width: 10),
-                  IconButton(
-                    icon: const Icon(Icons.skip_next_outlined),
-                    color: Colors.white,
-                    onPressed: _onNextAction,
-                  ),
-                  Container(width: 15),
-                ],
-              ),
-            ),
           ],
         );
       case ReaderSliderPosition.right:
@@ -701,7 +710,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     );
     if (widget.readerDirection != currentReaderDirection ||
         widget.readerType != currentReaderType) {
-      widget.reload(_current);
+      widget.reload(_current, _fullScreen);
     } else {
       setState(() {});
     }
@@ -736,7 +745,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
       return false;
     }
     widget.chapter.series.sort(
-          (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
+      (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
     );
     int index = widget.chapter.series
         .map((e) => e.id)
@@ -748,12 +757,12 @@ abstract class _ComicReaderState extends State<_ComicReader> {
   void _onNextAction() {
     if (_hasNextEp()) {
       widget.chapter.series.sort(
-            (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
+        (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
       );
       final ids = widget.chapter.series.map((e) => e.id).toList();
       int index = ids.indexOf(widget.chapter.id);
       index++;
-      widget.onChangeEp(ids[index]);
+      widget.onChangeEp(ids[index], _fullScreen);
     } else {
       defaultToast(context, "已经到头了");
     }
@@ -762,7 +771,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
 
 class _EpChooser extends StatefulWidget {
   final ChapterResponse chapter;
-  final FutureOr Function(int) onChangeEp;
+  final FutureOr Function(int, bool) onChangeEp;
 
   const _EpChooser(this.chapter, this.onChangeEp);
 
@@ -781,7 +790,7 @@ class _EpChooserState extends State<_EpChooser> {
 
     var entries = widget.chapter.series;
     entries.sort(
-          (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
+      (a, b) => int.parse(a.sort).compareTo(int.parse(b.sort)),
     );
     var widgets = [
       Container(height: 20),
@@ -800,7 +809,7 @@ class _EpChooserState extends State<_EpChooser> {
           child: MaterialButton(
             onPressed: () {
               Navigator.of(context).pop();
-              widget.onChangeEp(e.id);
+              widget.onChangeEp(e.id, false);
             },
             textColor: Colors.white,
             child: Text(e.sort + (e.name == "" ? "" : (" - ${e.name}"))),
@@ -1168,11 +1177,11 @@ class _ComicReaderGalleryState extends _ComicReaderState {
     return Align(
       alignment: Alignment.bottomRight,
       child: Material(
-        color: const Color(0x0),
+        color: Colors.transparent,
         child: Container(
-          margin: EdgeInsets.only(bottom: 10),
-          padding: EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
-          decoration: BoxDecoration(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               bottomLeft: Radius.circular(10),

@@ -324,7 +324,7 @@ Widget buildMock(double? width, double? height) {
 
 Widget buildError(double? width, double? height) {
   return Image(
-    image: AssetImage('lib/assets/error.png'),
+    image: const AssetImage('lib/assets/error.png'),
     width: width,
     height: height,
   );
@@ -342,7 +342,7 @@ Widget buildLoading(double? width, double? height) {
       child: Icon(
         Icons.downloading,
         size: size,
-        color: Colors.black12,
+        color: Colors.grey.withAlpha(150),
       ),
     ),
   );
