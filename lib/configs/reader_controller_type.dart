@@ -7,16 +7,16 @@ import 'package:jasmine/basic/methods.dart';
 enum ReaderControllerType {
   touchOnce,
   controller,
-  touch_double,
-  touch_double_once_next,
+  touchDouble,
+  touchDoubleOnceNext,
   threeArea,
 }
 
 Map<String, ReaderControllerType> _readerControllerTypeMap = {
   "点击屏幕一次全屏": ReaderControllerType.touchOnce,
   "使用控制器全屏": ReaderControllerType.controller,
-  "双击屏幕全屏": ReaderControllerType.touch_double,
-  "双击屏幕全屏 + 单击屏幕下一页": ReaderControllerType.touch_double_once_next,
+  "双击屏幕全屏": ReaderControllerType.touchDouble,
+  "双击屏幕全屏 + 单击屏幕下一页": ReaderControllerType.touchDoubleOnceNext,
   "将屏幕划分成三个区域 (上一页, 下一页, 全屏)": ReaderControllerType.threeArea,
 };
 
