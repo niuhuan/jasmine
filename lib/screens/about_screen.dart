@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
+import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/components/badge.dart';
 
@@ -31,6 +32,8 @@ class _AboutState extends State<AboutScreen> {
           _buildGotoGithub(),
           const Divider(),
           _buildVersionText(),
+          const Divider(),
+          androidDisplayModeSetting(),
           const Divider(),
         ],
       ),

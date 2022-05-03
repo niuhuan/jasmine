@@ -280,6 +280,27 @@ class Methods {
   Future<dynamic> renewAllDownloads() async {
     return _invoke("renew_all_downloads", "");
   }
+
+  /// 获取安卓的屏幕刷新率
+  Future<List<String>> loadAndroidModes() async {
+    return List.of(await _channel.invokeMethod("androidGetModes"))
+        .map((e) => "$e")
+        .toList();
+  }
+
+  /// 设置安卓的屏幕刷新率
+  Future setAndroidMode(String androidDisplayMode) {
+    return _channel
+        .invokeMethod("androidSetMode", {"mode": androidDisplayMode});
+  }
+
+  /// 获取安卓的版本
+  Future<int> androidGetVersion() async {
+    if (Platform.isAndroid) {
+      return await _channel.invokeMethod("androidGetVersion", {});
+    }
+    return 0;
+  }
 }
 
 class _Response {

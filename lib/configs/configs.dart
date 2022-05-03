@@ -1,3 +1,5 @@
+import 'package:jasmine/configs/android_display_mode.dart';
+import 'package:jasmine/configs/android_version.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_cover_rate.dart';
 
@@ -14,6 +16,8 @@ import 'pager_controller_mode.dart';
 import 'pager_view_mode.dart';
 
 Future initConfigs() async {
+  await initAndroidVersion();
+  await initAndroidDisplayMode();
   await initVersion();
   autoCheckNewVersion();
   await initApiHost();
