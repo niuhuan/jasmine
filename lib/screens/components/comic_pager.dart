@@ -169,6 +169,7 @@ class _StreamPagerState extends State<_StreamPager> {
         Expanded(
           child: ComicList(
             controller: _controller,
+            onScroll: _onScroll,
             data: _data,
             append: _buildLoadingCard(),
           ),

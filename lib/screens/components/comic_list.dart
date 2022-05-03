@@ -13,6 +13,7 @@ class ComicList extends StatefulWidget {
   final List<ComicBasic> data;
   final Widget? append;
   final ScrollController? controller;
+  final Function? onScroll;
 
   const ComicList({
     Key? key,
@@ -20,6 +21,7 @@ class ComicList extends StatefulWidget {
     this.append,
     this.controller,
     this.inScroll = false,
+    this.onScroll,
   }) : super(key: key);
 
   @override
@@ -110,20 +112,27 @@ class _ComicListState extends State<ComicList> {
         runAlignment: WrapAlignment.spaceBetween,
         children: widgets
             .map((e) => SizedBox(
-          width: columnWidth,
-          height: columnWidth / childAspectRatio,
-          child: e,
-        ))
+                  width: columnWidth,
+                  height: columnWidth / childAspectRatio,
+                  child: e,
+                ))
             .toList(),
       );
       return wrap;
     }
-    return GridView.count(
+    final view = GridView.count(
       childAspectRatio: childAspectRatio,
       crossAxisCount: pagerColumnNumber,
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
       children: widgets,
+    );
+    return NotificationListener(
+      child: view,
+      onNotification: (scrollNotification) {
+        widget.onScroll?.call();
+        return true;
+      },
     );
   }
 
@@ -143,11 +152,18 @@ class _ComicListState extends State<ComicList> {
     if (widget.inScroll) {
       return Column(children: widgets);
     }
-    return ListView(
+    final view = ListView(
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       children: widgets,
+    );
+    return NotificationListener(
+      child: view,
+      onNotification: (scrollNotification) {
+        widget.onScroll?.call();
+        return true;
+      },
     );
   }
 
@@ -228,20 +244,27 @@ class _ComicListState extends State<ComicList> {
         runAlignment: WrapAlignment.spaceBetween,
         children: widgets
             .map((e) => SizedBox(
-          width: columnWidth,
-          height: columnWidth / childAspectRatio,
-          child: e,
-        ))
+                  width: columnWidth,
+                  height: columnWidth / childAspectRatio,
+                  child: e,
+                ))
             .toList(),
       );
       return wrap;
     }
-    return GridView.count(
+    final view = GridView.count(
       childAspectRatio: childAspectRatio,
       crossAxisCount: pagerColumnNumber,
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
       children: widgets,
+    );
+    return NotificationListener(
+      child: view,
+      onNotification: (scrollNotification) {
+        widget.onScroll?.call();
+        return true;
+      },
     );
   }
 
@@ -325,11 +348,18 @@ class _ComicListState extends State<ComicList> {
     if (widget.inScroll) {
       return wrap;
     }
-    return ListView(
+    final view = ListView(
       controller: widget.controller,
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(10.0),
       children: [wrap],
+    );
+    return NotificationListener(
+      child: view,
+      onNotification: (scrollNotification) {
+        widget.onScroll?.call();
+        return true;
+      },
     );
   }
 
