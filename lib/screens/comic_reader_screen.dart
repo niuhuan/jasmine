@@ -268,7 +268,9 @@ abstract class _ComicReaderState extends State<_ComicReader> {
   void initState() {
     _fullScreen = widget.fullScreenOnInit;
     if (_fullScreen) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+      if (Platform.isAndroid || Platform.isIOS) {
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+      }
     }
     _current = widget.startIndex;
     _slider = widget.startIndex;
@@ -286,7 +288,10 @@ abstract class _ComicReaderState extends State<_ComicReader> {
       delVolumeListen();
     }
     if (Platform.isAndroid || Platform.isIOS) {
-      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: SystemUiOverlay.values,
+      );
     }
     super.dispose();
   }
@@ -1180,7 +1185,8 @@ class _ComicReaderGalleryState extends _ComicReaderState {
         color: Colors.transparent,
         child: Container(
           margin: const EdgeInsets.only(bottom: 10),
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
