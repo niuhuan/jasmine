@@ -90,6 +90,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
         final screen = Scaffold(
           backgroundColor: Colors.black,
           body: _ComicReader(
+            seriesId: widget.seriesId,
             chapter: chapter,
             startIndex: widget.initRank,
             reload: (int index, bool fullScreen) async {
@@ -200,6 +201,7 @@ class _ReaderControllerEventArgs extends EventArgs {
 }
 
 class _ComicReader extends StatefulWidget {
+  final int seriesId;
   final ChapterResponse chapter;
   final FutureOr Function(int, bool) reload;
   final FutureOr Function(int, bool) onChangeEp;
@@ -209,6 +211,7 @@ class _ComicReader extends StatefulWidget {
   final bool fullScreenOnInit;
 
   const _ComicReader({
+    required this.seriesId,
     required this.chapter,
     required this.reload,
     required this.onChangeEp,
@@ -256,7 +259,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         _current = index;
         _slider = index;
         var _ = methods.updateViewLog(
-          widget.chapter.seriesId,
+          widget.seriesId,
           widget.chapter.id,
           index,
         ); // 在后台线程入库
