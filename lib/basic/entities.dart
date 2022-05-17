@@ -1163,3 +1163,13 @@ class DlImage {
     return _data;
   }
 }
+
+ComicBasic albumToSimple(AlbumResponse album) {
+  return ComicBasic(
+    id: album.id,
+    description: album.description,
+    name: album.name,
+    author: album.author.join(" / "),
+    image: album.images[0] ?? '',
+  );
+}

@@ -365,7 +365,7 @@ class _ComicListState extends State<ComicList> {
 
   void _pushToComicInfo(ComicBasic data) {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return ComicInfoScreen(data);
+      return ComicInfoScreen(data.id, data);
     }));
   }
 }

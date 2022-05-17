@@ -5,11 +5,9 @@ import 'package:jasmine/screens/components/item_builder.dart';
 import 'components/comic_info_card.dart';
 
 class ComicDownloadScreen extends StatefulWidget {
-  final ComicBasic simple;
   final AlbumResponse album;
 
-  const ComicDownloadScreen(this.simple, this.album, {Key? key})
-      : super(key: key);
+  const ComicDownloadScreen(this.album, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ComicDownloadScreenState();
@@ -21,7 +19,7 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
   final List<int> _selectedEps = []; // 选中的EP
 
   Future _init() async {
-    var task = await methods.downloadById(widget.simple.id);
+    var task = await methods.downloadById(widget.album.id);
     task?.chapters.map((e) => e.id)?.forEach(_taskedEps.add);
   }
 
@@ -39,7 +37,7 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
       ),
       body: ListView(
         children: [
-          ComicInfoCard(widget.simple, link: true),
+          ComicInfoCard(albumToSimple(widget.album), link: true),
           ItemBuilder(
             future: _innerDownloadFuture,
             onRefresh: () async {},

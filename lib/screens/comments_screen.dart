@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/screens/components/comic_list.dart';
+
+import 'components/comic_comments_list.dart';
+
+class CommentsScreen extends StatefulWidget {
+  const CommentsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _CommentsScreenState();
+}
+
+class _CommentsScreenState extends State<CommentsScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("讨论区"),
+      ),
+      body: ListView(
+        children: const [
+          ComicCommentsList(mode: "manhua", aid: null, gotoComic: true),
+        ],
+      ),
+    );
+  }
+}

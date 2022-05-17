@@ -3,15 +3,18 @@ import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/item_builder.dart';
 
+import '../comic_info_screen.dart';
 import 'avatar.dart';
 
 class ComicCommentsList extends StatefulWidget {
-  final String mode;
-  final int aid;
+  final String? mode;
+  final int? aid;
+  final bool gotoComic;
 
   const ComicCommentsList({
     required this.mode,
     required this.aid,
+    this.gotoComic = false,
     Key? key,
   }) : super(key: key);
 
@@ -63,21 +66,25 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
             ...snapshot.requireData.list.map((e) => _buildComment(
                   context,
                   e,
-                  widget.aid,
-                  widget.mode,
                   true,
+                  widget.mode,
+                  widget.gotoComic,
                 )),
             _buildNextPage(),
-            _buildPostComment(
-              context,
-              null,
-              widget.aid,
-              () {
-                setState(() {
-                  _future = _loadPage();
-                });
-              },
-            ),
+            ...widget.aid != null
+                ? [
+                    _buildPostComment(
+                      context,
+                      null,
+                      widget.aid!,
+                      () {
+                        setState(() {
+                          _future = _loadPage();
+                        });
+                      },
+                    ),
+                  ]
+                : [],
           ],
         );
       },
@@ -128,19 +135,20 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
 Widget _buildComment(
   BuildContext context,
   Comment comment,
-  int aid,
-  String mode,
   bool jumpList,
+  String? mode,
+  bool gotoComic,
 ) {
   return InkWell(
     onTap: () {
       if (!jumpList) {
         return;
       }
+      if (comment.AID != null) {}
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => _CommentChildrenScreen(
-            aid: aid,
+            aid: comment.AID!,
             mode: mode,
             comment: comment,
           ),
@@ -148,9 +156,10 @@ Widget _buildComment(
       );
     },
     child: _ComicCommentItem(
-      aid: aid,
+      aid: comment.AID,
       mode: mode,
       comment: comment,
+      gotoComic: jumpList && gotoComic,
     ),
   );
 }
@@ -202,14 +211,16 @@ Widget _buildPostComment(
 
 class _ComicCommentItem extends StatefulWidget {
   // 清除缓存使用mode和aid
-  final String mode;
-  final int aid;
+  final String? mode;
+  final int? aid;
   final Comment comment;
+  final bool gotoComic;
 
   const _ComicCommentItem({
     required this.mode,
     required this.aid,
     required this.comment,
+    required this.gotoComic,
   });
 
   @override
@@ -228,6 +239,9 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
         fontSize: 12, color: theme.colorScheme.secondary.withOpacity(.8));
     var connectStyle =
         TextStyle(color: theme.textTheme.bodyText1?.color?.withOpacity(.8));
+    var gotoComicStyle = TextStyle(
+      color: theme.colorScheme.secondary.withOpacity(.5),
+    );
     var datetimeStyle = TextStyle(
         color: theme.textTheme.bodyText1?.color?.withOpacity(.6), fontSize: 12);
     return Container(
@@ -372,6 +386,36 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                 ),
                 Container(height: 5),
                 Text(comment.content, style: connectStyle),
+                ...widget.gotoComic
+                    ? [
+                        Container(height: 8),
+                        GestureDetector(
+                          onTap: () {
+                            if (comment.AID != null) {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return ComicInfoScreen(comment.AID!, null);
+                              }));
+                            }
+                          },
+                          child: LayoutBuilder(
+                            builder: (
+                              BuildContext context,
+                              BoxConstraints constraints,
+                            ) {
+                              return SizedBox(
+                                width: constraints.maxWidth,
+                                child: Text(
+                                  comment.name,
+                                  style: gotoComicStyle,
+                                  textAlign: TextAlign.right,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ]
+                    : [],
               ],
             ),
           ),
@@ -382,7 +426,7 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
 }
 
 class _CommentChildrenScreen extends StatefulWidget {
-  final String mode;
+  final String? mode;
   final int aid;
   final Comment comment;
 
@@ -408,6 +452,7 @@ class _CommentChildrenScreenState extends State<_CommentChildrenScreen> {
             mode: widget.mode,
             aid: widget.aid,
             comment: widget.comment,
+            gotoComic: false,
           ),
           const Divider(),
           Expanded(
@@ -416,7 +461,7 @@ class _CommentChildrenScreenState extends State<_CommentChildrenScreen> {
                 ...widget.comment.replys.map((e) => _buildComment(
                       context,
                       e,
-                      widget.aid,
+                      false,
                       widget.mode,
                       false,
                     )),

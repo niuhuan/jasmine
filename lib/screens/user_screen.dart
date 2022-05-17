@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/configs/login.dart';
 import 'package:jasmine/screens/about_screen.dart';
+import 'package:jasmine/screens/comments_screen.dart';
 import 'package:jasmine/screens/components/avatar.dart';
 import 'package:jasmine/screens/view_log_screen.dart';
 
@@ -41,10 +42,7 @@ class _UserScreenState extends State<UserScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("个人中心"),
-        actions: [_buildAbout()]
-      ),
+      appBar: AppBar(title: const Text("个人中心"), actions: [_buildAbout()]),
       body: SafeArea(
         child: ListView(
           children: [
@@ -56,7 +54,8 @@ class _UserScreenState extends State<UserScreen>
             const Divider(),
             _buildDownloads(),
             const Divider(),
-
+            _buildComments(),
+            const Divider(),
             Container(height: 30),
           ],
         ),
@@ -196,6 +195,19 @@ class _UserScreenState extends State<UserScreen>
     );
   }
 
+  Widget _buildComments() {
+    return ListTile(
+      onTap: () async {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+            return const CommentsScreen();
+          },
+        ));
+      },
+      title: const Text("讨论区"),
+    );
+  }
+
   Widget _buildAbout() {
     return IconButton(
       onPressed: () async {
@@ -205,7 +217,9 @@ class _UserScreenState extends State<UserScreen>
           },
         ));
       },
-      icon: const VersionBadged(child: Padding(padding: EdgeInsets.all(1), child: Icon(Icons.info_outlined))),
+      icon: const VersionBadged(
+          child: Padding(
+              padding: EdgeInsets.all(1), child: Icon(Icons.info_outlined))),
     );
   }
 }

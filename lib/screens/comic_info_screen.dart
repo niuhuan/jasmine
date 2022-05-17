@@ -12,9 +12,11 @@ import 'components/comic_comments_list.dart';
 import 'components/continue_read_button.dart';
 
 class ComicInfoScreen extends StatefulWidget {
-  final ComicBasic simple;
+  final int comicId;
+  final ComicBasic? simple;
 
-  const ComicInfoScreen(this.simple, {Key? key}) : super(key: key);
+  const ComicInfoScreen(this.comicId, this.simple, {Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ComicInfoScreenState();
@@ -23,8 +25,8 @@ class ComicInfoScreen extends StatefulWidget {
 class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
   var _favouriteLoading = false;
   var _tabIndex = 0;
-  late Future<AlbumResponse> _albumFuture = methods.album(widget.simple.id);
-  late Future<ViewLog?> _viewFuture = methods.findViewLog(widget.simple.id);
+  late Future<AlbumResponse> _albumFuture = methods.album(widget.comicId);
+  late Future<ViewLog?> _viewFuture = methods.findViewLog(widget.comicId);
 
   @override
   void didChangeDependencies() {
@@ -35,7 +37,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
   @override
   void didPopNext() {
     setState(() {
-      _viewFuture = methods.findViewLog(widget.simple.id);
+      _viewFuture = methods.findViewLog(widget.comicId);
     });
   }
 
@@ -48,10 +50,9 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.simple.name),
+        title: Text(widget.simple?.name ?? ""),
         actions: [
           FutureBuilder(
             future: _albumFuture,
@@ -69,7 +70,6 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                     context,
                     MaterialPageRoute(builder: (BuildContext context) {
                       return ComicDownloadScreen(
-                        widget.simple,
                         snapshot.requireData,
                       );
                     }),
@@ -114,12 +114,14 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
       body: ListView(
         shrinkWrap: true,
         children: [
-          ComicInfoCard(widget.simple, link: true),
+          widget.simple != null
+              ? ComicInfoCard(widget.simple!, link: true)
+              : Container(),
           ItemBuilder(
             future: _albumFuture,
             onRefresh: () async {
               setState(() {
-                _albumFuture = methods.album(widget.simple.id);
+                _albumFuture = methods.album(widget.comicId);
               });
             },
             successBuilder: (
@@ -136,11 +138,11 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
 
               final _views = [
                 _ComicSerials(
-                  widget.simple,
+                  albumToSimple(album),
                   album,
                   _viewFuture,
                 ),
-                ComicCommentsList(mode: "manhua", aid: widget.simple.id),
+                ComicCommentsList(mode: "manhua", aid: widget.comicId),
                 _ComicRelatedList(album.relatedList),
               ];
 
@@ -148,14 +150,17 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  widget.simple == null
+                      ? ComicInfoCard(albumToSimple(album), link: true)
+                      : Container(),
                   _buildTags(album.tags),
-                  ...(widget.simple.description.isEmpty
+                  ...(album.description.isEmpty
                       ? []
                       : [
                           const Divider(),
                           Container(
                             padding: const EdgeInsets.all(10),
-                            child: SelectableText(widget.simple.description),
+                            child: SelectableText(album.description),
                           ),
                         ]),
                   const Divider(),
