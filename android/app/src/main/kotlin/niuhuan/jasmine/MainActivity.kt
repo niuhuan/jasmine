@@ -37,7 +37,7 @@ class MainActivity : FlutterActivity() {
         result.withCoroutine {
             when (call.method) {
                 "invoke" -> Jni.invoke(call.arguments<String>())
-                "saveImageFileToGallery" -> saveImageFileToGallery(call.arguments<String>())
+                "saveImageFileToGallery" -> saveImageFileToGallery(call.arguments<String>()!!)
                 "androidGetModes" -> {
                     modes()
                 }

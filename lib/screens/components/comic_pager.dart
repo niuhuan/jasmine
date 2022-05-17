@@ -61,26 +61,22 @@ class _StreamPagerState extends State<_StreamPager> {
   var _joining = false;
   var _joinSuccess = true;
 
-  Future<List<ComicSimple>> _next() async {
-    var response = await widget.onPage(_nextPage);
-    if (_nextPage == 1) {
-      if (response.total == 0) {
-        _maxPage = 1;
-      } else {
-        _maxPage = (response.total / response.list.length).ceil();
-      }
-      _total = response.total;
-    }
-    _nextPage++;
-    return response.list;
-  }
-
   Future _join() async {
     try {
       setState(() {
         _joining = true;
       });
-      _data.addAll(await _next());
+      var response = await widget.onPage(_nextPage);
+      if (_nextPage == 1) {
+        if (response.total == 0) {
+          _maxPage = 1;
+        } else {
+          _maxPage = (response.total / response.list.length).ceil();
+        }
+        _total = response.total;
+      }
+      _nextPage++;
+      _data.addAll(response.list);
       setState(() {
         _joinSuccess = true;
         _joining = false;
@@ -100,16 +96,12 @@ class _StreamPagerState extends State<_StreamPager> {
   @override
   void initState() {
     _controller = ScrollController();
-    _controller.addListener(_onScroll);
-    Future.delayed(Duration.zero, () {
-      _join();
-    });
+    _join();
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.removeListener(_onScroll);
     _controller.dispose();
     super.dispose();
   }
