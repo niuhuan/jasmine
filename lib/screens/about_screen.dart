@@ -4,6 +4,8 @@ import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/components/badge.dart';
 
+import '../configs/theme.dart';
+
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
 
@@ -32,6 +34,8 @@ class _AboutState extends State<AboutScreen> {
           _buildGotoGithub(),
           const Divider(),
           _buildVersionText(),
+          const Divider(),
+          themeSetting(context),
           const Divider(),
           androidDisplayModeSetting(),
           const Divider(),

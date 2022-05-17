@@ -84,8 +84,6 @@ class _AppScreenState extends State<AppScreen> {
           selectedFontSize: 12,
           unselectedFontSize: 12,
           onTap: _onItemTapped,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.black.withAlpha(120),
         ),
       ),
     );

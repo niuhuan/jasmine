@@ -2,6 +2,7 @@ import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/android_version.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_cover_rate.dart';
+import 'package:jasmine/configs/theme.dart';
 
 import 'auto_clean.dart';
 import 'network_api_host.dart';
@@ -31,5 +32,6 @@ Future initConfigs() async {
   await initPagerColumnCount();
   await initPagerCoverRate();
   await initAutoClean();
+  await initTheme();
   initLogin();
 }
