@@ -35,7 +35,7 @@ async fn main() -> Result<()> {
         un => panic!("unknown target : {}", un),
     };
     if flutter_version == "2.10.5" {
-        release_file_name = release_file_name + "old_flutter-"
+        release_file_name = "old_flutter-" + release_file_name
     }
 
     let client = reqwest::ClientBuilder::new().user_agent(UA).build()?;
