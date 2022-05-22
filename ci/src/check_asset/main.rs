@@ -1,7 +1,7 @@
+use anyhow::Result;
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 use serde_json::Value;
-use anyhow::Result;
 
 const OWNER: &str = "niuhuan";
 const REPO: &str = "jasmine";
@@ -13,6 +13,10 @@ async fn main() -> Result<()> {
     if gh_token.is_empty() {
         panic!("Please set GH_TOKEN");
     }
+    let flutter_version = std::env::var("flutter_version")?;
+    if flutter_version.is_empty() {
+        panic!("Please set flutter_version");
+    }
 
     let target = std::env::var("TARGET")?;
 
@@ -20,7 +24,7 @@ async fn main() -> Result<()> {
 
     let code = vs_code_txt.trim();
 
-    let release_file_name = match target.as_str() {
+    let mut release_file_name = match target.as_str() {
         "macos" => format!("jasmine-{}-macos-intel.dmg", code),
         "ios" => format!("jasmine-{}-ios-nosign.ipa", code),
         "windows" => format!("jasmine-{}-windows-x86_64.zip", code),
@@ -30,12 +34,20 @@ async fn main() -> Result<()> {
         "android-x86_64" => format!("jasmine-{}-android-x86_64.apk", code),
         un => panic!("unknown target : {}", un),
     };
+    if flutter_version == "2.10.5" {
+        release_file_name = release_file_name + "old_flutter-"
+    }
 
     let client = reqwest::ClientBuilder::new().user_agent(UA).build()?;
 
-    let check_response = client.get(format!("https://api.github.com/repos/{}/{}/releases/tags/{}", OWNER, REPO, code))
+    let check_response = client
+        .get(format!(
+            "https://api.github.com/repos/{}/{}/releases/tags/{}",
+            OWNER, REPO, code
+        ))
         .header("Authorization", format!("token {}", gh_token))
-        .send().await?;
+        .send()
+        .await?;
 
     match check_response.status().as_u16() {
         200 => (),
@@ -48,7 +60,10 @@ async fn main() -> Result<()> {
     let release: Release = check_response.json().await?;
 
     let ass_names: Vec<String> = release.assets.iter().map(|a| a.name.clone()).collect();
-    println!("::set-output name=skip_build::{}", ass_names.contains(&release_file_name));
+    println!(
+        "::set-output name=skip_build::{}",
+        ass_names.contains(&release_file_name)
+    );
     Ok(())
 }
 
