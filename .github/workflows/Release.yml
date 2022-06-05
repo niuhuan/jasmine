@@ -185,6 +185,7 @@ jobs:
           cargo build --manifest-path native/jmbackend/platforms/ios/Cargo.toml --features= --lib --release --target=aarch64-apple-ios
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
           cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
+          /usr/libexec/PlistBuddy -c 'Add :application-identifier string niuhuan.jasmine' ios/Runner/Info.plist
           flutter build ios --no-simulator --no-codesign --release
           cd build
           rm -rf Payload
