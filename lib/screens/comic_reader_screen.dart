@@ -529,6 +529,15 @@ abstract class _ComicReaderState extends State<_ComicReader> {
                       ],
                     ),
                   ),
+            _fullScreen
+                ? Container()
+                : Container(
+              color: const Color(0x88000000),
+              child: SafeArea(
+                top: false,
+                child: Container(),
+              ),
+            ),
           ],
         );
       case ReaderSliderPosition.right:
