@@ -301,6 +301,47 @@ class Methods {
     }
     return 0;
   }
+
+  Future export_jm_zip(List<int> idList, String path) {
+    return _invoke("export_jm_zip", {
+      "comic_id": idList,
+      "dir": path,
+    });
+  }
+
+  Future export_jm_jmi(List<int> idList, String path) {
+    return _invoke("export_jm_jmi", {
+      "comic_id": idList,
+      "dir": path,
+    });
+  }
+
+  Future import_jm_zip(String path) {
+    print(path);
+    return _invoke("import_jm_zip", path);
+  }
+
+  Future import_jm_jmi(String path) {
+    print(path);
+    return _invoke("import_jm_jmi", path);
+  }
+
+  Future import_jm_dir(String path) {
+    print(path);
+    return _invoke("import_jm_dir", path);
+  }
+
+  Future<IsPro> isPro() async {
+    return IsPro.fromJson(jsonDecode(await _invoke("is_pro", "")));
+  }
+
+  Future reloadPro() {
+    return _invoke("reload_pro", "");
+  }
+
+  Future inputCdKey(String cdKey) {
+    return _invoke("input_cd_key", cdKey);
+  }
 }
 
 class _Response {

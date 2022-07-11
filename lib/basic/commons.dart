@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:clipboard/clipboard.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:jasmine/basic/methods.dart';
@@ -215,4 +216,11 @@ void confirmCopy(BuildContext context, String content) async {
   if (await confirmDialog(context, "复制", content)) {
     copyToClipBoard(context, content);
   }
+}
+
+/// 选择一个文件夹用于保存文件
+Future<String?> chooseFolder(BuildContext context) async {
+  return FilePicker.platform.getDirectoryPath(
+    dialogTitle: "选择一个文件夹, 将文件保存到这里",
+  );
 }

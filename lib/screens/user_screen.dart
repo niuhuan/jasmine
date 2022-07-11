@@ -4,8 +4,10 @@ import 'package:jasmine/configs/login.dart';
 import 'package:jasmine/screens/about_screen.dart';
 import 'package:jasmine/screens/comments_screen.dart';
 import 'package:jasmine/screens/components/avatar.dart';
+import 'package:jasmine/screens/pro_screen.dart';
 import 'package:jasmine/screens/view_log_screen.dart';
 
+import '../configs/is_pro.dart';
 import 'components/badge.dart';
 import 'downloads_screen.dart';
 import 'favorites_screen.dart';
@@ -25,12 +27,14 @@ class _UserScreenState extends State<UserScreen>
   @override
   void initState() {
     loginEvent.subscribe(_setState);
+    proEvent.subscribe(_setState);
     super.initState();
   }
 
   @override
   void dispose() {
     loginEvent.unsubscribe(_setState);
+    proEvent.unsubscribe(_setState);
     super.dispose();
   }
 
@@ -42,7 +46,20 @@ class _UserScreenState extends State<UserScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(title: const Text("个人中心"), actions: [_buildAbout()]),
+      appBar: AppBar(title: const Text("个人中心"), actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return const ProScreen();
+            }));
+          },
+          icon: Icon(
+            isPro ? Icons.offline_bolt : Icons.offline_bolt_outlined,
+          ),
+        ),
+        _buildAbout(),
+      ]),
       body: SafeArea(
         child: ListView(
           children: [

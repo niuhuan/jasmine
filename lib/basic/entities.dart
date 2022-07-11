@@ -1076,6 +1076,7 @@ class DownloadAlbum {
     required this.imageCount,
     required this.dledImageCount,
   });
+
   late final int id;
   late final String name;
   late final String author;
@@ -1088,7 +1089,7 @@ class DownloadAlbum {
   late final int imageCount;
   late final int dledImageCount;
 
-  DownloadAlbum.fromJson(Map<String, dynamic> json){
+  DownloadAlbum.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     author = json['author'];
@@ -1130,6 +1131,7 @@ class DlImage {
     required this.width,
     required this.height,
   });
+
   late final int albumId;
   late final int chapterId;
   late final int imageIndex;
@@ -1139,7 +1141,7 @@ class DlImage {
   late final int width;
   late final int height;
 
-  DlImage.fromJson(Map<String, dynamic> json){
+  DlImage.fromJson(Map<String, dynamic> json) {
     albumId = json['album_id'];
     chapterId = json['chapter_id'];
     imageIndex = json['image_index'];
@@ -1172,4 +1174,14 @@ ComicBasic albumToSimple(AlbumResponse album) {
     author: album.author.join(" / "),
     image: album.images[0] ?? '',
   );
+}
+
+class IsPro {
+  late bool isPro;
+  late int expire;
+
+  IsPro.fromJson(Map<String, dynamic> json) {
+    isPro = json["is_pro"];
+    this.expire = json["expire"];
+  }
 }

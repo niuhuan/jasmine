@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
+import 'package:jasmine/screens/download_import_screen.dart';
 
 import 'components/comic_download_card.dart';
 import 'download_album_screen.dart';
+import 'downloads_exports_screen.dart';
 
 class DownloadsScreen extends StatefulWidget {
   const DownloadsScreen({Key? key}) : super(key: key);
@@ -28,6 +30,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       appBar: AppBar(
         title: const Text("下载列表"),
         actions: [
+          exportButton(),
+          importButton(),
           IconButton(
             onPressed: () async {
               await methods.renewAllDownloads();
@@ -78,6 +82,43 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                 .toList(),
           );
         },
+      ),
+    );
+  }
+
+  Widget importButton() {
+    return IconButton(
+      onPressed: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DownloadImportScreen(),
+          ),
+        );
+        setState(() {
+          _downloadsFuture = methods.allDownloads();
+        });
+      },
+      icon: const Icon(
+        Icons.label_important,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget exportButton() {
+    return IconButton(
+      onPressed: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DownloadsExportScreen(),
+          ),
+        );
+      },
+      icon: const Icon(
+        Icons.send_to_mobile,
+        color: Colors.white,
       ),
     );
   }

@@ -61,9 +61,26 @@ class ComicDownloadCard extends StatelessWidget {
                     style: const TextStyle(fontSize: 10),
                   ),
                 ])),
+                ...(comic.dlStatus == 0)
+                    ? [
+                        const Text("队列中", style: TextStyle(color: Colors.blue)),
+                      ]
+                    : [],
+                ...(comic.dlStatus == 1)
+                    ? [
+                        const Text("已下载",
+                            style: TextStyle(color: Colors.green)),
+                      ]
+                    : [],
+                ...(comic.dlStatus == 2)
+                    ? [
+                        const Text("已失败", style: TextStyle(color: Colors.red)),
+                      ]
+                    : [],
                 ...(comic.dlStatus == 3)
                     ? [
-                        const Text("删除中", style: TextStyle(color: Colors.red)),
+                        const Text("删除中",
+                            style: TextStyle(color: Colors.orange)),
                       ]
                     : [],
               ],

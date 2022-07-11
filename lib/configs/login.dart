@@ -2,6 +2,7 @@ import 'package:event/event.dart';
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/is_pro.dart';
 
 enum LoginStatus {
   notSet,
@@ -40,6 +41,8 @@ Future initLogin() async {
   } catch (e, st) {
     print("$e\n$st");
     _loginState = LoginStatus.loginField;
+  } finally {
+    reloadIsPro();
   }
 }
 

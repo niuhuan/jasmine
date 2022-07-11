@@ -58,25 +58,25 @@ jobs:
         config:
           - target: linux
             host: ubuntu-latest
-            flutter_version: '3.0.3'
+            flutter_version: '3.0.4'
           - target: windows
             host: windows-latest
-            flutter_version: '3.0.3'
+            flutter_version: '3.0.4'
           - target: macos
             host: macos-latest
-            flutter_version: '3.0.3'
+            flutter_version: '3.0.4'
           - target: ios
             host: macos-latest
-            flutter_version: '3.0.3'
+            flutter_version: '3.0.4'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.0.3'
+            flutter_version: '3.0.4'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.0.3'
+            flutter_version: '3.0.4'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.0.3'
+            flutter_version: '3.0.4'
           - target: android-arm32
             host: ubuntu-latest
             flutter_version: '2.10.5'
@@ -261,7 +261,8 @@ jobs:
         if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'macos'
         run: |
           cargo build --manifest-path native/jmbackend/platforms/macos/Cargo.toml --release --target x86_64-apple-darwin
-          cp native/jmbackend/platforms/macos/target/x86_64-apple-darwin/release/librust.a macos/
+          cargo build --manifest-path native/jmbackend/platforms/macos/Cargo.toml --release --target aarch64-apple-darwin
+          lipo -create -output macos/librust.a native/jmbackend/platforms/macos/target/x86_64-apple-darwin/release/librust.a native/jmbackend/platforms/macos/target/aarch64-apple-darwin/release/librust.a
           cbindgen native/jmbackend/src/lib.rs -l c > macos/rust.h
           flutter config --enable-macos-desktop
           flutter build macos

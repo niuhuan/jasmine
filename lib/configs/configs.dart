@@ -5,6 +5,7 @@ import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/theme.dart';
 
 import 'auto_clean.dart';
+import 'is_pro.dart';
 import 'network_api_host.dart';
 import 'network_cdn_host.dart';
 import 'reader_controller_type.dart';
@@ -33,5 +34,6 @@ Future initConfigs() async {
   await initPagerCoverRate();
   await initAutoClean();
   await initTheme();
+  await reloadIsPro();
   initLogin();
 }
