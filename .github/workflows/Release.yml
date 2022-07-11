@@ -15,6 +15,7 @@ jobs:
     needs:
       - check_release
       - build_release_assets
+      - community_notify
     steps:
       - run: exit 0
 
@@ -30,12 +31,12 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-
+          key: ${{ runner .os }}-cargo-
 
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -110,7 +111,7 @@ jobs:
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
 
       - id: check_asset
         name: Check asset
@@ -177,6 +178,8 @@ jobs:
         run: |
           sed -i "s/another_xlider: ^1.0.1+2/another_xlider: 1.0.1+2/g" pubspec.yaml
           sed -i "s/flutter_styled_toast: ^2.0.0/flutter_styled_toast: 2.0.0/g" pubspec.yaml
+          sed -i "s/filesystem_picker: ^3.0.0-beta.1/filesystem_picker: 2.0.0/g" pubspec.yaml
+      
 
       - name: Install rust target and build (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
@@ -198,6 +201,7 @@ jobs:
       - name: Install rust target and build (Android-arm64)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm64')
         run: |
+          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/22.1.7171670
           rustup target install aarch64-linux-android
           cd native/jmbackend/platforms/android
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t arm64-v8a build --release
@@ -207,6 +211,7 @@ jobs:
       - name: Install rust target and build (Android-arm32)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32')
         run: |
+          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/22.1.7171670
           rustup target install armv7-linux-androideabi
           cd native/jmbackend/platforms/android
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t armeabi-v7a build --release
@@ -216,6 +221,7 @@ jobs:
       - name: Install rust target and build (Android-x86_64)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-x86_64')
         run: |
+          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/22.1.7171670
           rustup target install x86_64-linux-android
           cd native/jmbackend/platforms/android
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t x86_64 build --release
@@ -260,6 +266,7 @@ jobs:
       - name: Build (macos)
         if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'macos'
         run: |
+          rustup target install aarch64-apple-darwin
           cargo build --manifest-path native/jmbackend/platforms/macos/Cargo.toml --release --target x86_64-apple-darwin
           cargo build --manifest-path native/jmbackend/platforms/macos/Cargo.toml --release --target aarch64-apple-darwin
           lipo -create -output macos/librust.a native/jmbackend/platforms/macos/target/x86_64-apple-darwin/release/librust.a native/jmbackend/platforms/macos/target/aarch64-apple-darwin/release/librust.a
@@ -289,3 +296,36 @@ jobs:
           cd ci
           cargo run --bin upload-asset
 
+  community_notify:
+    name: community notify
+    runs-on: ubuntu-latest
+    needs:
+      - build_release_assets
+    env:
+      TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+      TG_CHAT_IDS: ${{ secrets.TG_CHAT_IDS }}
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      DISCORD_CHAT_IDS: ${{ secrets.DISCORD_CHAT_IDS }}
+    steps:
+
+      - name: Cargo cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - run: |
+          cd ci
+          cargo run --bin community-notify

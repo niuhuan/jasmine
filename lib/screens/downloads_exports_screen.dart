@@ -54,6 +54,7 @@ class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
         ],
       ),
       body: ContentBuilder(
+        key: null,
         future: _downloadsFuture,
         onRefresh: () async {
           setState(() {

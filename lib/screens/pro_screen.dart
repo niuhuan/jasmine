@@ -61,7 +61,8 @@ class _ProScreenState extends State<ProScreen> {
             padding: EdgeInsets.all(20),
             child: Text(
               "发电小功能 \n"
-              "  可以对下载批量导入导出",
+              "  可以对下载批量导入导出 \n"
+              "  点击页码可以跳页",
             ),
           ),
           const Divider(),

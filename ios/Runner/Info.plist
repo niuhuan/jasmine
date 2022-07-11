@@ -51,7 +51,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>application-identifier</key>
-	<string>niuhuan.jasmine</string>
 </dict>
 </plist>

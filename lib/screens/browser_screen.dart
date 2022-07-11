@@ -26,6 +26,7 @@ class _BrowserScreenState extends State<BrowserScreen>
   bool get wantKeepAlive => true;
 
   late Future<CategoriesResponse> _future;
+  late Key _key;
   String _slug = "";
   SortBy _sortBy = sortByDefault;
 
@@ -38,6 +39,7 @@ class _BrowserScreenState extends State<BrowserScreen>
   @override
   void initState() {
     _future = _categories();
+    _key = UniqueKey();
     super.initState();
   }
 
@@ -59,10 +61,12 @@ class _BrowserScreenState extends State<BrowserScreen>
         ],
       ),
       body: ContentBuilder(
+        key: _key,
         future: _future,
         onRefresh: () async {
           setState(() {
             _future = _categories();
+            _key = UniqueKey();
           });
         },
         successBuilder: (

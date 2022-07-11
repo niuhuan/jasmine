@@ -44,6 +44,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
         ],
       ),
       body: ContentBuilder(
+        key: null,
         future: _downloadsFuture,
         onRefresh: () async {
           setState(() {
