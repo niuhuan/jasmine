@@ -135,7 +135,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       minWidth: 0,
       child: Text(
         "$downloadThreadCount线程",
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

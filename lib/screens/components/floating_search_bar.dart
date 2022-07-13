@@ -206,6 +206,7 @@ class _FloatingSearchBarScreenState extends State<FloatingSearchBarScreen>
   }
 
   void _hideSearchBar() {
+    _node.unfocus();
     _animationController.reverse();
   }
 }
