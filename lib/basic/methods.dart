@@ -342,6 +342,14 @@ class Methods {
   Future inputCdKey(String cdKey) {
     return _invoke("input_cd_key", cdKey);
   }
+
+  Future<int> load_download_thread() async {
+    return int.parse(await _invoke("load_download_thread", ""));
+  }
+
+  Future set_download_thread(int count) {
+    return _invoke("set_download_thread", "${count}");
+  }
 }
 
 class _Response {

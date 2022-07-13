@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/download_thread_count.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 import 'package:jasmine/screens/download_import_screen.dart';
 
@@ -28,8 +29,9 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("下载列表"),
+        title: const Text("下载"),
         actions: [
+          threadCountButton(),
           exportButton(),
           importButton(),
           IconButton(
@@ -120,6 +122,20 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       icon: const Icon(
         Icons.send_to_mobile,
         color: Colors.white,
+      ),
+    );
+  }
+
+  Widget threadCountButton() {
+    return MaterialButton(
+      onPressed: () async {
+        await chooseDownloadThread(context);
+        setState(() {});
+      },
+      minWidth: 0,
+      child: Text(
+        "$downloadThreadCount线程",
+        style: TextStyle(color: Colors.white),
       ),
     );
   }
