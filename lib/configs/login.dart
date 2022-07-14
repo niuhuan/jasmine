@@ -163,8 +163,22 @@ class _LoginDialogState extends State<_LoginDialog> {
                   margin: const EdgeInsets.all(10),
                   child: MaterialButton(
                     color: Colors.orange.shade700,
-                    onPressed: () {
-                      openUrl("https://jmcomic1.cc/signup");
+                    onPressed: () async {
+                      String? fen = await chooseMapDialog(
+                        context,
+                        values: {
+                          "注册分流1": "https://18comic.vip/signup",
+                          "注册分流2": "https://18comic.org/signup",
+                          "注册分流3": "https://jmcomic.me/signup",
+                          "注册分流4": "https://jmcomic1.me/signup",
+                          "注册分流5": "https://jmcomic.asia/signup",
+                          "注册分流6": "https://jmcomic.city/signup",
+                        },
+                        title: "选择注册分流",
+                      );
+                      if (fen != null) {
+                        openUrl(fen);
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),
