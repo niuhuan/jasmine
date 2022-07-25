@@ -135,7 +135,7 @@ jobs:
 
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'
-        uses: subosito/flutter-action@v2.3.0
+        uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.flutter_channel }}
           flutter-version: ${{ env.flutter_version }}
