@@ -136,12 +136,12 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           path: 'native'
 
-#      - name: Cache Flutter dependencies (Linux/Android)
-#        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' || matrix.config.target == 'linux' )
-#        uses: actions/cache@v3
-#        with:
-#          path: /opt/hostedtoolcache/flutter
-#          key: ${{ runner.os }}-flutter
+      - name: Cache Flutter dependencies (Linux/Android)
+        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' || matrix.config.target == 'linux' )
+        uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.os }}-flutter
 
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'
@@ -189,7 +189,7 @@ jobs:
         run: |
           sed -i "s/another_xlider: ^1.0.1+2/another_xlider: 1.0.1+2/g" pubspec.yaml
           sed -i "s/flutter_styled_toast: ^2.0.0/flutter_styled_toast: 2.0.0/g" pubspec.yaml
-          sed -i "s/filesystem_picker: ^3.0.0/filesystem_picker: 2.0.0/g" pubspec.yaml
+          sed -i "s/filesystem_picker: 3.0.0/filesystem_picker: 2.0.0/g" pubspec.yaml
 
       - name: Append application-identifier (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
