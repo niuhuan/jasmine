@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
 
 env:
-  flutter_channel: 'stable'
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
@@ -59,40 +58,51 @@ jobs:
         config:
           - target: linux
             host: ubuntu-latest
-            flutter_version: '3.0.4'
+            flutter_version: '3.1.0'
+            flutter_channel: 'beta'
           - target: windows
             host: windows-latest
-            flutter_version: '3.0.4'
+            flutter_version: '3.0.5'
+            flutter_channel: 'stable'
           - target: macos
             host: macos-latest
-            flutter_version: '3.0.4'
+            flutter_version: '3.0.5'
+            flutter_channel: 'stable'
           - target: ios
             host: macos-latest
-            flutter_version: '3.0.4'
+            flutter_version: '3.0.5'
+            flutter_channel: 'stable'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.0.5'
+            flutter_version: '3.1.0'
+            flutter_channel: 'beta'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.0.5'
+            flutter_version: '3.1.0'
+            flutter_channel: 'beta'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.0.5'
+            flutter_version: '3.1.0'
+            flutter_channel: 'beta'
           - target: android-arm32
             host: ubuntu-latest
             flutter_version: '2.10.5'
+            flutter_channel: 'stable'
           - target: android-arm64
             host: ubuntu-latest
             flutter_version: '2.10.5'
+            flutter_channel: 'stable'
           - target: android-x86_64
             host: ubuntu-latest
             flutter_version: '2.10.5'
+            flutter_channel: 'stable'
 
     runs-on: ${{ matrix.config.host }}
 
     env:
       TARGET: ${{ matrix.config.target }}
       flutter_version: ${{ matrix.config.flutter_version }}
+      flutter_channel: ${{ matrix.config.flutter_version }}
 
     steps:
       - name: Checkout
