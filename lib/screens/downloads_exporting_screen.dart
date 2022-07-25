@@ -132,10 +132,10 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         setState(() {
           exporting = true;
         });
-        await methods.export_jm_jmi(
+        print(await methods.export_jm_jmi(
           widget.idList,
           path,
-        );
+        ));
         exported = true;
       } catch (err) {
         e = err;
@@ -166,10 +166,10 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         setState(() {
           exporting = true;
         });
-        await methods.export_jm_zip(
+        print(await methods.export_jm_zip(
           widget.idList,
           path,
-        );
+        ));
         exported = true;
       } catch (err) {
         e = err;
