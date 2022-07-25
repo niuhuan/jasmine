@@ -59,25 +59,25 @@ jobs:
         config:
           - target: linux
             host: ubuntu-latest
-            flutter_version: '3.1.0'
+            flutter_version: '3.0.5'
           - target: windows
             host: windows-latest
-            flutter_version: '3.1.0'
+            flutter_version: '3.0.5'
           - target: macos
             host: macos-latest
-            flutter_version: '3.1.0'
+            flutter_version: '3.0.5'
           - target: ios
             host: macos-latest
-            flutter_version: '3.1.0'
+            flutter_version: '3.0.5'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.1.0'
+            flutter_version: '3.0.5'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.1.0'
+            flutter_version: '3.0.5'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.1.0'
+            flutter_version: '3.0.5'
           - target: android-arm32
             host: ubuntu-latest
             flutter_version: '2.10.5'
