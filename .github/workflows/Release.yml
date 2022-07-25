@@ -102,7 +102,7 @@ jobs:
     env:
       TARGET: ${{ matrix.config.target }}
       flutter_version: ${{ matrix.config.flutter_version }}
-      flutter_channel: ${{ matrix.config.flutter_version }}
+      flutter_channel: ${{ matrix.config.flutter_channel }}
 
     steps:
       - name: Checkout
@@ -136,12 +136,12 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           path: 'native'
 
-      - name: Cache Flutter dependencies (Linux/Android)
-        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' || matrix.config.target == 'linux' )
-        uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: ${{ runner.os }}-flutter
+#      - name: Cache Flutter dependencies (Linux/Android)
+#        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' || matrix.config.target == 'linux' )
+#        uses: actions/cache@v3
+#        with:
+#          path: /opt/hostedtoolcache/flutter
+#          key: ${{ runner.os }}-flutter
 
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'
