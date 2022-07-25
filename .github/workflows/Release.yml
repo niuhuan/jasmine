@@ -71,13 +71,13 @@ jobs:
             flutter_version: '3.0.4'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.0.4'
+            flutter_version: '3.0.0'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.0.4'
+            flutter_version: '3.0.0'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.0.4'
+            flutter_version: '3.0.0'
           - target: android-arm32
             host: ubuntu-latest
             flutter_version: '2.10.5'
