@@ -71,13 +71,13 @@ jobs:
             flutter_version: '3.0.4'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.0.0'
+            flutter_version: '3.0.5'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.0.0'
+            flutter_version: '3.0.5'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.0.0'
+            flutter_version: '3.0.5'
           - target: android-arm32
             host: ubuntu-latest
             flutter_version: '2.10.5'
@@ -179,7 +179,7 @@ jobs:
         run: |
           sed -i "s/another_xlider: ^1.0.1+2/another_xlider: 1.0.1+2/g" pubspec.yaml
           sed -i "s/flutter_styled_toast: ^2.0.0/flutter_styled_toast: 2.0.0/g" pubspec.yaml
-          sed -i "s/filesystem_picker: ^3.0.0-beta.1/filesystem_picker: 2.0.0/g" pubspec.yaml
+          sed -i "s/filesystem_picker: ^3.0.0/filesystem_picker: 2.0.0/g" pubspec.yaml
 
       - name: Append application-identifier (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
