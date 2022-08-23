@@ -39,6 +39,8 @@ class _AboutState extends State<AboutScreen> {
           const Divider(),
           androidDisplayModeSetting(),
           const Divider(),
+          _buildIssues(),
+          const Divider(),
         ],
       ),
     );
@@ -141,6 +143,15 @@ class _AboutState extends State<AboutScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       child: SelectableText(info ?? ""),
+    );
+  }
+
+  Widget _buildIssues() {
+    return ListTile(
+      title: const Text("意见反馈"),
+      onTap: () {
+        openUrl("https://github.com/niuhuan/jasmine/issues/");
+      },
     );
   }
 }

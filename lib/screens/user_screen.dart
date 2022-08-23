@@ -73,6 +73,10 @@ class _UserScreenState extends State<UserScreen>
             const Divider(),
             _buildComments(),
             const Divider(),
+            _buildFdT(),
+            const Divider(),
+            _buildAboutT(),
+            const Divider(),
             Container(height: 30),
           ],
         ),
@@ -235,8 +239,37 @@ class _UserScreenState extends State<UserScreen>
         ));
       },
       icon: const VersionBadged(
-          child: Padding(
-              padding: EdgeInsets.all(1), child: Icon(Icons.info_outlined))),
+        child: Padding(
+            padding: EdgeInsets.all(1), child: Icon(Icons.info_outlined)),
+      ),
+    );
+  }
+
+  Widget _buildFdT() {
+    return ListTile(
+      title: const Text("发电"),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+            return const ProScreen();
+          },
+        ));
+      },
+    );
+  }
+
+  Widget _buildAboutT() {
+    return ListTile(
+      title: const VersionBadged(
+        child: Text("关于"),
+      ),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+            return const AboutScreen();
+          },
+        ));
+      },
     );
   }
 }
