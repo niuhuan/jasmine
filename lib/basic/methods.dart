@@ -353,6 +353,14 @@ class Methods {
   Future set_download_thread(int count) {
     return _invoke("set_download_thread", "${count}");
   }
+
+  Future clearAllSearchLog() {
+    return _invoke("clear_all_search_log", "");
+  }
+
+  Future clearASearchLog(String log) {
+    return _invoke("clear_a_search_log", log);
+  }
 }
 
 class _Response {

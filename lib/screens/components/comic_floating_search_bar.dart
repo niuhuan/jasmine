@@ -1,6 +1,9 @@
 import 'package:event/event.dart';
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/entities.dart';
+import 'package:jasmine/basic/methods.dart';
+
+import '../../basic/commons.dart';
 import 'floating_search_bar.dart';
 
 final _event = Event();
@@ -85,13 +88,39 @@ class _ComicFloatingSearchBarScreenState
   }
 
   List<Widget> _buildHistory() {
+    if (_histories.isEmpty) {
+      return [];
+    }
     final List<Widget> widgets = [];
-    widgets.add(_buildTitle("历史记录"));
+    widgets.add(_buildTitle("历史记录", clear: () async {
+      String? choose = await chooseListDialog(
+        context,
+        values: ["是", "否"],
+        title: "清除所有历史记录?",
+      );
+      if ("是" == choose) {
+        await methods.clearAllSearchLog();
+        _histories.clear();
+        _setState(null);
+      }
+    }));
     widgets.add(Wrap(
       children: _histories.map((e) {
         return InkWell(
           onTap: () {
             _onSubmitted(e.searchQuery);
+          },
+          onLongPress: () async {
+            String? choose = await chooseListDialog(
+              context,
+              values: ["是", "否"],
+              title: "清除历史记录\"${e.searchQuery}\"?",
+            );
+            if ("是" == choose) {
+              await methods.clearASearchLog(e.searchQuery);
+              _histories.remove(e);
+              _setState(null);
+            }
           },
           child: Container(
             padding: const EdgeInsets.only(
@@ -181,7 +210,27 @@ class _ComicFloatingSearchBarScreenState
     return widgets;
   }
 
-  Widget _buildTitle(String title) {
+  Widget _buildTitle(String title, {void Function()? clear}) {
+    if (clear != null) {
+      return Container(
+        margin: const EdgeInsets.only(top: 10, bottom: 5),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Expanded(child: Container()),
+            IconButton(
+              onPressed: clear,
+              icon: const Icon(Icons.close, size: 14, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 5),
       child: Text(
