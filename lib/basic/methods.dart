@@ -105,9 +105,12 @@ class Methods {
     })));
   }
 
-  Future<FavoritesResponse> favorites(int page) async {
+  Future<FavoritesResponse> favorites(int folderId, int page) async {
     return FavoritesResponse.fromJson(
-      jsonDecode(await _invoke("favorites", page)),
+      jsonDecode(await _invoke("favorites", {
+        "folder_id": folderId,
+        "page": page,
+      })),
     );
   }
 

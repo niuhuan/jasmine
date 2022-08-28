@@ -636,6 +636,7 @@ class SelfInfo {
     required this.expPercent,
     required this.badges,
     required this.albumFavoritesMax,
+    required this.favoriteList,
   });
 
   late final int uid;
@@ -656,6 +657,7 @@ class SelfInfo {
   late final double expPercent;
   late final List<dynamic> badges;
   late final int albumFavoritesMax;
+  late final List<FavoriteFolder> favoriteList;
 
   SelfInfo.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
@@ -676,6 +678,7 @@ class SelfInfo {
     expPercent = json['expPercent'];
     badges = List.castFrom<dynamic, dynamic>(json['badges']);
     albumFavoritesMax = json['album_favorites_max'];
+    favoriteList = List.from(json['favorite_list']).map((e)=>FavoriteFolder.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -698,6 +701,33 @@ class SelfInfo {
     _data['expPercent'] = expPercent;
     _data['badges'] = badges;
     _data['album_favorites_max'] = albumFavoritesMax;
+    _data['favorite_list'] = favoriteList.map((e)=>e.toJson()).toList();
+    return _data;
+  }
+}
+
+class FavoriteFolder {
+  FavoriteFolder({
+    required this.fid,
+    required this.uid,
+    required this.name,
+  });
+
+  late final String fid;
+  late final String uid;
+  late final String name;
+
+  FavoriteFolder.fromJson(Map<String, dynamic> json) {
+    fid = json['FID'];
+    uid = json['UID'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['FID'] = fid;
+    _data['UID'] = uid;
+    _data['name'] = name;
     return _data;
   }
 }
