@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/browser_screen.dart';
 import 'package:jasmine/screens/comic_search_screen.dart';
 import 'package:jasmine/screens/components/badge.dart';
@@ -33,9 +34,21 @@ class _AppScreenState extends State<AppScreen> {
   ];
 
   @override
+  void initState() {
+    versionPop(context);
+    versionEvent.subscribe(_versionSub);
+    super.initState();
+  }
+
+  @override
   void dispose() {
+    versionEvent.unsubscribe(_versionSub);
     _pageController.dispose();
     super.dispose();
+  }
+
+  _versionSub(_) {
+    versionPop(context);
   }
 
   var _selectedIndex = 0;
