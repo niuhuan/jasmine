@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../basic/commons.dart';
 import '../basic/methods.dart';
 import '../configs/is_pro.dart';
+import '../configs/android_version.dart';
 import 'components/content_loading.dart';
 
 // 导入
@@ -74,6 +76,17 @@ class _DownloadImportScreenState extends State<DownloadImportScreen> {
     return MaterialButton(
       height: 80,
       onPressed: () async {
+        if (Platform.isAndroid) {
+          if (androidVersion >= 30) {
+            if (!(await Permission.manageExternalStorage.request()).isGranted) {
+              throw Exception("申请权限被拒绝");
+            }
+          } else {
+            if (!(await Permission.storage.request()).isGranted) {
+              throw Exception("申请权限被拒绝");
+            }
+          }
+        }
         String? path;
         if (Platform.isAndroid) {
           path = await FilesystemPicker.open(

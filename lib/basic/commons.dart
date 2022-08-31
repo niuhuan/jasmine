@@ -7,6 +7,7 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../configs/android_version.dart';
 
 /// 显示一个toast
 void defaultToast(BuildContext context, String title) {
@@ -76,8 +77,14 @@ Future<T?> chooseMapDialog<T>(
 
 Future saveImageFileToGallery(BuildContext context, String path) async {
   if (Platform.isAndroid) {
-    if (!(await Permission.storage.request()).isGranted) {
-      return;
+    if (androidVersion >= 30) {
+      if (!(await Permission.manageExternalStorage.request()).isGranted) {
+        throw Exception("申请权限被拒绝");
+      }
+    } else {
+      if (!(await Permission.storage.request()).isGranted) {
+        throw Exception("申请权限被拒绝");
+      }
     }
   }
   if (Platform.isIOS || Platform.isAndroid) {

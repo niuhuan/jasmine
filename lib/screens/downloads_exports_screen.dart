@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import '../basic/commons.dart';
 import 'components/comic_download_card.dart';
 import 'downloads_exporting_screen.dart';
+import '../configs/android_version.dart';
 
 class DownloadsExportScreen extends StatefulWidget {
   const DownloadsExportScreen({Key? key}) : super(key: key);
@@ -138,6 +141,17 @@ class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
           if (selected.isEmpty) {
             defaultToast(context, "请选择导出的内容");
             return;
+          }
+          if (Platform.isAndroid) {
+            if (androidVersion >= 30) {
+              if (!(await Permission.manageExternalStorage.request()).isGranted) {
+                throw Exception("申请权限被拒绝");
+              }
+            } else {
+              if (!(await Permission.storage.request()).isGranted) {
+                throw Exception("申请权限被拒绝");
+              }
+            }
           }
           final exported = await Navigator.of(context).push(
             MaterialPageRoute(
