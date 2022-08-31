@@ -361,6 +361,15 @@ class Methods {
   Future clearASearchLog(String log) {
     return _invoke("clear_a_search_log", log);
   }
+
+  Future setProxy(String url) {
+    return _invoke("set_proxy", url);
+  }
+
+  Future<String> getProxy() {
+    return _invoke("get_proxy", "");
+  }
+
 }
 
 class _Response {

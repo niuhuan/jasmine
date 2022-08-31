@@ -3,6 +3,7 @@ import 'package:jasmine/configs/android_version.dart';
 import 'package:jasmine/configs/download_thread_count.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_cover_rate.dart';
+import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/theme.dart';
 
 import 'auto_clean.dart';
@@ -37,5 +38,6 @@ Future initConfigs() async {
   await initTheme();
   await reloadIsPro();
   await initDownloadThreadCount();
+  await initProxy();
   initLogin();
 }
