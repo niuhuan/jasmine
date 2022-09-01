@@ -155,7 +155,21 @@ class _FloatingSearchBarScreenState extends State<FloatingSearchBarScreen>
                             right: 10,
                             bottom: 15,
                           ),
-                          decoration: _sharp,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey.shade500.withOpacity(.3),
+                              width: .1,
+                            ),
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: .2,
+                                spreadRadius: .3,
+                                color: Colors.grey.shade500.withOpacity(.3),
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                           child: widget.panel,
                         ),
                       ),
@@ -221,7 +235,21 @@ class _SearchBarContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
       height: 50,
-      decoration: _sharp,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey.shade500.withOpacity(.3),
+          width: .1,
+        ),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: .2,
+            spreadRadius: .3,
+            color: Colors.grey.shade500.withOpacity(.3),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(5),
+      ),
       child: child,
     );
   }
@@ -235,19 +263,3 @@ class FloatingSearchBarController {
   void display({String? modifyInput}) =>
       _state?._displayFloatingSearchBar(modifyInput: modifyInput);
 }
-
-final _sharp = BoxDecoration(
-  border: Border.all(
-    color: Colors.grey.shade500.withOpacity(.3),
-    width: .1,
-  ),
-  color: Colors.white,
-  boxShadow: [
-    BoxShadow(
-      blurRadius: .2,
-      spreadRadius: .3,
-      color: Colors.grey.shade500.withOpacity(.3),
-    ),
-  ],
-  borderRadius: BorderRadius.circular(5),
-);

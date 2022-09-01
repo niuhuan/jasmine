@@ -102,9 +102,9 @@ class _LoginDialogState extends State<_LoginDialog> {
       height: 250,
       width: MediaQuery.of(context).size.width - 90,
       margin: const EdgeInsets.all(30),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: Colors.white,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: Material(
         color: Colors.transparent,
