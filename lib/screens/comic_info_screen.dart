@@ -10,6 +10,7 @@ import 'comic_download_screen.dart';
 import 'comic_reader_screen.dart';
 import 'components/comic_comments_list.dart';
 import 'components/continue_read_button.dart';
+import 'components/right_click_pop.dart';
 
 class ComicInfoScreen extends StatefulWidget {
   final int comicId;
@@ -49,6 +50,10 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(

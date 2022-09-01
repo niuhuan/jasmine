@@ -6,6 +6,7 @@ import 'package:jasmine/screens/components/content_builder.dart';
 import 'package:jasmine/screens/download_import_screen.dart';
 
 import 'components/comic_download_card.dart';
+import 'components/right_click_pop.dart';
 import 'download_album_screen.dart';
 import 'downloads_exports_screen.dart';
 
@@ -27,6 +28,10 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("下载"),

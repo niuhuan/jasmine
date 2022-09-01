@@ -6,6 +6,7 @@ import 'components/browser_bottom_sheet.dart';
 import 'components/comic_floating_search_bar.dart';
 import 'components/comic_pager.dart';
 import 'components/actions.dart';
+import 'components/right_click_pop.dart';
 
 class ComicSearchScreen extends StatefulWidget {
   final String initKeywords;
@@ -24,6 +25,10 @@ class _ComicSearchScreenState extends State<ComicSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return ComicFloatingSearchBarScreen(
       controller: _controller,
       onQuery: (value) {

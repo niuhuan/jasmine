@@ -6,6 +6,7 @@ import 'package:jasmine/screens/components/content_builder.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../basic/commons.dart';
 import 'components/comic_download_card.dart';
+import 'components/right_click_pop.dart';
 import 'downloads_exporting_screen.dart';
 import '../configs/android_version.dart';
 
@@ -35,6 +36,10 @@ class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("批量导出"),

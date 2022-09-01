@@ -4,6 +4,7 @@ import 'package:jasmine/basic/methods.dart';
 import '../basic/commons.dart';
 import '../configs/is_pro.dart';
 import 'components/content_loading.dart';
+import 'components/right_click_pop.dart';
 
 class DownloadsExportingScreen extends StatefulWidget {
   final List<int> idList;
@@ -184,6 +185,14 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(
+      child: buildScreen(context),
+      context: context,
+      canPop: !exporting,
+    );
+  }
+
+  Widget buildScreen(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(

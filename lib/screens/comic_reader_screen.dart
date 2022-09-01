@@ -18,6 +18,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'components/images.dart';
+import 'components/right_click_pop.dart';
 
 class ComicReaderScreen extends StatefulWidget {
   final ComicBasic comic;
@@ -63,6 +64,10 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return FutureBuilder(
       future: _chapterFuture,
       builder: (BuildContext context, AsyncSnapshot<ChapterResponse> snapshot) {

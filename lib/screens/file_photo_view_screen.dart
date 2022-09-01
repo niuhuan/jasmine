@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:photo_view/photo_view.dart';
 
+import 'components/right_click_pop.dart';
+
 // 预览图片
 class FilePhotoViewScreen extends StatelessWidget {
   final String filePath;
@@ -11,7 +13,11 @@ class FilePhotoViewScreen extends StatelessWidget {
   const FilePhotoViewScreen(this.filePath, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) => Scaffold(
         body: Stack(
           children: [
             GestureDetector(

@@ -9,6 +9,7 @@ import 'package:jasmine/screens/components/my_flat_button.dart';
 
 import 'comic_reader_screen.dart';
 import 'comic_search_screen.dart';
+import 'components/right_click_pop.dart';
 
 class DownloadAlbumScreen extends StatefulWidget {
   final DownloadAlbum album;
@@ -32,6 +33,10 @@ class _DownloadAlbumScreenState extends State<DownloadAlbumScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.album.name),

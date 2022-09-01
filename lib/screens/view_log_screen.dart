@@ -4,9 +4,8 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/floating_search_bar.dart';
 
 import 'components/browser_bottom_sheet.dart';
-import 'components/comic_floating_search_bar.dart';
 import 'components/comic_pager.dart';
-import 'components/actions.dart';
+import 'components/right_click_pop.dart';
 
 class ViewLogScreen extends StatefulWidget {
   const ViewLogScreen({Key? key}) : super(key: key);
@@ -18,6 +17,10 @@ class ViewLogScreen extends StatefulWidget {
 class _ViewLogScreenState extends State<ViewLogScreen> {
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("浏览记录"),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../basic/commons.dart';
 import '../basic/methods.dart';
 import '../configs/is_pro.dart';
+import 'components/right_click_pop.dart';
 
 class ProScreen extends StatefulWidget {
   const ProScreen({Key? key}) : super(key: key);
@@ -26,6 +27,10 @@ class _ProScreenState extends State<ProScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var min = size.width < size.height ? size.width : size.height;
     return Scaffold(

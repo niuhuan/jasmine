@@ -3,11 +3,17 @@ import 'package:jasmine/configs/network_api_host.dart';
 import 'package:jasmine/configs/network_cdn_host.dart';
 import 'package:jasmine/screens/init_screen.dart';
 
+import 'components/right_click_pop.dart';
+
 class NetworkSettingScreen extends StatelessWidget {
   const NetworkSettingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("网络设置"),

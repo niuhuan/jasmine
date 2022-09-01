@@ -4,6 +4,8 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/login.dart';
 import 'package:jasmine/screens/components/comic_pager.dart';
 
+import 'components/right_click_pop.dart';
+
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
 
@@ -43,6 +45,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("收藏夹"),

@@ -3,6 +3,7 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/comic_list.dart';
 
 import 'components/comic_comments_list.dart';
+import 'components/right_click_pop.dart';
 
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({Key? key}) : super(key: key);
@@ -12,8 +13,13 @@ class CommentsScreen extends StatefulWidget {
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("讨论区"),

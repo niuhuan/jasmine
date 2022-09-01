@@ -5,6 +5,7 @@ import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/theme.dart';
+import 'package:jasmine/configs/using_right_click_pop.dart';
 
 import 'auto_clean.dart';
 import 'is_pro.dart';
@@ -39,5 +40,6 @@ Future initConfigs() async {
   await reloadIsPro();
   await initDownloadThreadCount();
   await initProxy();
+  await initUsingRightClickPop();
   initLogin();
 }

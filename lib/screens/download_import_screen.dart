@@ -10,6 +10,7 @@ import '../basic/methods.dart';
 import '../configs/is_pro.dart';
 import '../configs/android_version.dart';
 import 'components/content_loading.dart';
+import 'components/right_click_pop.dart';
 
 // 导入
 class DownloadImportScreen extends StatefulWidget {
@@ -45,6 +46,14 @@ class _DownloadImportScreenState extends State<DownloadImportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(
+      child: buildScreen(context),
+      context: context,
+      canPop: !_importing,
+    );
+  }
+
+  Widget buildScreen(BuildContext context) {
     if (_importing) {
       return Scaffold(
         body: ContentLoading(label: _importMessage),

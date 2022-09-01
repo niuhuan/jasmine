@@ -6,6 +6,8 @@ import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/components/badge.dart';
 
 import '../configs/theme.dart';
+import '../configs/using_right_click_pop.dart';
+import 'components/right_click_pop.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -17,8 +19,13 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutState extends State<AboutScreen> {
+
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("关于"),
@@ -43,6 +50,8 @@ class _AboutState extends State<AboutScreen> {
           androidDisplayModeSetting(),
           const Divider(),
           _buildIssues(),
+          const Divider(),
+          usingRightClickPopSetting(),
           const Divider(),
         ],
       ),

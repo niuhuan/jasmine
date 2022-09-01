@@ -3,6 +3,7 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/item_builder.dart';
 
 import 'components/comic_info_card.dart';
+import 'components/right_click_pop.dart';
 
 class ComicDownloadScreen extends StatefulWidget {
   final AlbumResponse album;
@@ -31,6 +32,10 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return rightClickPop(child: buildScreen(context), context: context);
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("下载 - ${widget.album.name}"),
