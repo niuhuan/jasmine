@@ -195,7 +195,8 @@ class _LoginDialogState extends State<_LoginDialog> {
                     color: Colors.orange.shade700,
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      _login(_username, _password);
+                      await _login(_username, _password);
+                      await reloadIsPro();
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),
