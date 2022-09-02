@@ -5,6 +5,7 @@ import 'package:jasmine/screens/about_screen.dart';
 import 'package:jasmine/screens/comments_screen.dart';
 import 'package:jasmine/screens/components/avatar.dart';
 import 'package:jasmine/screens/pro_screen.dart';
+import 'package:jasmine/screens/settings_scree.dart';
 import 'package:jasmine/screens/view_log_screen.dart';
 
 import '../configs/is_pro.dart';
@@ -58,7 +59,8 @@ class _UserScreenState extends State<UserScreen>
             isPro ? Icons.offline_bolt : Icons.offline_bolt_outlined,
           ),
         ),
-        _buildAbout(),
+        _buildSettingsIcon(),
+        _buildAboutIcon(),
       ]),
       body: SafeArea(
         child: ListView(
@@ -74,6 +76,8 @@ class _UserScreenState extends State<UserScreen>
             _buildComments(),
             const Divider(),
             _buildFdT(),
+            const Divider(),
+            _buildSettingsT(),
             const Divider(),
             _buildAboutT(),
             const Divider(),
@@ -229,7 +233,25 @@ class _UserScreenState extends State<UserScreen>
     );
   }
 
-  Widget _buildAbout() {
+  Widget _buildSettingsIcon() {
+    return IconButton(
+      onPressed: () async {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+            return const SettingsScreen();
+          },
+        ));
+      },
+      icon: const VersionBadged(
+        child: Padding(
+          padding: EdgeInsets.all(1),
+          child: Icon(Icons.settings),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAboutIcon() {
     return IconButton(
       onPressed: () async {
         Navigator.of(context).push(MaterialPageRoute(
@@ -240,7 +262,9 @@ class _UserScreenState extends State<UserScreen>
       },
       icon: const VersionBadged(
         child: Padding(
-            padding: EdgeInsets.all(1), child: Icon(Icons.info_outlined)),
+          padding: EdgeInsets.all(1),
+          child: Icon(Icons.info_outlined),
+        ),
       ),
     );
   }
@@ -252,6 +276,19 @@ class _UserScreenState extends State<UserScreen>
         Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) {
             return const ProScreen();
+          },
+        ));
+      },
+    );
+  }
+
+  Widget _buildSettingsT() {
+    return ListTile(
+      title: const Text("设置"),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) {
+            return const SettingsScreen();
           },
         ));
       },
