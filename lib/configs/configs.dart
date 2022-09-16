@@ -6,6 +6,10 @@ import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/theme.dart';
 import 'package:jasmine/configs/using_right_click_pop.dart';
+import 'package:jasmine/configs/web_dav_password.dart';
+import 'package:jasmine/configs/web_dav_sync_switch.dart';
+import 'package:jasmine/configs/web_dav_url.dart';
+import 'package:jasmine/configs/web_dav_username.dart';
 
 import 'auto_clean.dart';
 import 'is_pro.dart';
@@ -41,5 +45,9 @@ Future initConfigs() async {
   await initDownloadThreadCount();
   await initProxy();
   await initUsingRightClickPop();
+  await initWebDavSyncSwitch();
+  await initWebDavUrl();
+  await initWebDavUserName();
+  await initWebDavPassword();
   initLogin();
 }

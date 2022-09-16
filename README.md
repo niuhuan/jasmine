@@ -1,8 +1,6 @@
 Jasmine Comic
 =============
-[![license](https://img.shields.io/github/license/niuhuan/jasmine)](https://raw.githubusercontent.com/niuhuan/jasmine/master/LICENSE)
 [![releases](https://img.shields.io/github/v/release/niuhuan/jasmine)](https://github.com/niuhuan/jasmine/releases)
-[![downloads](https://img.shields.io/github/downloads/niuhuan/jasmine/total)](https://github.com/niuhuan/jasmine/releases)
 
 一个简单易用的漫画二次元客户端，同时支持支持 Android / iOS / MacOS / Windows.
 
@@ -38,7 +36,7 @@ Jasmine Comic
 - [x] 用户
   - [x] 登录/注册
 - [x] 设备优化
-  - [x] 安卓的120Hz或更高评率屏幕的支持 
+  - [x] 安卓的高刷新率屏幕的支持 
 
 ## 技术架构
 

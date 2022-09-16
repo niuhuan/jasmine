@@ -5,6 +5,7 @@ import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/configs.dart';
 
+import '../basic/web_dav_sync.dart';
 import 'app_screen.dart';
 import 'network_setting_screen.dart';
 
@@ -43,7 +44,8 @@ class _InitScreenState extends State<InitScreen> {
     try {
       await methods.init();
       await initConfigs();
-      Future.delayed(Duration.zero, () {
+      Future.delayed(Duration.zero, () async {
+        await webDavSyncAuto(context);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (BuildContext context) {
             return const AppScreen();

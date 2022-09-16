@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../basic/web_dav_sync.dart';
 import '../configs/android_display_mode.dart';
 import '../configs/proxy.dart';
 import '../configs/theme.dart';
 import '../configs/using_right_click_pop.dart';
+import '../configs/web_dav_password.dart';
+import '../configs/web_dav_sync_switch.dart';
+import '../configs/web_dav_url.dart';
+import '../configs/web_dav_username.dart';
 import 'components/right_click_pop.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -37,8 +42,15 @@ class _SettingsState extends State<SettingsScreen> {
           const Divider(),
           usingRightClickPopSetting(),
           const Divider(),
+          webDavSyncSwitchSetting(),
+          webDavUrlSetting(),
+          webDavUserNameSetting(),
+          webDavPasswordSetting(),
+          webDavSyncClick(context),
+          const Divider(),
         ],
       ),
     );
   }
+
 }

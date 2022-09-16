@@ -647,7 +647,7 @@ class SelfInfo {
   late final String fname;
   late final String gender;
   late final String message;
-  late final String coin;
+  late final int coin;
   late final int albumFavorites;
   late final String s;
   late final String levelName;

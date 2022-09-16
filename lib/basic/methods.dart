@@ -370,6 +370,10 @@ class Methods {
     return _invoke("get_proxy", "");
   }
 
+  Future webDavSync(dynamic params) {
+    return _invoke("sync_webdav", params);
+  }
+
 }
 
 class _Response {

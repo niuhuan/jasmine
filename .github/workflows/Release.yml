@@ -58,32 +58,32 @@ jobs:
         config:
           - target: linux
             host: ubuntu-latest
-            flutter_version: '3.3.0'
-            flutter_channel: 'beta'
+            flutter_version: '3.3.2'
+            flutter_channel: 'stable'
           - target: windows
             host: windows-latest
-            flutter_version: '3.3.0'
+            flutter_version: '3.3.2'
             flutter_channel: 'stable'
           - target: macos
             host: macos-latest
-            flutter_version: '3.3.0'
+            flutter_version: '3.3.2'
             flutter_channel: 'stable'
           - target: ios
             host: macos-latest
-            flutter_version: '3.3.0'
+            flutter_version: '3.3.2'
             flutter_channel: 'stable'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.3.0'
-            flutter_channel: 'beta'
+            flutter_version: '3.3.2'
+            flutter_channel: 'stable'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.3.0'
-            flutter_channel: 'beta'
+            flutter_version: '3.3.2'
+            flutter_channel: 'stable'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.3.0'
-            flutter_channel: 'beta'
+            flutter_version: '3.3.2'
+            flutter_channel: 'stable'
           - target: android-arm32
             host: ubuntu-latest
             flutter_version: '2.10.5'
@@ -174,8 +174,8 @@ jobs:
         with:
           packages: |
             platform-tools
-            platforms;android-32
-            build-tools;30.0.2
+            platforms;android-33
+            build-tools;33.0.0
             ndk;22.1.7171670
 
       - name: Set-Version (All)
@@ -189,7 +189,8 @@ jobs:
         run: |
           sed -i "s/another_xlider: ^1.0.1+2/another_xlider: 1.0.1+2/g" pubspec.yaml
           sed -i "s/flutter_styled_toast: ^2.0.0/flutter_styled_toast: 2.0.0/g" pubspec.yaml
-          sed -i "s/filesystem_picker: 3.0.0/filesystem_picker: 2.0.0/g" pubspec.yaml
+          sed -i "s/filesystem_picker: ^3.1.0/filesystem_picker: 2.0.0/g" pubspec.yaml
+          sed -i "s/file_picker: ^5.1.0/file_picker: 4.6.1/g" pubspec.yaml
 
       - name: Append application-identifier (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')

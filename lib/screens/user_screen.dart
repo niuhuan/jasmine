@@ -75,12 +75,12 @@ class _UserScreenState extends State<UserScreen>
             const Divider(),
             _buildComments(),
             const Divider(),
-            _buildFdT(),
-            const Divider(),
-            _buildSettingsT(),
-            const Divider(),
-            _buildAboutT(),
-            const Divider(),
+            // _buildFdT(),
+            // const Divider(),
+            // _buildSettingsT(),
+            // const Divider(),
+            // _buildAboutT(),
+            // const Divider(),
             Container(height: 30),
           ],
         ),
@@ -242,12 +242,7 @@ class _UserScreenState extends State<UserScreen>
           },
         ));
       },
-      icon: const VersionBadged(
-        child: Padding(
-          padding: EdgeInsets.all(1),
-          child: Icon(Icons.settings),
-        ),
-      ),
+      icon: const Icon(Icons.settings),
     );
   }
 
