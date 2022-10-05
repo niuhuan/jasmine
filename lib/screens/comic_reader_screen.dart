@@ -17,6 +17,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../configs/volume_key_control.dart';
 import 'components/images.dart';
 import 'components/right_click_pop.dart';
 
@@ -143,8 +144,6 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
 // 监听后会拦截安卓手机音量键
 // 仅最后一次监听生效
 // event可能为DOWN/UP
-
-const _listVolume = false;
 
 var _volumeListenCount = 0;
 
@@ -283,7 +282,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     _current = widget.startIndex;
     _slider = widget.startIndex;
     _readerControllerEvent.subscribe(_onPageControl);
-    if (_listVolume) {
+    if (currentVolumeKeyControl()) {
       addVolumeListen();
     }
     super.initState();
@@ -292,7 +291,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
   @override
   void dispose() {
     _readerControllerEvent.unsubscribe(_onPageControl);
-    if (_listVolume) {
+    if (currentVolumeKeyControl()) {
       delVolumeListen();
     }
     if (Platform.isAndroid || Platform.isIOS) {

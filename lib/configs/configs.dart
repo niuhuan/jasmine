@@ -6,6 +6,7 @@ import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/theme.dart';
 import 'package:jasmine/configs/using_right_click_pop.dart';
+import 'package:jasmine/configs/volume_key_control.dart';
 import 'package:jasmine/configs/web_dav_password.dart';
 import 'package:jasmine/configs/web_dav_sync_switch.dart';
 import 'package:jasmine/configs/web_dav_url.dart';
@@ -49,5 +50,6 @@ Future initConfigs() async {
   await initWebDavUrl();
   await initWebDavUserName();
   await initWebDavPassword();
+  await initVolumeKeyControl();
   initLogin();
 }

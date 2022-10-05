@@ -10,8 +10,10 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Display
+import android.view.KeyEvent
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.Executors
@@ -29,6 +31,9 @@ class MainActivity : FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "methods").setMethodCallHandler(
             this::methods
         )
+        //
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, "volume_button")
+            .setStreamHandler(volumeStreamHandler)
         // super
         super.configureFlutterEngine(flutterEngine)
     }
@@ -151,6 +156,39 @@ class MainActivity : FlutterActivity() {
                 }
             }
         }
+    }
+
+// volume_buttons
+
+    private var volumeEvents: EventChannel.EventSink? = null
+
+    private val volumeStreamHandler = object : EventChannel.StreamHandler {
+
+        override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+            volumeEvents = events
+        }
+
+        override fun onCancel(arguments: Any?) {
+            volumeEvents = null
+        }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        volumeEvents?.let {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                uiThreadHandler.post {
+                    it.success("DOWN")
+                }
+                return true
+            }
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                uiThreadHandler.post {
+                    it.success("UP")
+                }
+                return true
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
 }

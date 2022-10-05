@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../basic/web_dav_sync.dart';
@@ -5,6 +7,7 @@ import '../configs/android_display_mode.dart';
 import '../configs/proxy.dart';
 import '../configs/theme.dart';
 import '../configs/using_right_click_pop.dart';
+import '../configs/volume_key_control.dart';
 import '../configs/web_dav_password.dart';
 import '../configs/web_dav_sync_switch.dart';
 import '../configs/web_dav_url.dart';
@@ -41,6 +44,8 @@ class _SettingsState extends State<SettingsScreen> {
           androidDisplayModeSetting(),
           const Divider(),
           usingRightClickPopSetting(),
+          const Divider(),
+          volumeKeyControlSetting(),
           const Divider(),
           webDavSyncSwitchSetting(),
           webDavUrlSetting(),
