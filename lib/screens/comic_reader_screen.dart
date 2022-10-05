@@ -369,13 +369,43 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         !_fullScreen) {
       return Container();
     }
-    return Align(
+    if (ReaderSliderPosition.right == currentReaderSliderPosition){
+      return SafeArea(child: Align(
+        alignment: Alignment.bottomRight,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding:
+            const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+              ),
+              color: Color(0x88000000),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                _onFullScreenChange(!_fullScreen);
+              },
+              child: Icon(
+                _fullScreen ? Icons.fullscreen_exit : Icons.fullscreen_outlined,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ));
+    }
+    return SafeArea(child: Align(
       alignment: Alignment.bottomLeft,
       child: Material(
         color: Colors.transparent,
         child: Container(
           padding:
-              const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+          const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
           margin: const EdgeInsets.only(bottom: 10),
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -396,7 +426,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildTouchOnceControllerAction(Widget child) {
