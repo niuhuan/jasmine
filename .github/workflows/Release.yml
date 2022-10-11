@@ -190,6 +190,7 @@ jobs:
           sed -i "s/another_xlider: ^1.0.1+2/another_xlider: 1.0.1+2/g" pubspec.yaml
           sed -i "s/flutter_styled_toast: ^2.0.0/flutter_styled_toast: 2.0.0/g" pubspec.yaml
           sed -i "s/filesystem_picker: ^3.1.0/filesystem_picker: 2.0.0/g" pubspec.yaml
+          sed -i "s/file_picker: 5.2.1/file_picker: 4.6.1/g" pubspec.yaml
 
       - name: Append application-identifier (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')

@@ -19,7 +19,6 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutState extends State<AboutScreen> {
-
   @override
   Widget build(BuildContext context) {
     return rightClickPop(child: buildScreen(context), context: context);
@@ -117,8 +116,9 @@ class _AboutState extends State<AboutScreen> {
           style: TextStyle(height: 1.3, color: Colors.blue),
           strutStyle: StrutStyle(height: 1.3),
         ),
-        onTap: () {
-          manualCheckNewVersion(context);
+        onTap: () async {
+          await manualCheckNewVersion(context);
+          setState(() {});
         },
       ),
     );
