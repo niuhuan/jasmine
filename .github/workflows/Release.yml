@@ -65,7 +65,7 @@ jobs:
             flutter_version: '3.3.4'
             flutter_channel: 'stable'
           - target: macos
-            host: macos-11
+            host: macos-latest
             flutter_version: '3.3.4'
             flutter_channel: 'stable'
           - target: ios
@@ -137,7 +137,7 @@ jobs:
           path: 'native'
 
       - name: Cache Flutter dependencies (Linux/Android)
-        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' || matrix.config.target == 'linux' )
+        if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.host == 'ubuntu-latest'
         uses: actions/cache@v3
         with:
           path: /opt/hostedtoolcache/flutter
