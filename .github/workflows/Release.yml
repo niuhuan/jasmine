@@ -69,7 +69,7 @@ jobs:
             flutter_version: '3.3.4'
             flutter_channel: 'stable'
           - target: ios
-            host: macos-11
+            host: macos-latest
             flutter_version: '3.3.4'
             flutter_channel: 'stable'
           - target: android-arm32
