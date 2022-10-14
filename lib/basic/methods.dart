@@ -374,6 +374,9 @@ class Methods {
     return _invoke("sync_webdav", params);
   }
 
+  Future<String> iosGetDocumentDir() async {
+    return await _channel.invokeMethod("iosGetDocumentDir");
+  }
 }
 
 class _Response {

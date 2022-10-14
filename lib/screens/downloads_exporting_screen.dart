@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 
@@ -122,7 +124,9 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
     }
     late String? path;
     try {
-      path = await chooseFolder(context);
+      path = Platform.isIOS
+          ? await methods.iosGetDocumentDir()
+          : await chooseFolder(context);
     } catch (e) {
       defaultToast(context, "$e");
       return;
@@ -156,7 +160,9 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
     }
     late String? path;
     try {
-      path = await chooseFolder(context);
+      path = Platform.isIOS
+          ? await methods.iosGetDocumentDir()
+          : await chooseFolder(context);
     } catch (e) {
       defaultToast(context, "$e");
       return;

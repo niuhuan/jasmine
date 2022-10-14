@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:another_xlider/another_xlider.dart';
 import 'package:event/event.dart';
@@ -368,14 +369,15 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         !_fullScreen) {
       return Container();
     }
-    if (ReaderSliderPosition.right == currentReaderSliderPosition){
-      return SafeArea(child: Align(
+    if (ReaderSliderPosition.right == currentReaderSliderPosition) {
+      return SafeArea(
+          child: Align(
         alignment: Alignment.bottomRight,
         child: Material(
           color: Colors.transparent,
           child: Container(
             padding:
-            const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+                const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
             margin: const EdgeInsets.only(bottom: 10),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -398,13 +400,14 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         ),
       ));
     }
-    return SafeArea(child: Align(
+    return SafeArea(
+        child: Align(
       alignment: Alignment.bottomLeft,
       child: Material(
         color: Colors.transparent,
         child: Container(
           padding:
-          const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+              const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
           margin: const EdgeInsets.only(bottom: 10),
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -566,12 +569,12 @@ abstract class _ComicReaderState extends State<_ComicReader> {
             _fullScreen
                 ? Container()
                 : Container(
-              color: const Color(0x88000000),
-              child: SafeArea(
-                top: false,
-                child: Container(),
-              ),
-            ),
+                    color: const Color(0x88000000),
+                    child: SafeArea(
+                      top: false,
+                      child: Container(),
+                    ),
+                  ),
           ],
         );
       case ReaderSliderPosition.right:
@@ -1042,9 +1045,8 @@ class _ComicReaderWebToonState extends _ComicReaderState {
             } else {
               var maxHeight = constraints.maxHeight -
                   super._appBarHeight() -
-                  (super._fullScreen
-                      ? super._appBarHeight()
-                      : super._bottomBarHeight());
+                  super._bottomBarHeight() -
+                  MediaQuery.of(context).padding.bottom;
               renderSize = Size(
                 maxHeight *
                     _trueSizes[index]!.width /
@@ -1090,10 +1092,8 @@ class _ComicReaderWebToonState extends _ComicReaderState {
             top: super._appBarHeight(),
             bottom: widget.readerDirection == ReaderDirection.topToBottom
                 ? 130 // 纵向滚动 底部永远都是130的空白
-                : ( // 横向滚动
-                    super._fullScreen
-                        ? super._appBarHeight() // 全屏时底部和顶部到屏幕边框距离一样保持美观
-                        : super._bottomBarHeight())
+                : (super._bottomBarHeight() +
+                    MediaQuery.of(context).padding.bottom)
             // 非全屏时, 顶部去掉顶部BAR的高度, 底部去掉底部BAR的高度, 形成看似填充的效果
             ,
           ),
@@ -1357,15 +1357,12 @@ class _ListViewReaderState extends _ComicReaderState
           reverse: currentReaderDirection == ReaderDirection.rightToLeft,
           padding: EdgeInsets.only(
             // 不管全屏与否, 滚动方向如何, 顶部永远保持间距
-            top: super._appBarHeight(),
+            top: currentReaderDirection == ReaderDirection.topToBottom
+                ? super._appBarHeight()
+                : max(super._appBarHeight(), super._bottomBarHeight()),
             bottom: currentReaderDirection == ReaderDirection.topToBottom
                 ? 130 // 纵向滚动 底部永远都是130的空白
-                : ( // 横向滚动
-                    super._fullScreen
-                        ? super._appBarHeight() // 全屏时底部和顶部到屏幕边框距离一样保持美观
-                        : super._bottomBarHeight())
-            // 非全屏时, 顶部去掉顶部BAR的高度, 底部去掉底部BAR的高度, 形成看似填充的效果
-            ,
+                : max(super._appBarHeight(), super._bottomBarHeight()),
           ),
           itemCount: widget.chapter.images.length + 1,
           itemBuilder: (BuildContext context, int index) {
