@@ -8,13 +8,6 @@ import Flutter
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
-//        let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-//        let chars = documentDirectory.cString(using: String.Encoding.utf8)
-//
-//         init_ffi(chars!)
-
-
-
         let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         let fromChars = documentDirectory.cString(using: String.Encoding.utf8)
 
