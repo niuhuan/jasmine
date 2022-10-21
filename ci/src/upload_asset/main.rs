@@ -19,17 +19,17 @@ async fn main() -> Result<()> {
     let code = vs_code_txt.trim();
 
     let mut release_file_name = match target.as_str() {
-        "macos" => format!("jasmine-{}-macos-intel.dmg", code),
-        "ios" => format!("jasmine-{}-ios-nosign.ipa", code),
+        "macos" => format!("jasmine-{}.dmg", code),
+        "ios" => format!("jasmine-{}-nosign.ipa", code),
         "windows" => format!("jasmine-{}-windows-x86_64.zip", code),
-        "linux" => format!("jasmine-{}-linux-x86_64.AppImage", code),
-        "android-arm32" => format!("jasmine-{}-android-arm32.apk", code),
-        "android-arm64" => format!("jasmine-{}-android-arm64.apk", code),
-        "android-x86_64" => format!("jasmine-{}-android-x86_64.apk", code),
+        "linux" => format!("jasmine-{}-x86_64.AppImage", code),
+        "android-arm32" => format!("jasmine-{}-arm32.apk", code),
+        "android-arm64" => format!("jasmine-{}-arm64.apk", code),
+        "android-x86_64" => format!("jasmine-{}-x86_64.apk", code),
         un => panic!("unknown target : {}", un),
     };
-    if flutter_version == "2.10.5" {
-        release_file_name = format!("old_flutter-{}", release_file_name);
+    if flutter_version.starts_with("2.") {
+        release_file_name = format!("compatible-{}", release_file_name);
     }
 
     let local_path = match target.as_str() {

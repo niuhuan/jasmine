@@ -312,10 +312,26 @@ class Methods {
     });
   }
 
+  Future export_jm_zip_single(int id, String folder, String? rename) {
+    return _invoke("export_jm_zip_single", {
+      "id": id,
+      "folder": folder,
+      "rename": rename,
+    });
+  }
+
   Future export_jm_jmi(List<int> idList, String path) {
     return _invoke("export_jm_jmi", {
       "comic_id": idList,
       "dir": path,
+    });
+  }
+
+  Future export_jm_jmi_single(int id, String folder, String? rename) {
+    return _invoke("export_jm_jmi_single", {
+      "id": id,
+      "folder": folder,
+      "rename": rename,
     });
   }
 
@@ -376,6 +392,14 @@ class Methods {
 
   Future<String> iosGetDocumentDir() async {
     return await _channel.invokeMethod("iosGetDocumentDir");
+  }
+
+  Future<String> getDownloadAndExportTo() async {
+    return await _invoke("get_download_and_export_to", "");
+  }
+
+  Future setDownloadAndExportTo(String path) async {
+    return await _invoke("set_download_and_export_to", path);
   }
 }
 

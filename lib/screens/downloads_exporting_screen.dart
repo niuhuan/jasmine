@@ -4,9 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 
 import '../basic/commons.dart';
+import '../configs/export_rename.dart';
 import '../configs/is_pro.dart';
 import 'components/content_loading.dart';
 import 'components/right_click_pop.dart';
+
+class ExportAb {
+  final int id;
+  final String name;
+
+  ExportAb(this.id, this.name);
+}
 
 class DownloadsExportingScreen extends StatefulWidget {
   final List<int> idList;
@@ -48,7 +56,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
       return ContentLoading(label: exportMessage);
     }
     if (exportFail) {
-      return Center(child: Text("导出失败\n$e"));
+      return Center(child: Text("导出失败\n$e\n($exportMessage)"));
     }
     if (exported) {
       return const Center(child: Text("导出成功"));
@@ -87,36 +95,6 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
     );
   }
 
-  // _exportPkz() async {
-  //   late String? path;
-  //   try {
-  //     path = await chooseFolder(context);
-  //   } catch (e) {
-  //     defaultToast(context, "$e");
-  //     return;
-  //   }
-  //   print("path $path");
-  //   if (path != null) {
-  //     try {
-  //       setState(() {
-  //         exporting = true;
-  //       });
-  //       await methods.exportComicDownloadToPkz(
-  //         widget.idList,
-  //         path,
-  //       );
-  //       exported = true;
-  //     } catch (err) {
-  //       e = err;
-  //       exportFail = true;
-  //     } finally {
-  //       setState(() {
-  //         exporting = false;
-  //       });
-  //     }
-  //   }
-  // }
-
   _exportPkis() async {
     if (!isPro) {
       defaultToast(context, "请先发电鸭");
@@ -137,10 +115,21 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         setState(() {
           exporting = true;
         });
-        print(await methods.export_jm_jmi(
-          widget.idList,
-          path,
-        ));
+        for (var value in widget.idList) {
+          var ab = await methods.downloadById(value);
+          setState(() {
+            exportMessage = "正在导出 : " + (ab?.album?.name ?? "");
+          });
+          String? rename;
+          if (currentExportRename()) {
+            rename = await displayTextInputDialog(context, title: "导出重命名", src: ab?.album?.name ?? "");
+          }
+          await methods.export_jm_jmi_single(
+            value,
+            path,
+            rename,
+          );
+        }
         exported = true;
       } catch (err) {
         e = err;
@@ -173,10 +162,21 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         setState(() {
           exporting = true;
         });
-        print(await methods.export_jm_zip(
-          widget.idList,
-          path,
-        ));
+        for (var value in widget.idList) {
+          var ab = await methods.downloadById(value);
+          setState(() {
+            exportMessage = "正在导出 : " + (ab?.album?.name ?? "");
+          });
+          String? rename;
+          if (currentExportRename()) {
+            rename = await displayTextInputDialog(context, title: "导出重命名", src: ab?.album?.name ?? "");
+          }
+          await methods.export_jm_zip_single(
+            value,
+            path,
+            rename,
+          );
+        }
         exported = true;
       } catch (err) {
         e = err;

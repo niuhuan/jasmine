@@ -13,6 +13,8 @@ import 'package:jasmine/configs/web_dav_url.dart';
 import 'package:jasmine/configs/web_dav_username.dart';
 
 import 'auto_clean.dart';
+import 'download_and_export_to.dart';
+import 'export_rename.dart';
 import 'is_pro.dart';
 import 'network_api_host.dart';
 import 'network_cdn_host.dart';
@@ -51,5 +53,7 @@ Future initConfigs() async {
   await initWebDavUserName();
   await initWebDavPassword();
   await initVolumeKeyControl();
+  await initDownloadAndExportTo();
+  await initExportRename();
   initLogin();
 }
