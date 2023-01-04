@@ -6,6 +6,7 @@ import '../basic/web_dav_sync.dart';
 import '../configs/android_display_mode.dart';
 import '../configs/download_and_export_to.dart';
 import '../configs/export_rename.dart';
+import '../configs/no_animation.dart';
 import '../configs/proxy.dart';
 import '../configs/theme.dart';
 import '../configs/using_right_click_pop.dart';
@@ -48,6 +49,7 @@ class _SettingsState extends State<SettingsScreen> {
           usingRightClickPopSetting(),
           const Divider(),
           volumeKeyControlSetting(),
+          noAnimationSetting(),
           const Divider(),
           exportRenameSetting(),
           downloadAndExportToSetting(),

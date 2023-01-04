@@ -1,6 +1,7 @@
 import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/android_version.dart';
 import 'package:jasmine/configs/download_thread_count.dart';
+import 'package:jasmine/configs/no_animation.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/proxy.dart';
@@ -53,6 +54,7 @@ Future initConfigs() async {
   await initWebDavUserName();
   await initWebDavPassword();
   await initVolumeKeyControl();
+  await initNoAnimation();
   await initDownloadAndExportTo();
   await initExportRename();
   initLogin();

@@ -18,6 +18,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../configs/no_animation.dart';
 import '../configs/volume_key_control.dart';
 import 'components/images.dart';
 import 'components/right_click_pop.dart';
@@ -193,8 +194,6 @@ Widget readerKeyboardHolder(Widget widget) {
 }
 
 ////////////////////////////////
-
-bool noAnimation() => false;
 
 Event<_ReaderControllerEventArgs> _readerControllerEvent =
     Event<_ReaderControllerEventArgs>();
@@ -1001,7 +1000,7 @@ class _ComicReaderWebToonState extends _ComicReaderState {
 
   @override
   void _needJumpTo(int index, bool animation) {
-    if (noAnimation() || animation == false) {
+    if (currentNoAnimation() || animation == false) {
       _itemScrollController.jumpTo(
         index: index,
       );
