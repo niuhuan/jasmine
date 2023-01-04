@@ -178,6 +178,12 @@ jobs:
             build-tools;33.0.0
             ndk;22.1.7171670
 
+      - name: Install libfuse2 (Linux)
+        if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'linux'
+        run: |
+          sudo apt update
+          sudo apt install -y libfuse2
+
       - name: Set-Version (All)
         if: steps.check_asset.outputs.skip_build != 'true'
         run: |
