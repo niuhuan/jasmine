@@ -66,6 +66,7 @@ class _ComicSearchScreenState extends State<ComicSearchScreen> {
             return InnerComicPage(
               total: response.total,
               list: response.content,
+              redirectAid: response.redirectAid,
             );
           },
         ),

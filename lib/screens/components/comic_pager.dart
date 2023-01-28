@@ -1,10 +1,11 @@
-import 'package:event/src/eventargs.dart';
+import 'package:event/event.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
+import 'package:jasmine/screens/comic_info_screen.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 
 import '../../configs/is_pro.dart';
@@ -75,6 +76,9 @@ class _StreamPagerState extends State<_StreamPager> {
       });
       var response = await widget.onPage(_nextPage);
       if (_nextPage == 1) {
+        if (_redirectAid(response.redirectAid, context)) {
+          return;
+        }
         if (response.total == 0) {
           _maxPage = 1;
         } else {
@@ -312,6 +316,9 @@ class _PagerPagerState extends State<_PagerPager> {
     var response = await widget.onPage(_currentPage);
     setState(() {
       if (_currentPage == 1) {
+        if (_redirectAid(response.redirectAid, context)) {
+          return;
+        }
         if (response.total == 0) {
           _maxPage = 1;
         } else {
@@ -475,4 +482,15 @@ class _PagerPagerState extends State<_PagerPager> {
       ),
     );
   }
+}
+
+bool _redirectAid(int? redirectAid, BuildContext context) {
+  if (redirectAid != null) {
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
+      return ComicInfoScreen(redirectAid, null);
+    }));
+    return true;
+  }
+  return false;
 }

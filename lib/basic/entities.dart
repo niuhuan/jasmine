@@ -61,16 +61,19 @@ class SearchPage {
 
   late final String searchQuery;
   late final int total;
+  late final int? redirectAid;
 
   SearchPage.fromJson(Map<String, dynamic> json) {
     searchQuery = json['search_query'];
     total = json['total'];
+    redirectAid = json['redirect_aid'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['search_query'] = searchQuery;
     _data['total'] = total;
+    _data['redirect_aid'] = redirectAid;
     return _data;
   }
 }
@@ -774,10 +777,12 @@ class ActionResponse {
 class InnerComicPage {
   final int total;
   final List<ComicSimple> list;
+  final int? redirectAid;
 
   InnerComicPage({
     required this.total,
     required this.list,
+    this.redirectAid,
   });
 }
 
