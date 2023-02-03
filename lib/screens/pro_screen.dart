@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../basic/commons.dart';
 import '../basic/methods.dart';
 import '../configs/is_pro.dart';
@@ -35,7 +34,7 @@ class _ProScreenState extends State<ProScreen> {
     var min = size.width < size.height ? size.width : size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("发电中心"),
+        title: const Text("订阅"),
       ),
       body: ListView(
         children: [
@@ -56,32 +55,24 @@ class _ProScreenState extends State<ProScreen> {
           const Padding(
             padding: EdgeInsets.all(20),
             child: Text(
-              "登录账号才能确认发电状态\n"
-              "点击\"我曾经发过电\"进同步发电状态\n"
-              "点击\"我刚才发了电\"兑换作者给您的礼物卡\n"
-              "去\"关于\"界面找到维护地址用爱发电",
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              "发电小功能 \n"
-              "  可以对下载批量导入导出 \n"
-              "  点击页码可以跳页",
+              "登录账号才能确认订阅状态\n"
+              "点击\"我曾经订阅过\"进同步订阅状态\n"
+              "点击\"我刚才订阅了\"兑换游戏礼品\n"
+              "去\"关于\"界面找到维护地址可了解此界面信息",
             ),
           ),
           const Divider(),
           ListTile(
-            title: const Text("发电详情"),
+            title: const Text("订阅详情"),
             subtitle: Text(
               isPro
-                  ? "发电中 (${DateTime.fromMillisecondsSinceEpoch(1000 * isProEx).toString()})"
-                  : "未发电",
+                  ? "订阅中 (${DateTime.fromMillisecondsSinceEpoch(1000 * isProEx).toString()})"
+                  : "未订阅",
             ),
           ),
           const Divider(),
           ListTile(
-            title: const Text("我曾经发过电"),
+            title: const Text("我曾订阅过"),
             onTap: () async {
               try {
                 await methods.reloadPro();
@@ -96,9 +87,9 @@ class _ProScreenState extends State<ProScreen> {
           ),
           const Divider(),
           ListTile(
-            title: const Text("我刚才发了电"),
+            title: const Text("我刚才订阅了"),
             onTap: () async {
-              final code = await displayTextInputDialog(context, title: "输入代码");
+              final code = await displayTextInputDialog(context, title: "输入订阅代码");
               if (code != null && code.isNotEmpty) {
                 try {
                   await methods.inputCdKey(code);

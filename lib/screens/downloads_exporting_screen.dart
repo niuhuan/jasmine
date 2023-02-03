@@ -72,7 +72,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         MaterialButton(
           onPressed: _exportPkis,
           child: Text(
-            "分别导出JMI" + (!isPro ? "\n(发电后使用)" : ""),
+            "分别导出JMI" + (!isPro ? "\n(订阅后使用)" : ""),
             style: TextStyle(
               color: !isPro ? Colors.grey : null,
             ),
@@ -83,7 +83,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         MaterialButton(
           onPressed: _exportZips,
           child: Text(
-            "分别导出JM.ZIP" + (!isPro ? "\n(发电后使用)" : ""),
+            "分别导出JM.ZIP" + (!isPro ? "\n(订阅后使用)" : ""),
             style: TextStyle(
               color: !isPro ? Colors.grey : null,
             ),
@@ -97,7 +97,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
 
   _exportPkis() async {
     if (!isPro) {
-      defaultToast(context, "请先发电鸭");
+      defaultToast(context, "请先订阅鸭");
       return;
     }
     late String? path;
@@ -144,7 +144,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
 
   _exportZips() async {
     if (!isPro) {
-      defaultToast(context, "请先发电鸭");
+      defaultToast(context, "请先订阅鸭");
       return;
     }
     late String? path;

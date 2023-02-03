@@ -110,7 +110,7 @@ class _StreamPagerState extends State<_StreamPager> {
       return;
     }
     if (!isPro) {
-      defaultToast(context, "发电才能跳页哦~");
+      defaultToast(context, "订阅才能跳页哦~");
       return;
     }
     _textEditController.clear();
@@ -196,7 +196,7 @@ class _StreamPagerState extends State<_StreamPager> {
               child: const Icon(Icons.power_off_outlined),
             ),
             const Text(
-              '$_noProMax页以上需要发电鸭',
+              '$_noProMax页以上需要订阅鸭',
               textAlign: TextAlign.center,
             ),
           ],
@@ -385,7 +385,7 @@ class _PagerPagerState extends State<_PagerPager> {
               InkWell(
                 onTap: () {
                   if (!isPro) {
-                    defaultToast(context, "发电才能跳页哦~");
+                    defaultToast(context, "订阅才能跳页哦~");
                     return;
                   }
                   _textEditController.clear();
@@ -462,7 +462,7 @@ class _PagerPagerState extends State<_PagerPager> {
                     onPressed: () {
                       if (_currentPage < _maxPage) {
                         if (!isPro && _currentPage + 1 > _noProMax) {
-                          defaultToast(context, "$_noProMax页以上需要发电鸭");
+                          defaultToast(context, "$_noProMax页以上需要订阅鸭");
                           return;
                         }
                         setState(() {

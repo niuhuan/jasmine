@@ -1,24 +1,3 @@
-## !! WARNING !!
-
-1.3.5 以下升级上来除IOS会闪退, 请先清理数据。
-
-保存以前的数据请自行研究, 数据库结构没有任何改变, 只有索引有改变, 导致的数据不兼容。
-
-1. IOS : 文件管理其中会出现旧数据。
-2. 安卓 : 请删除以前的APP再装新版本或在设置中清理数据
-3. windows : 请删除原来的目录。
-4. linux : 自行解决
-5. macos :  ~/Library/Application Support/jasmine
-
-## !! WARNING !!
-
 v1.3.9
 
-- [x] 🐛修复jasmine不能追加下载章节
-- [x] 🐛Jasmine下载总数超过图片总数
-- [x] ✨支持搜索jm代码(之前搜索过的话,需要清除缓存)
-- [x] 🚀升级flutter引擎
-
-v1.3.8
-
-- [x] 🚀功能:音量或者键盘翻页时不显示翻页动画(设置项)
+- [x] 🚀 remove anime when volumes button controller touch

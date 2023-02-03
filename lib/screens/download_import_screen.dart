@@ -146,7 +146,7 @@ class _DownloadImportScreenState extends State<DownloadImportScreen> {
         }
       },
       child: Text(
-        '选择.jm.zip文件进行导入\n选择jmi文件进行导入' + (!isPro ? "\n(发电后使用)" : ""),
+        '选择.jm.zip文件进行导入\n选择jmi文件进行导入' + (!isPro ? "\n(订阅后使用)" : ""),
         style: TextStyle(
           color: !isPro ? Colors.grey : null,
         ),
@@ -187,7 +187,7 @@ class _DownloadImportScreenState extends State<DownloadImportScreen> {
         }
       },
       child: Text(
-        '选择文件夹\n(导入里面所有的zip/jmi)' + (!isPro ? "\n(发电后使用)" : ""),
+        '选择文件夹\n(导入里面所有的zip/jmi)' + (!isPro ? "\n(订阅后使用)" : ""),
         style: TextStyle(
           color: !isPro ? Colors.grey : null,
         ),

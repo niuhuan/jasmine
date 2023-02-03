@@ -75,12 +75,6 @@ class _UserScreenState extends State<UserScreen>
             const Divider(),
             _buildComments(),
             const Divider(),
-            // _buildFdT(),
-            // const Divider(),
-            // _buildSettingsT(),
-            // const Divider(),
-            // _buildAboutT(),
-            // const Divider(),
             Container(height: 30),
           ],
         ),
@@ -101,7 +95,7 @@ class _UserScreenState extends State<UserScreen>
         child = _buildSelfInfoCard();
         break;
       case LoginStatus.loginField:
-        child = _buildLoginButton("登录失败/点击重试");
+        child = _buildLoginButton("登录失败 / 点击重试");
         break;
     }
     return Container(
@@ -264,44 +258,4 @@ class _UserScreenState extends State<UserScreen>
     );
   }
 
-  Widget _buildFdT() {
-    return ListTile(
-      title: const Text("发电"),
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) {
-            return const ProScreen();
-          },
-        ));
-      },
-    );
-  }
-
-  Widget _buildSettingsT() {
-    return ListTile(
-      title: const Text("设置"),
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) {
-            return const SettingsScreen();
-          },
-        ));
-      },
-    );
-  }
-
-  Widget _buildAboutT() {
-    return ListTile(
-      title: const VersionBadged(
-        child: Text("关于"),
-      ),
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) {
-            return const AboutScreen();
-          },
-        ));
-      },
-    );
-  }
 }

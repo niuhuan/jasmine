@@ -28,7 +28,7 @@ Widget downloadAndExportToSetting() {
   if (!isPro) {
     return SwitchListTile(
       title: const Text("下载时同时导出", style: TextStyle(color: Colors.grey)),
-      subtitle: const Text("发电才能使用", style: TextStyle(color: Colors.grey)),
+      subtitle: const Text("订阅才能使用", style: TextStyle(color: Colors.grey)),
       value: false,
       onChanged: (_) {},
     );
