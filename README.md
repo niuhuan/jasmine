@@ -1,70 +1,51 @@
 Jasmine Comic
 =============
-[![releases](https://img.shields.io/github/v/release/niuhuan/jasmine)](https://github.com/niuhuan/jasmine/releases)
 
-一个简单易用的漫画二次元客户端，同时支持支持 Android / iOS / MacOS / Windows.
+A comic browser，support Android / iOS / MacOS / Windows / Linux.
 
-此APP内容存在限制级别内容(露骨/血腥/暴力)，建议在18岁以下的用户在监护人陪同下使用，并请您在遵守当地法律法规。
 
-如果您觉得此软件对您有帮助，可以star进行支持。同时欢迎您issue，一起让软件变得更好。
+1. This APP has restricted content
+2. Please know local laws before using these codes
+3. The owner of the repo will not release these codes and its assets to the community outside github
 
-仓库地址 [https://github.com/niuhuan/jasmine](https://github.com/niuhuan/jasmine)
+## Screenshot
 
-## 软件截图
-
-#### 浏览器
+#### Browser
 
 ![](images/app_screen.png)
 
-#### 阅读器
+#### Reader
 
 ![](images/reader_screen.png)
 
-## 实现功能
+## Features
 
-- [x] 漫画
-  - [x] 漫画分类检索
-  - [x] 阅读漫画
-  - [x] 搜索漫画
-  - [x] 收藏漫画
-  - [x] 浏览记录
-  - [x] 下载漫画
-- [ ] 游戏
-- [x] 社区
-  - [x] 获取评论
-  - [x] 发布评论
-- [x] 用户
-  - [x] 登录/注册
-- [x] 设备优化
-  - [x] 安卓的高刷新率屏幕的支持 
+- [x] Comics
+  - [x] Comic categories
+  - [x] Comic reader
+  - [x] Comic search
+  - [x] Comic favours
+  - [x] Histories
+  - [x] Cache comic
+- [ ] Games
+- [x] Community
+  - [x] List comments
+  - [x] Send comments
+- [x] User
+  - [x] Login / Register
+- [x] Devices adaptation
+  - [x] Android's high frequency screen
 
-## 技术架构
+## Technical architecture
 
-flutter + rust
+Flutter: high-performance UI
 
-flutter实现了高性能的跨平台界面渲染，rust实现了安全以及高效的业务调度。
+Rust: High performance service
 
 ![](images/technologies.png)
 
-## 请您遵守使用规则
+## Please follow the rules
 
-本文中提到的本软件拓展包括但是不限于以下内容
+- These codes can only be learned and used, and are prohibited for commercial use
+- Do not send Assets to anyone
 
-- 使用本软件进行继续开发形成的软件。
-- 引入本软件部分内容为依赖/使用本软件内代码的同时包含本软件内一致内容或功能。
-- 直接对本软件进行打包发布
-
-软件副本分发以及代码使用规则规则
-
-- 本软件仅供学习交流使用, 本软件或本软件的拓展, 个人或企业不可用于商业用途, 不可上架任何商店。
-- 本软件的拓展在未经允许的情况下可以自用但不允许释放任何releases。
-- 不要在任何其他 **二次元软件** 的 **聊天社区** 或 **开发社区** 内, 发布有关本软件的链接或信息, 对于观点不同产生的分歧作者不站队任何立场。
-- 不要发送本软件安装包到 **任何社区内** , 不要将APK/IPA/ZIP/DMG发送包括任何聊天软件内的群聊功能。 分享本软件时, 在社区中使用Github中提供的Releases页面的链接, 或使用私聊窗口发送。
-
-源代码使用规则
-
-- 对本仓库的fork需要保留本仓库的链接, 以引导用户在主要仓库进行讨论。
-
-责任声明
-
-- 作者仅分享编程技术, 不分发软件, 不对分发软件承担任何后果。 因传播载造成的法律问题或纠纷, 需行为人自行承担, 请您遵守当地法以及副本接受方(社区或人)所在地区的法律。
