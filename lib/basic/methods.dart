@@ -201,6 +201,12 @@ class Methods {
     );
   }
 
+  Future logout() async {
+    return SelfInfo.fromJson(
+      jsonDecode(await _invoke("logout", "")),
+    );
+  }
+
   Future<CommentResponse> commentResponse(int aid, String comment) async {
     return CommentResponse.fromJson(jsonDecode(await _invoke("comment", {
       "aid": aid,

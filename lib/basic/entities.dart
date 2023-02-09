@@ -594,11 +594,13 @@ class PreLoginResponse {
     required this.preSet,
     required this.preLogin,
     required this.selfInfo,
+    required this.message,
   });
 
   late final bool preSet;
   late final bool preLogin;
   late final SelfInfo? selfInfo;
+  late final String? message;
 
   PreLoginResponse.fromJson(Map<String, dynamic> json) {
     preSet = json['pre_set'];
@@ -608,6 +610,7 @@ class PreLoginResponse {
     } else {
       selfInfo = null;
     }
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
@@ -615,6 +618,7 @@ class PreLoginResponse {
     _data['pre_set'] = preSet;
     _data['pre_login'] = preLogin;
     _data['self_info'] = selfInfo?.toJson();
+    _data['message'] = message;
     return _data;
   }
 }

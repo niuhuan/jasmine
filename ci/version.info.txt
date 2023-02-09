@@ -1,3 +1,3 @@
-v1.3.9
+v1.4.1
 
-- [x] 🚀 remove anime when volumes button controller touch
+- [x] 🚀 renew
