@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
-import 'package:jasmine/configs/android_display_mode.dart';
-import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/components/badge.dart';
-
-import '../configs/theme.dart';
-import '../configs/using_right_click_pop.dart';
 import 'components/right_click_pop.dart';
 
 class AboutScreen extends StatefulWidget {

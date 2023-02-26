@@ -19,7 +19,7 @@ Widget downloadThreadCountSetting() {
     builder: (BuildContext context, void Function(void Function()) setState) {
       return ListTile(
         title: Text(
-          "下载线程数" + (!isPro ? "(订阅)" : ""),
+          "下载线程数" + (!isPro ? "(发电)" : ""),
           style: TextStyle(
             color: !isPro ? Colors.grey : null,
           ),
@@ -36,7 +36,7 @@ Widget downloadThreadCountSetting() {
 
 Future chooseDownloadThread(BuildContext context) async {
   if (!isPro) {
-    defaultToast(context, "先订阅才能使用多线程嗷");
+    defaultToast(context, "先发电才能使用多线程嗷");
     return;
   }
   int? value = await chooseListDialog(context,title: "选择下载线程数",  values:_values,);

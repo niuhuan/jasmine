@@ -1,8 +1,10 @@
 import 'package:event/event.dart';
 import 'package:flutter/material.dart';
-import 'package:jasmine/basic/commons.dart';
-import 'package:jasmine/basic/methods.dart';
-import 'package:jasmine/configs/is_pro.dart';
+
+import '../basic/commons.dart';
+import '../basic/entities.dart';
+import '../basic/methods.dart';
+import 'is_pro.dart';
 
 enum LoginStatus {
   notSet,
@@ -13,6 +15,7 @@ enum LoginStatus {
 
 late SelfInfo _selfInfo;
 LoginStatus _status = LoginStatus.notSet;
+String _loginMessage = "";
 final Event _event = Event();
 
 SelfInfo get selfInfo => _selfInfo;
@@ -20,6 +23,8 @@ SelfInfo get selfInfo => _selfInfo;
 Event get loginEvent => _event;
 
 LoginStatus get loginStatus => _status;
+
+String get loginMessage => _loginMessage;
 
 set _loginState(LoginStatus value) {
   _status = value;
@@ -30,6 +35,7 @@ Future initLogin() async {
   try {
     _loginState = LoginStatus.logging;
     final preLogin = await methods.preLogin();
+    _loginMessage = preLogin.message ?? "";
     if (!preLogin.preSet) {
       _loginState = LoginStatus.notSet;
     } else if (preLogin.preLogin) {
@@ -46,7 +52,7 @@ Future initLogin() async {
   }
 }
 
-Future _login(String username, String password) async {
+Future login(String username, String password) async {
   try {
     _loginState = LoginStatus.logging;
     final selfInfo = await methods.login(username, password);
@@ -55,6 +61,7 @@ Future _login(String username, String password) async {
   } catch (e, st) {
     print("$e\n$st");
     _loginState = LoginStatus.loginField;
+    _loginMessage = "$e";
   }
 }
 
@@ -195,7 +202,7 @@ class _LoginDialogState extends State<_LoginDialog> {
                     color: Colors.orange.shade700,
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      await _login(_username, _password);
+                      await login(_username, _password);
                       await reloadIsPro();
                     },
                     child: Container(

@@ -6,7 +6,9 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/configs.dart';
 
 import '../basic/web_dav_sync.dart';
+import '../configs/login.dart';
 import 'app_screen.dart';
+import 'first_login_screen.dart';
 import 'network_setting_screen.dart';
 
 class InitScreen extends StatefulWidget {
@@ -44,14 +46,26 @@ class _InitScreenState extends State<InitScreen> {
     try {
       await methods.init();
       await initConfigs();
-      Future.delayed(Duration.zero, () async {
-        await webDavSyncAuto(context);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) {
-            return const AppScreen();
-          }),
-        );
-      });
+      print("STATE : ${loginStatus}");
+      if (loginStatus == LoginStatus.notSet) {
+        Future.delayed(Duration.zero, () async {
+          await webDavSyncAuto(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return firstLoginScreen;
+            }),
+          );
+        });
+      } else {
+        Future.delayed(Duration.zero, () async {
+          await webDavSyncAuto(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return const AppScreen();
+            }),
+          );
+        });
+      }
     } catch (e, st) {
       print("$e\n$st");
       defaultToast(context, "初始化失败, 请设置网络");
