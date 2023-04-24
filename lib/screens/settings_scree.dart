@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/screens/downloads_exports_screen2.dart';
+
+import '../basic/commons.dart';
 import '../basic/web_dav_sync.dart';
 import '../configs/android_display_mode.dart';
 import '../configs/download_and_export_to.dart';
@@ -57,9 +63,28 @@ class _SettingsState extends State<SettingsScreen> {
           webDavPasswordSetting(),
           webDavSyncClick(context),
           const Divider(),
+          const Divider(),
+          ListTile(
+            onTap: () async {
+              if (await confirmDialog(
+                  context, "清除账号信息", "您确定要清除账号信息并退出APP吗?")) {
+                await methods.logout();
+                exit(0);
+              }
+            },
+            title: const Text("清除账号信息"),
+          ),
+          const Divider(),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (c) => const DownloadsExportScreen2()));
+            },
+            title: const Text("导出下载到目录(即使没有下载完)"),
+          ),
+          const Divider(),
         ],
       ),
     );
   }
-
 }

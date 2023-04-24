@@ -151,6 +151,10 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
     return Container(
       padding: const EdgeInsets.all(5),
       child: MaterialButton(
+        elevation: Theme.of(context).colorScheme.brightness == Brightness.light
+            ? 1
+            : 0,
+        focusElevation: 0,
         onPressed: () {
           _clickOfEp(e.id);
         },
@@ -166,7 +170,7 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
           ),
           TextSpan(
             text: e.name == "" ? e.sort : "${e.sort} - ${e.name}",
-            style: const TextStyle(color: Colors.black),
+            style: TextStyle(color: _textColorOfEp(e.id)),
           ),
         ])),
       ),
@@ -195,7 +199,9 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
     if (_selectedEps.contains(id)) {
       return Colors.blueGrey.shade300;
     }
-    return Colors.grey.shade200;
+    return Theme.of(context).colorScheme.brightness == Brightness.light
+        ? Colors.white
+        : Theme.of(context).textTheme.bodyText1!.color!.withOpacity(.17);
   }
 
   Icon _iconOfEp(int id) {
@@ -205,6 +211,22 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
     if (_selectedEps.contains(id)) {
       return const Icon(Icons.check_box, color: Colors.black);
     }
-    return const Icon(Icons.check_box_outline_blank, color: Colors.black);
+    return Theme.of(context).colorScheme.brightness == Brightness.light
+        ? const Icon(Icons.check_box_outline_blank, color: Colors.black)
+        : const Icon(Icons.check_box_outline_blank, color: Colors.white);
+  }
+
+  Color _textColorOfEp(int id) {
+    if (_taskedEps.contains(id)) {
+      return Colors.black;
+    }
+    if (_selectedEps.contains(id)) {
+      return  Theme.of(context).colorScheme.brightness == Brightness.light
+          ? Colors.black
+          : Colors.black;
+    }
+    return Theme.of(context).colorScheme.brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
   }
 }

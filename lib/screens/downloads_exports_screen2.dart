@@ -3,21 +3,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
+import 'package:jasmine/screens/downloads_exporting_screen2.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../basic/commons.dart';
 import 'components/comic_download_card.dart';
 import 'components/right_click_pop.dart';
-import 'downloads_exporting_screen.dart';
 import '../configs/android_version.dart';
 
-class DownloadsExportScreen extends StatefulWidget {
-  const DownloadsExportScreen({Key? key}) : super(key: key);
+class DownloadsExportScreen2 extends StatefulWidget {
+  const DownloadsExportScreen2({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _DownloadsExportScreenState();
+  State<StatefulWidget> createState() => _DownloadsExportScreen2State();
 }
 
-class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
+class _DownloadsExportScreen2State extends State<DownloadsExportScreen2> {
   late Future<List<DownloadAlbum>> _downloadsFuture;
 
   @override
@@ -25,7 +25,7 @@ class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
     _downloadsFuture = methods.allDownloads().then((value) {
       List<DownloadAlbum> a = [];
       for (var value1 in value) {
-        if (value1.dlStatus == 1) {
+        if (value1.dlStatus != 3) {
           a.add(value1);
         }
       }
@@ -42,7 +42,7 @@ class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
   Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("批量导出"),
+        title: const Text("批量导出(即使没有下载完)"),
         actions: [
           FutureBuilder(
             future: _downloadsFuture,
@@ -69,7 +69,7 @@ class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
             _downloadsFuture = methods.allDownloads().then((value) {
               List<DownloadAlbum> a = [];
               for (var value1 in value) {
-                if (value1.dlStatus == 1) {
+                if (value1.dlStatus != 3) {
                   a.add(value1);
                 }
               }
@@ -118,70 +118,88 @@ class _DownloadsExportScreenState extends State<DownloadsExportScreen> {
   List<int> selected = [];
 
   Widget _selectAllButton(List<int> exportableIds) {
-    return IconButton(
-      onPressed: () async {
-        setState(() {
-          if (selected.length >= exportableIds.length) {
-            selected.clear();
-          } else {
-            selected.clear();
-            selected.addAll(exportableIds);
-          }
-        });
-      },
-      icon: const Icon(
-        Icons.select_all,
-      ),
-    );
+    return MaterialButton(
+        minWidth: 0,
+        onPressed: () async {
+          setState(() {
+            if (selected.length >= exportableIds.length) {
+              selected.clear();
+            } else {
+              selected.clear();
+              selected.addAll(exportableIds);
+            }
+          });
+        },
+        child: Column(
+          children: [
+            Expanded(child: Container()),
+            const Icon(
+              Icons.select_all,
+              size: 18,
+              color: Colors.white,
+            ),
+            const Text(
+              '全选',
+              style: TextStyle(fontSize: 14, color: Colors.white),
+            ),
+            Expanded(child: Container()),
+          ],
+        ));
   }
 
   Widget _goToExport() {
-    return IconButton(
-      onPressed: () async {
-        if (selected.isEmpty) {
-          defaultToast(context, "请选择导出的内容");
-          return;
-        }
-        if(!await androidMangeStorageRequest()) {
-          throw Exception("申请权限被拒绝");
-        }
-        final exported = await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => DownloadsExportingScreen(
-              idList: selected,
+    return MaterialButton(
+        minWidth: 0,
+        onPressed: () async {
+          if (selected.isEmpty) {
+            defaultToast(context, "请选择导出的内容");
+            return;
+          }
+          if(!await androidMangeStorageRequest()) {
+            throw Exception("申请权限被拒绝");
+          }
+          final exported = await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => DownloadsExportingScreen2(
+                idList: selected,
+              ),
             ),
-          ),
-        );
-        _downloadsFuture = methods.allDownloads().then((value) {
-          List<DownloadAlbum> a = [];
-          for (var value1 in value) {
-            if (value1.dlStatus == 1) {
-              a.add(value1);
+          );
+          _downloadsFuture = methods.allDownloads().then((value) {
+            List<DownloadAlbum> a = [];
+            for (var value1 in value) {
+              if (value1.dlStatus != 3) {
+                a.add(value1);
+              }
+            }
+            return a;
+          });
+          var pre = selected;
+          setState(() {
+            selected = [];
+          });
+          final result = await _downloadsFuture;
+          for (var value2 in result.map((e) => e.id)) {
+            if (pre.contains(value2)) {
+              selected.add(value2);
             }
           }
-          return a;
-        }).then((value) {
-          List<DownloadAlbum> a = [];
-          for (var value1 in value) {
-            a.add(value1);
-          }
-          return a;
-        });
-        var pre = selected;
-        setState(() {
-          selected = [];
-        });
-        final result = await _downloadsFuture;
-        for (var value2 in result.map((e) => e.id)) {
-          if (pre.contains(value2)) {
-            selected.add(value2);
-          }
-        }
-        setState(() {});
-      },
-      icon: const Icon(
-        Icons.check,
-      ),
-    );
+          setState(() {});
+        },
+        child: Column(
+          children: [
+            Expanded(child: Container()),
+            const Icon(
+              Icons.check,
+              size: 18,
+              color: Colors.white,
+            ),
+            const Text(
+              '确认',
+              style: TextStyle(fontSize: 14, color: Colors.white),
+            ),
+            Expanded(child: Container()),
+          ],
+        ));
   }
 }

@@ -34,6 +34,8 @@ class ComicInfoCard extends StatelessWidget {
       child: Row(
         children: [
           Card(
+            shape: coverShape,
+            clipBehavior: Clip.antiAlias,
             child: JM3x4Cover(
               comicId: comic.id,
               width: 100 * 3 / 4,

@@ -105,11 +105,12 @@ class Methods {
     })));
   }
 
-  Future<FavoritesResponse> favorites(int folderId, int page) async {
+  Future<FavoritesResponse> favorites(int folderId, int page, String o) async {
     return FavoritesResponse.fromJson(
       jsonDecode(await _invoke("favorites", {
         "folder_id": folderId,
         "page": page,
+        "o": o,
       })),
     );
   }
@@ -202,9 +203,7 @@ class Methods {
   }
 
   Future logout() async {
-    return SelfInfo.fromJson(
-      jsonDecode(await _invoke("logout", "")),
-    );
+    await _invoke("logout", {});
   }
 
   Future<CommentResponse> commentResponse(int aid, String comment) async {
@@ -235,6 +234,10 @@ class Methods {
 
   Future<String> loadUsername() {
     return _invoke("load_username", "");
+  }
+
+  Future<String> loadLastLoginUsername() {
+    return _invoke("loadLastLoginUsername", "");
   }
 
   Future<String> loadPassword() {
@@ -311,33 +314,57 @@ class Methods {
     return 0;
   }
 
-  Future export_jm_zip(List<int> idList, String path) {
-    return _invoke("export_jm_zip", {
+  Future export_jm_jpegs(List<int> idList, String path, bool deleteExported) {
+    return _invoke("export_jm_jpegs", {
       "comic_id": idList,
       "dir": path,
+      "delete_exported": deleteExported,
     });
   }
 
-  Future export_jm_zip_single(int id, String folder, String? rename) {
+  Future export_jm_zip(List<int> idList, String path, bool deleteExported) {
+    return _invoke("export_jm_zip", {
+      "comic_id": idList,
+      "dir": path,
+      "delete_exported": deleteExported,
+    });
+  }
+
+  Future export_jm_zip_single(
+      int id, String folder, String? rename, bool deleteExported) {
     return _invoke("export_jm_zip_single", {
       "id": id,
       "folder": folder,
       "rename": rename,
+      "delete_exported": deleteExported,
     });
   }
 
-  Future export_jm_jmi(List<int> idList, String path) {
+  Future export_jm_jpegs_zip_single(
+      int id, String folder, String? rename, bool deleteExported) {
+    return _invoke("export_jm_jpegs_zip_single", {
+      "id": id,
+      "folder": folder,
+      "rename": rename,
+      "delete_exported": deleteExported,
+    });
+  }
+
+  Future export_jm_jmi(List<int> idList, String path, bool deleteExported) {
     return _invoke("export_jm_jmi", {
       "comic_id": idList,
       "dir": path,
+      "delete_exported": deleteExported,
     });
   }
 
-  Future export_jm_jmi_single(int id, String folder, String? rename) {
+  Future export_jm_jmi_single(
+      int id, String folder, String? rename, bool deleteExported) {
     return _invoke("export_jm_jmi_single", {
       "id": id,
       "folder": folder,
       "rename": rename,
+      "delete_exported": deleteExported,
     });
   }
 
@@ -400,12 +427,47 @@ class Methods {
     return await _channel.invokeMethod("iosGetDocumentDir");
   }
 
+  Future<String> androidDefaultExportsDir() async {
+    return await _channel.invokeMethod("androidDefaultExportsDir");
+  }
+
   Future<String> getDownloadAndExportTo() async {
     return await _invoke("get_download_and_export_to", "");
   }
 
+  Future<String> getHomeDir() async {
+    return await _invoke("getHomeDir", "");
+  }
+
   Future setDownloadAndExportTo(String path) async {
     return await _invoke("set_download_and_export_to", path);
+  }
+
+  Future<int> ping(String idx) async {
+    print("PING $idx");
+    return int.parse(await _invoke("ping_server", idx));
+  }
+
+  Future mkdirs(String path) {
+    return _invoke("mkdirs", path);
+  }
+
+  Future androidMkdirs(String path) async {
+    return await _channel.invokeMethod("androidMkdirs", path);
+  }
+
+  Future<String> picturesDir() async {
+    return await _channel.invokeMethod("picturesDir");
+  }
+
+  Future<String> copyPictureToFolder(String folder, String path) async {
+    return await _invoke(
+      "copyPictureToFolder",
+      {
+        "folder": folder,
+        "path": path,
+      },
+    );
   }
 }
 

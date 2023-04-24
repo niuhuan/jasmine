@@ -17,7 +17,7 @@ bool currentWebDavSyncSwitch() {
 
 Future<void> _chooseWebDavSyncSwitch(BuildContext context) async {
   String? result = await chooseListDialog<String>(context,
-      title: "同步到WebDAV", values: ["是", "否"]);
+      title: "开开启时自动同步历史记录到WebDAV", values: ["是", "否"]);
   if (result != null) {
     var target = result == "是";
     await methods.saveProperty(_propertyName, "$target");
@@ -30,7 +30,7 @@ Widget webDavSyncSwitchSetting() {
     builder: (BuildContext context, void Function(void Function()) setState) {
       return ListTile(
         title: Text(
-          "开启时自动同步到WebDAV",
+          "开启时自动同步历史记录到WebDAV",
           style: TextStyle(
             color: !isPro ? Colors.grey : null,
           ),

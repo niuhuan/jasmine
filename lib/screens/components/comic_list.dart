@@ -5,6 +5,7 @@ import 'package:jasmine/configs/pager_cover_rate.dart';
 import 'package:jasmine/configs/pager_view_mode.dart';
 import 'package:jasmine/screens/comic_info_screen.dart';
 
+import '../../basic/commons.dart';
 import 'comic_info_card.dart';
 import 'images.dart';
 
@@ -71,6 +72,8 @@ class _ComicListState extends State<ComicList> {
           _pushToComicInfo(widget.data[i]);
         },
         child: Card(
+          shape: coverShape,
+          clipBehavior: Clip.antiAlias,
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               switch (currentPagerCoverRate) {
@@ -175,6 +178,8 @@ class _ComicListState extends State<ComicList> {
           _pushToComicInfo(widget.data[i]);
         },
         child: Card(
+          shape: coverShape,
+          clipBehavior: Clip.antiAlias,
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               late final Widget image;
@@ -292,6 +297,8 @@ class _ComicListState extends State<ComicList> {
               width: width,
               height: height,
               child: Card(
+                shape: coverShape,
+                clipBehavior: Clip.antiAlias,
                 child: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     late final Widget image;

@@ -251,8 +251,19 @@ abstract class _ComicReaderState extends State<_ComicReader> {
 
   Future _onFullScreenChange(bool fullScreen) async {
     setState(() {
-      SystemChrome.setEnabledSystemUIOverlays(
-          fullScreen ? [] : SystemUiOverlay.values);
+      if (Platform.isAndroid || Platform.isIOS) {
+        if (fullScreen) {
+          SystemChrome.setEnabledSystemUIMode(
+            SystemUiMode.manual,
+            overlays: [],
+          );
+        } else {
+          SystemChrome.setEnabledSystemUIMode(
+            SystemUiMode.edgeToEdge,
+            overlays: SystemUiOverlay.values,
+          );
+        }
+      }
       _fullScreen = fullScreen;
     });
   }
@@ -276,7 +287,10 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     _fullScreen = widget.fullScreenOnInit;
     if (_fullScreen) {
       if (Platform.isAndroid || Platform.isIOS) {
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+        SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.edgeToEdge,
+          overlays: SystemUiOverlay.values,
+        );
       }
     }
     _current = widget.startIndex;
@@ -296,7 +310,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     }
     if (Platform.isAndroid || Platform.isIOS) {
       SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual,
+        SystemUiMode.edgeToEdge,
         overlays: SystemUiOverlay.values,
       );
     }
@@ -309,12 +323,12 @@ abstract class _ComicReaderState extends State<_ComicReader> {
       switch (event) {
         case "UP":
           if (_current > 0) {
-            _needJumpTo(_current - 1, true);
+            _needJumpTo(_current - 1, !currentNoAnimation());
           }
           break;
         case "DOWN":
           if (_current < widget.chapter.images.length - 1) {
-            _needJumpTo(_current + 1, true);
+            _needJumpTo(_current + 1, !currentNoAnimation());
           }
           break;
       }
@@ -336,21 +350,21 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         return Stack(
           children: [
             _buildTouchOnceControllerAction(_buildViewer()),
-            _buildBar(Container()),
+            _buildBar(null),
           ],
         );
       case ReaderControllerType.touchDouble:
         return Stack(
           children: [
             _buildTouchDoubleControllerAction(_buildViewer()),
-            _buildBar(Container()),
+            _buildBar(null),
           ],
         );
       case ReaderControllerType.touchDoubleOnceNext:
         return Stack(
           children: [
             _buildTouchDoubleOnceNextControllerAction(_buildViewer()),
-            _buildBar(Container()),
+            _buildBar(null),
           ],
         );
       case ReaderControllerType.threeArea:
@@ -370,34 +384,37 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     }
     if (ReaderSliderPosition.right == currentReaderSliderPosition) {
       return SafeArea(
-          child: Align(
-        alignment: Alignment.bottomRight,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            padding:
-                const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
-            margin: const EdgeInsets.only(bottom: 10),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              padding:
+                  const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+                color: Color(0x88000000),
               ),
-              color: Color(0x88000000),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                _onFullScreenChange(!_fullScreen);
-              },
-              child: Icon(
-                _fullScreen ? Icons.fullscreen_exit : Icons.fullscreen_outlined,
-                size: 30,
-                color: Colors.white,
+              child: GestureDetector(
+                onTap: () {
+                  _onFullScreenChange(!_fullScreen);
+                },
+                child: Icon(
+                  _fullScreen
+                      ? Icons.fullscreen_exit
+                      : Icons.fullscreen_outlined,
+                  size: 30,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
         ),
-      ));
+      );
     }
     return SafeArea(
         child: Align(
@@ -526,13 +543,13 @@ abstract class _ComicReaderState extends State<_ComicReader> {
     );
   }
 
-  Widget _buildBar(Widget child) {
+  Widget _buildBar(Widget? child) {
     switch (currentReaderSliderPosition) {
       case ReaderSliderPosition.bottom:
         return Column(
           children: [
             _buildAppBar(),
-            Expanded(child: child),
+            Expanded(child: child ?? Container()),
             _fullScreen
                 ? Container()
                 : Container(
@@ -583,7 +600,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
             Expanded(
               child: Stack(
                 children: [
-                  child,
+                  ...child == null ? [] : [child],
                   _buildSliderRight(),
                 ],
               ),
@@ -597,7 +614,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
             Expanded(
               child: Stack(
                 children: [
-                  child,
+                  ...child == null ? [] : [child],
                   _buildSliderLeft(),
                 ],
               ),
@@ -1000,11 +1017,7 @@ class _ComicReaderWebToonState extends _ComicReaderState {
 
   @override
   void _needJumpTo(int index, bool animation) {
-    if (currentNoAnimation() || animation == false) {
-      _itemScrollController.jumpTo(
-        index: index,
-      );
-    } else {
+    if (animation) {
       if (DateTime.now().millisecondsSinceEpoch < _controllerTime) {
         return;
       }
@@ -1012,6 +1025,10 @@ class _ComicReaderWebToonState extends _ComicReaderState {
       _itemScrollController.scrollTo(
         index: index, // 减1 当前position 再减少1 前一个
         duration: const Duration(milliseconds: 400),
+      );
+    } else {
+      _itemScrollController.jumpTo(
+        index: index,
       );
     }
   }

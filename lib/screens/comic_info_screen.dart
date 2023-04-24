@@ -10,6 +10,7 @@ import 'comic_download_screen.dart';
 import 'comic_reader_screen.dart';
 import 'components/comic_comments_list.dart';
 import 'components/continue_read_button.dart';
+import 'components/my_flat_button.dart';
 import 'components/right_click_pop.dart';
 
 class ComicInfoScreen extends StatefulWidget {
@@ -297,36 +298,27 @@ class _ComicSerialsState extends State<_ComicSerials> {
           album: widget.album,
           onChoose: _onChoose,
         ),
-        widget.album.series.isEmpty ? _buildOneButton() : _buildSeriesWrap(),
+        widget.album.series.isEmpty ? _buildOneButton() : _buildSeries(),
       ],
     );
   }
 
   Widget _buildOneButton() {
-    return Container(
-      color: Colors.transparent,
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        children: [
-          Expanded(
-            child: MaterialButton(
-              onPressed: () {
-                _push(
-                  widget.comicSimple,
-                  widget.album.series,
-                  widget.comicSimple.id,
-                  0,
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                child: const Text("开始阅读"),
-              ),
-            ),
-          ),
-        ],
-      ),
+    return MyFlatButton(
+      title: "开始阅读",
+      onPressed:  () {
+        _push(
+          widget.comicSimple,
+          widget.album.series,
+          widget.comicSimple.id,
+          0,
+        );
+      },
     );
+  }
+
+  Widget _buildSeries() {
+    return _buildSeriesWrap();
   }
 
   Widget _buildSeriesWrap() {
@@ -338,13 +330,53 @@ class _ComicSerialsState extends State<_ComicSerials> {
         alignment: WrapAlignment.spaceAround,
         children: widget.album.series.map((e) {
           return MaterialButton(
+            elevation:
+            Theme.of(context).colorScheme.brightness == Brightness.light
+                ? 1
+                : 0,
+            focusElevation: 0,
             onPressed: () {
               _push(widget.comicSimple, widget.album.series, e.id, 0);
             },
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.brightness == Brightness.light
+                ? Colors.white
+                : Theme.of(context)
+                .textTheme
+                .bodyText1!
+                .color!
+                .withOpacity(.17),
             child: Text(
               e.sort + (e.name == "" ? "" : (" - ${e.name}")),
-              style: const TextStyle(color: Colors.black),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildSeriesList() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: widget.album.series.map((e) {
+          return MaterialButton(
+            elevation:
+            Theme.of(context).colorScheme.brightness == Brightness.light
+                ? 1
+                : 0,
+            focusElevation: 0,
+            onPressed: () {
+              _push(widget.comicSimple, widget.album.series, e.id, 0);
+            },
+            color: Theme.of(context).colorScheme.brightness == Brightness.light
+                ? Colors.white
+                : Theme.of(context)
+                .textTheme
+                .bodyText1!
+                .color!
+                .withOpacity(.17),
+            child: Text(
+              e.sort + (e.name == "" ? "" : (" - ${e.name}")),
             ),
           );
         }).toList(),

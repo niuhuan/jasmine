@@ -16,8 +16,8 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import niuhuan.jasmine.Jni
 import java.util.concurrent.Executors
+import java.io.File
 
 class MainActivity : FlutterActivity() {
 
@@ -51,6 +51,12 @@ class MainActivity : FlutterActivity() {
                     setMode(call.argument("mode")!!)
                 }
                 "androidGetVersion" -> Build.VERSION.SDK_INT
+                "androidStorageRoot" -> storageRoot()
+                "androidDefaultExportsDir" -> androidDefaultExportsDir().absolutePath
+                "androidMkdirs" -> androidMkdirs(
+                    call.arguments<String>() ?: throw Exception("need arg"),
+                )
+                "picturesDir" -> picturesDir().absolutePath
                 else -> result.notImplemented()
             }
         }
@@ -190,6 +196,35 @@ class MainActivity : FlutterActivity() {
             }
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    fun storageRoot(): String {
+        return Environment.getExternalStorageDirectory().absolutePath
+    }
+
+    private fun picturesDir(): File {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            ?: throw java.lang.IllegalStateException()
+    }
+
+    private fun downloadsDir(): File {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            ?: throw java.lang.IllegalStateException()
+    }
+
+    private fun defaultJennyDir(): File {
+        return File(downloadsDir(), "jasmine")
+    }
+
+    private fun androidDefaultExportsDir(): File {
+        return File(defaultJennyDir(), "exports")
+    }
+
+    private fun androidMkdirs(path: String) {
+        val dir = File(path)
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
     }
 
 }

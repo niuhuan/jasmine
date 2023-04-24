@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/screens/components/mouse_and_touch_scroll_behavior.dart';
 import 'package:jasmine/screens/init_screen.dart';
-
+import 'basic/desktop.dart';
 import 'basic/navigator.dart';
 import 'configs/theme.dart';
 
 void main() async {
-  runApp(const Jasmine());
+  runApp(const Jenny());
 }
 
-class Jasmine extends StatefulWidget {
-  const Jasmine({Key? key}) : super(key: key);
+class Jenny extends StatefulWidget {
+  const Jenny({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _JasmineState();
+  State<StatefulWidget> createState() => _JennyState();
 }
 
-class _JasmineState extends State<Jasmine> {
+class _JennyState extends State<Jenny> {
 
   @override
   void initState() {
+    onDesktopStart();
     themeEvent.subscribe(_setState);
     super.initState();
   }
 
   @override
   void dispose() {
+    onDesktopStop();
     themeEvent.unsubscribe(_setState);
     super.dispose();
   }

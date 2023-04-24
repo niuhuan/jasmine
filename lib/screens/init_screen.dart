@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/configs.dart';
+import 'package:jasmine/configs/login.dart';
 
 import '../basic/web_dav_sync.dart';
-import '../configs/login.dart';
 import 'app_screen.dart';
 import 'first_login_screen.dart';
 import 'network_setting_screen.dart';
@@ -28,16 +29,28 @@ class _InitScreenState extends State<InitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff99dcd7),
-      body: ConstrainedBox(
-        constraints: const BoxConstraints.expand(),
-        child: Container(
-          padding: const EdgeInsets.all(50),
-          child: Image.asset(
-            "lib/assets/startup.webp",
-            fit: BoxFit.contain,
+      backgroundColor: const Color(0xffeeeeee),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('lib/assets/backpoint.png'),
+                repeat: ImageRepeat.repeat,
+              ),
+            ),
           ),
-        ),
+          ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                "lib/assets/startup.png",
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

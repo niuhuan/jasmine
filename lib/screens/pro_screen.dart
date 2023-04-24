@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../basic/commons.dart';
 import '../basic/methods.dart';
 import '../configs/is_pro.dart';
@@ -16,7 +17,7 @@ class _ProScreenState extends State<ProScreen> {
 
   @override
   void initState() {
-    methods.loadUsername().then((value) {
+    methods.loadLastLoginUsername().then((value) {
       setState(() {
         _username = value;
       });
@@ -34,7 +35,7 @@ class _ProScreenState extends State<ProScreen> {
     var min = size.width < size.height ? size.width : size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("发电"),
+        title: const Text("发电中心"),
       ),
       body: ListView(
         children: [
@@ -56,9 +57,9 @@ class _ProScreenState extends State<ProScreen> {
             padding: EdgeInsets.all(20),
             child: Text(
               "登录账号才能确认发电状态\n"
-              "点击\"我曾经发电过\"进同步发电状态\n"
-              "点击\"我刚才发电了\"兑换游戏礼品\n"
-              "去\"关于\"界面找到维护地址可了解此界面信息",
+              "点击\"我曾经发过电\"进同步发电状态\n"
+              "点击\"我刚才发了电\"兑换作者给您的礼物卡\n"
+              "去\"关于\"界面找到维护地址用爱发电",
             ),
           ),
           const Divider(),
@@ -72,7 +73,7 @@ class _ProScreenState extends State<ProScreen> {
           ),
           const Divider(),
           ListTile(
-            title: const Text("我曾发电过"),
+            title: const Text("我曾经发过电"),
             onTap: () async {
               try {
                 await methods.reloadPro();
@@ -87,9 +88,9 @@ class _ProScreenState extends State<ProScreen> {
           ),
           const Divider(),
           ListTile(
-            title: const Text("我刚才发电了"),
+            title: const Text("我刚才发了电"),
             onTap: () async {
-              final code = await displayTextInputDialog(context, title: "输入发电代码");
+              final code = await displayTextInputDialog(context, title: "输入代码");
               if (code != null && code.isNotEmpty) {
                 try {
                   await methods.inputCdKey(code);

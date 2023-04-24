@@ -1,10 +1,8 @@
 import 'package:event/event.dart';
 import 'package:flutter/material.dart';
-
-import '../basic/commons.dart';
-import '../basic/entities.dart';
-import '../basic/methods.dart';
-import 'is_pro.dart';
+import 'package:jasmine/basic/commons.dart';
+import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/is_pro.dart';
 
 enum LoginStatus {
   notSet,
