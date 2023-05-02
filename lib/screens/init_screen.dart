@@ -8,7 +8,9 @@ import 'package:jasmine/configs/configs.dart';
 import 'package:jasmine/configs/login.dart';
 
 import '../basic/web_dav_sync.dart';
+import '../configs/passed.dart';
 import 'app_screen.dart';
+import 'calculator_screen.dart';
 import 'first_login_screen.dart';
 import 'network_setting_screen.dart';
 
@@ -59,13 +61,12 @@ class _InitScreenState extends State<InitScreen> {
     try {
       await methods.init();
       await initConfigs();
-      print("STATE : ${loginStatus}");
-      if (loginStatus == LoginStatus.notSet) {
+      if (!currentPassed()) {
         Future.delayed(Duration.zero, () async {
           await webDavSyncAuto(context);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (BuildContext context) {
-              return firstLoginScreen;
+              return const CalculatorScreen();
             }),
           );
         });

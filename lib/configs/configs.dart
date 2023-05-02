@@ -4,6 +4,7 @@ import 'package:jasmine/configs/download_thread_count.dart';
 import 'package:jasmine/configs/no_animation.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
 import 'package:jasmine/configs/pager_cover_rate.dart';
+import 'package:jasmine/configs/passed.dart';
 import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/theme.dart';
 import 'package:jasmine/configs/using_right_click_pop.dart';
@@ -30,6 +31,7 @@ import 'pager_controller_mode.dart';
 import 'pager_view_mode.dart';
 
 Future initConfigs() async {
+  await initPassed();
   await initAndroidVersion();
   await initAndroidDisplayMode();
   await initVersion();
