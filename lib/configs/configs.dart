@@ -1,5 +1,6 @@
 import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/android_version.dart';
+import 'package:jasmine/configs/display_jmcode.dart';
 import 'package:jasmine/configs/download_thread_count.dart';
 import 'package:jasmine/configs/no_animation.dart';
 import 'package:jasmine/configs/pager_column_number.dart';
@@ -62,4 +63,5 @@ Future initConfigs() async {
   await initDownloadAndExportTo();
   await initExportRename();
   await initLogin();
+  await initDisplayJmcode();
 }

@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/entities.dart';
 import 'package:jasmine/screens/comic_search_screen.dart';
 
+import '../../configs/display_jmcode.dart';
 import 'images.dart';
 
 class ComicInfoCard extends StatelessWidget {
@@ -47,14 +49,35 @@ class ComicInfoCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                link
-                    ? GestureDetector(
-                        onLongPress: () {
+                ...link
+                    ? [
+                  Text.rich(TextSpan(children: [
+                    TextSpan(
+                      text: comic.name,
+                      style: titleStyle,
+                      recognizer: LongPressGestureRecognizer()
+                        ..onLongPress = () {
                           confirmCopy(context, comic.name);
                         },
-                        child: Text(comic.name, style: titleStyle),
-                      )
-                    : Text(comic.name, style: titleStyle),
+                    ),
+                    ...currentDisplayJmcode()
+                        ? [
+                      TextSpan(
+                        text: "  (JM${comic.id})",
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.orange.shade700,
+                        ),
+                        recognizer: LongPressGestureRecognizer()
+                          ..onLongPress = () {
+                            confirmCopy(context, "JM${comic.id}");
+                          },
+                      ),
+                    ]
+                        : [],
+                  ])),
+                ]
+                    : [Text(comic.name, style: titleStyle)],
                 Container(height: 4),
                 link
                     ? GestureDetector(

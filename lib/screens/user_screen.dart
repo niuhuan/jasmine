@@ -5,7 +5,7 @@ import 'package:jasmine/screens/about_screen.dart';
 import 'package:jasmine/screens/comments_screen.dart';
 import 'package:jasmine/screens/components/avatar.dart';
 import 'package:jasmine/screens/pro_screen.dart';
-import 'package:jasmine/screens/settings_scree.dart';
+import 'package:jasmine/screens/settings_screen.dart';
 import 'package:jasmine/screens/view_log_screen.dart';
 
 import '../configs/is_pro.dart';
