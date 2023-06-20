@@ -1,4 +1,4 @@
-v71.4.
+v1.4.7
 
 - [x] ✨ Copy comment content to clipboard
 - [x] ♻️ Upgrade flutter engine
