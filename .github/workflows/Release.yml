@@ -199,6 +199,7 @@ jobs:
           sed -i "s/filesystem_picker: ^3.1.0/filesystem_picker: 2.0.0/g" pubspec.yaml
           sed -i "s/file_picker: 5.2.1/file_picker: 4.6.1/g" pubspec.yaml
           sed -i "s/modal_bottom_sheet: ^3.0.0-pre/modal_bottom_sheet: ^2.0.0/g" pubspec.yaml
+          sed -i "s/window_manager: ^0.3.2/window_manager: 0.3.2/g" pubspec.yaml
 
       - name: Append application-identifier (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')

@@ -26,6 +26,7 @@ dependencies:
   filesystem_picker: ^3.1.0
   window_manager: ^0.3.2
   flutter_screenutil: ^5.7.0
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
