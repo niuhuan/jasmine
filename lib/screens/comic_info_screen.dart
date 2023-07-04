@@ -58,7 +58,19 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.simple?.name ?? ""),
+        title: widget.simple != null
+            ? Text(widget.simple?.name ?? "")
+            : FutureBuilder(
+          future: _albumFuture,
+          builder: (BuildContext context,
+              AsyncSnapshot<AlbumResponse> snapshot) {
+            if (snapshot.connectionState != ConnectionState.done ||
+                snapshot.hasError) {
+              return const Text("");
+            }
+            return Text(snapshot.requireData.name);
+          },
+        ), //
         actions: [
           FutureBuilder(
             future: _albumFuture,

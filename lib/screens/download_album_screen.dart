@@ -7,6 +7,7 @@ import 'package:jasmine/screens/components/comic_download_card.dart';
 import 'package:jasmine/screens/components/item_builder.dart';
 import 'package:jasmine/screens/components/my_flat_button.dart';
 
+import 'comic_info_screen.dart';
 import 'comic_reader_screen.dart';
 import 'comic_search_screen.dart';
 import 'components/right_click_pop.dart';
@@ -40,6 +41,21 @@ class _DownloadAlbumScreenState extends State<DownloadAlbumScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.album.name),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return ComicInfoScreen(widget.album.id, null);
+                  },
+                ),
+              );
+            },
+            icon: const Icon(Icons.settings_ethernet_outlined),
+          ),
+        ],
       ),
       body: ListView(
         children: [
