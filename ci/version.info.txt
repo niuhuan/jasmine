@@ -1,7 +1,5 @@
-v1.4.8
+v1.4.9
 
-- [x] ✨ Download comic link to online
-- [x] ♻️ Display comic title at future page
-- [x] ♻️ Choose pro servers
-- [x] ✨ Export *.cbz into zip
-- [x] 🐛 Fix export zip entries unix permission
+- [x] ✨ Display actors
+- [x] ♻️ Hidden comment's html tags 
+- [x] ✨ Search from title
