@@ -1,5 +1,6 @@
-v1.4.9
+v1.5.1
 
-- [x] ✨ Display actors
-- [x] ♻️ Hidden comment's html tags 
-- [x] ✨ Search from title
+- [x] ♻️ Network
+- [x] 🐛 Fix copy error
+- [x] ♻️ Title words setting
+- [x] ♻️ Login error tips

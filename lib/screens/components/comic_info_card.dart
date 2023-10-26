@@ -5,6 +5,7 @@ import 'package:jasmine/basic/entities.dart';
 import 'package:jasmine/screens/comic_search_screen.dart';
 
 import '../../configs/display_jmcode.dart';
+import '../../configs/search_title_words.dart';
 import 'images.dart';
 
 class ComicInfoCard extends StatelessWidget {
@@ -51,42 +52,42 @@ class ComicInfoCard extends StatelessWidget {
               children: [
                 ...link
                     ? [
-                        Text.rich(TextSpan(children: [
-                          true
-                              ? TextSpan(
-                                  style: titleStyle,
-                                  children: titleProcess(comic.name, context),
-                                  recognizer: LongPressGestureRecognizer()
-                                    ..onLongPress = () {
-                                      confirmCopy(context, comic.name);
-                                    },
-                                )
-                              : TextSpan(
-                                  text: comic.name,
-                                  style: titleStyle,
-                                  children: [],
-                                  recognizer: LongPressGestureRecognizer()
-                                    ..onLongPress = () {
-                                      confirmCopy(context, comic.name);
-                                    },
-                                ),
-                          ...currentDisplayJmcode()
-                              ? [
-                                  TextSpan(
-                                    text: "  (JM${comic.id})",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.orange.shade700,
-                                    ),
-                                    recognizer: LongPressGestureRecognizer()
-                                      ..onLongPress = () {
-                                        confirmCopy(context, "JM${comic.id}");
-                                      },
-                                  ),
-                                ]
-                              : [],
-                        ])),
-                      ]
+                  Text.rich(TextSpan(children: [
+                    currentSearchTitleWords()
+                        ? TextSpan(
+                      style: titleStyle,
+                      children: titleProcess(comic.name, context),
+                      recognizer: LongPressGestureRecognizer()
+                        ..onLongPress = () {
+                          confirmCopy(context, comic.name);
+                        },
+                    )
+                        : TextSpan(
+                      text: comic.name,
+                      style: titleStyle,
+                      children: [],
+                      recognizer: LongPressGestureRecognizer()
+                        ..onLongPress = () {
+                          confirmCopy(context, comic.name);
+                        },
+                    ),
+                    ...currentDisplayJmcode()
+                        ? [
+                      TextSpan(
+                        text: "  (JM${comic.id})",
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.orange.shade700,
+                        ),
+                        recognizer: LongPressGestureRecognizer()
+                          ..onLongPress = () {
+                            confirmCopy(context, "JM${comic.id}");
+                          },
+                      ),
+                    ]
+                        : [],
+                  ])),
+                ]
                     : [Text(comic.name, style: titleStyle)],
                 Container(height: 4),
                 link
