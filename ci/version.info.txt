@@ -1,4 +1,4 @@
-v1.5.1
+v1.5.2
 
 - [x] ♻️ Network
 - [x] 🐛 Fix copy error
