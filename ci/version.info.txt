@@ -1,6 +1,3 @@
-v1.5.3
+v1.5.4
 
 - [x] ♻️ Network
-- [x] 🐛 Fix copy error
-- [x] ♻️ Title words setting
-- [x] ♻️ Login error tips
