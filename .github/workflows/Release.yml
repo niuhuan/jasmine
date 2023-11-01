@@ -5,6 +5,7 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  RUST_TOOLCHAIN: nightly-2023-10-31
   NDK_VERSION: 25.2.9519653
 
 jobs:
@@ -36,7 +37,7 @@ jobs:
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -122,7 +123,7 @@ jobs:
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       - id: check_asset
         name: Check asset
@@ -356,7 +357,7 @@ jobs:
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       - name: Checkout
         uses: actions/checkout@v3
