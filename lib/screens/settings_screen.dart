@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/network_api_host.dart';
+import 'package:jasmine/configs/network_cdn_host.dart';
 import 'package:jasmine/screens/downloads_exports_screen2.dart';
 
 import '../basic/commons.dart';
@@ -45,6 +47,8 @@ class _SettingsState extends State<SettingsScreen> {
       body: ListView(
         children: [
           const Divider(),
+          apiHostSetting(),
+          cdnHostSetting(),
           proxySetting(),
           const Divider(),
           themeSetting(context),
