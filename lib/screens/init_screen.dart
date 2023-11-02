@@ -61,12 +61,22 @@ class _InitScreenState extends State<InitScreen> {
     try {
       await methods.init();
       await initConfigs();
+      print("STATE : ${loginStatus}");
       if (!currentPassed()) {
         Future.delayed(Duration.zero, () async {
           await webDavSyncAuto(context);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (BuildContext context) {
               return const CalculatorScreen();
+            }),
+          );
+        });
+      } else if (loginStatus == LoginStatus.notSet) {
+        Future.delayed(Duration.zero, () async {
+          await webDavSyncAuto(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return firstLoginScreen;
             }),
           );
         });

@@ -121,6 +121,13 @@ class _FirstLoginScreenState extends State<FirstLoginScreen> {
           _passwordField(),
           apiHostSetting(),
           cdnHostSetting(),
+          const Divider(),
+          ListTile(
+            title: const Text("注册"),
+            onTap: () {
+              regxxx(context);
+            },
+          ),
         ],
       ),
     );
