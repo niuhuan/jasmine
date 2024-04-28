@@ -155,14 +155,14 @@ jobs:
           architecture: x64
 
       - name: Install cargo tools (non-android)
-        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'macos' || matrix.config.target == 'windows' || matrix.config.target == 'linux' )
+        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'macos' || matrix.config.target == 'windows' || matrix.config.target == 'linux' || matrix.config.target == 'ios' )
         run: |
-          cargo install cbindgen
+          cargo install --force cbindgen
 
       - name: Install cargo tools (Android)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' )
         run: |
-          cargo install cargo-ndk
+          cargo install --force cargo-ndk
 
       - name: Setup java (Android)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' )
@@ -213,7 +213,6 @@ jobs:
       - name: Install rust target and build (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
         run: |
-          cargo install cbindgen
           rustup target install aarch64-apple-ios
           cargo build --manifest-path native/jmbackend/platforms/ios/Cargo.toml --features= --lib --release --target=aarch64-apple-ios
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
@@ -301,7 +300,6 @@ jobs:
       - name: Build (macos)
         if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'macos'
         run: |
-          cargo install cbindgen
           rustup target install x86_64-apple-darwin
           rustup target install aarch64-apple-darwin
           cargo build --manifest-path native/jmbackend/platforms/macos/Cargo.toml --release --target x86_64-apple-darwin
