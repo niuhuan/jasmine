@@ -213,6 +213,7 @@ jobs:
       - name: Install rust target and build (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
         run: |
+          cargo install cbindgen
           rustup target install aarch64-apple-ios
           cargo build --manifest-path native/jmbackend/platforms/ios/Cargo.toml --features= --lib --release --target=aarch64-apple-ios
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
@@ -300,6 +301,7 @@ jobs:
       - name: Build (macos)
         if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'macos'
         run: |
+          cargo install cbindgen
           rustup target install aarch64-apple-darwin
           cargo build --manifest-path native/jmbackend/platforms/macos/Cargo.toml --release --target x86_64-apple-darwin
           cargo build --manifest-path native/jmbackend/platforms/macos/Cargo.toml --release --target aarch64-apple-darwin
