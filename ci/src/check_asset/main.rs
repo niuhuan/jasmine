@@ -9,9 +9,9 @@ const UA: &str = "niuhuan jasmine ci";
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let gh_token = std::env::var("GITHUB_TOKEN")?;
+    let gh_token = std::env::var("GH_TOKEN")?;
     if gh_token.is_empty() {
-        panic!("Please set GITHUB_TOKEN");
+        panic!("Please set GH_TOKEN");
     }
     let flutter_version = std::env::var("flutter_version")?;
     if flutter_version.is_empty() {

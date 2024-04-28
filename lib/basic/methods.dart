@@ -454,8 +454,13 @@ class Methods {
   }
 
   Future<int> ping(String idx) async {
-    print("PING $idx");
+    print("PING API $idx");
     return int.parse(await _invoke("ping_server", idx));
+  }
+
+  Future<int> pingCdn(String idx) async {
+    print("PING CDN $idx");
+    return int.parse(await _invoke("ping_cdn", idx));
   }
 
   Future mkdirs(String path) {

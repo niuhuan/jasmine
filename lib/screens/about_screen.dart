@@ -54,22 +54,30 @@ class _AboutState extends State<AboutScreen> {
       builder: (BuildContext context, BoxConstraints constraints) {
         double? width, height;
         if (constraints.maxWidth < constraints.maxHeight) {
-          width = constraints.maxWidth / 2;
+          width = constraints.maxWidth / 3;
         } else {
-          height = constraints.maxHeight / 2;
+          height = constraints.maxHeight / 3;
         }
-        return Container(
-          padding: const EdgeInsets.all(10),
-          child: Center(
-            child: SizedBox(
-              width: width,
-              height: height,
-              child: Image.asset(
-                "lib/assets/startup.png",
-                fit: BoxFit.contain,
+        double l = width ?? height!;
+        return Column(
+          children: [
+            Container(height: l / 4),
+            SizedBox(
+              width: l,
+              height: l,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints.expand(),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Image.asset(
+                    "lib/assets/ic_launcher.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
             ),
-          ),
+            Container(height: l / 4),
+          ],
         );
       },
     );

@@ -32,27 +32,25 @@ class _InitScreenState extends State<InitScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffeeeeee),
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/assets/backpoint.png'),
-                repeat: ImageRepeat.repeat,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return Center(
+            child: SizedBox(
+              width: constraints.maxWidth / 2,
+              height: constraints.maxHeight / 2,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints.expand(),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Image.asset(
+                    "lib/assets/ic_launcher.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
             ),
-          ),
-          ConstrainedBox(
-            constraints: const BoxConstraints.expand(),
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                "lib/assets/startup.png",
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -62,14 +60,34 @@ class _InitScreenState extends State<InitScreen> {
       await methods.init();
       await initConfigs();
       print("STATE : ${loginStatus}");
-      Future.delayed(Duration.zero, () async {
-        await webDavSyncAuto(context);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) {
-            return const AppScreen();
-          }),
-        );
-      });
+      if (!currentPassed()) {
+        Future.delayed(Duration.zero, () async {
+          await webDavSyncAuto(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return const CalculatorScreen();
+            }),
+          );
+        });
+      } else if (loginStatus == LoginStatus.notSet) {
+        Future.delayed(Duration.zero, () async {
+          await webDavSyncAuto(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return firstLoginScreen;
+            }),
+          );
+        });
+      } else {
+        Future.delayed(Duration.zero, () async {
+          await webDavSyncAuto(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return const AppScreen();
+            }),
+          );
+        });
+      }
     } catch (e, st) {
       print("$e\n$st");
       defaultToast(context, "初始化失败, 请设置网络");

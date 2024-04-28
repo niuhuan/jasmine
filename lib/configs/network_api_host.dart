@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 
 late String _apiHost;
@@ -9,6 +8,7 @@ const apiHosts = {
   "分流1": "1",
   "分流2": "2",
   "分流3": "3",
+  "分流4": "4",
 };
 
 String _apiHostName(String value) {
