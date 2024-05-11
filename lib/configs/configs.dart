@@ -17,6 +17,7 @@ import 'package:jasmine/configs/web_dav_url.dart';
 import 'package:jasmine/configs/web_dav_username.dart';
 
 import 'auto_clean.dart';
+import 'categories_sort.dart';
 import 'download_and_export_to.dart';
 import 'export_path.dart';
 import 'export_rename.dart';
@@ -66,4 +67,5 @@ Future initConfigs() async {
   await initLogin();
   await initDisplayJmcode();
   await initSearchTitleWords();
+  await initCategoriesSort();
 }

@@ -9,6 +9,7 @@ import 'package:jasmine/screens/downloads_exports_screen2.dart';
 import '../basic/commons.dart';
 import '../basic/web_dav_sync.dart';
 import '../configs/android_display_mode.dart';
+import '../configs/categories_sort.dart';
 import '../configs/display_jmcode.dart';
 import '../configs/download_and_export_to.dart';
 import '../configs/export_rename.dart';
@@ -51,6 +52,7 @@ class _SettingsState extends State<SettingsScreen> {
           cdnHostSetting(),
           proxySetting(),
           const Divider(),
+          categoriesSortSetting(context),
           themeSetting(context),
           const Divider(),
           androidDisplayModeSetting(),

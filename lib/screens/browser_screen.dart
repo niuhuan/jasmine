@@ -6,6 +6,7 @@ import 'package:jasmine/screens/components/comic_pager.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 import 'package:jasmine/screens/components/floating_search_bar.dart';
 
+import '../configs/categories_sort.dart';
 import '../configs/login.dart';
 import 'components/browser_bottom_sheet.dart';
 import 'components/actions.dart';
@@ -88,6 +89,7 @@ class _BrowserScreenState extends State<BrowserScreen>
   Future<CategoriesResponse> _categories() async {
     final rsp = await methods.categories();
     blockStore = rsp.blocks;
+    sortCategories(rsp.categories);
     return rsp;
   }
 
@@ -96,6 +98,21 @@ class _BrowserScreenState extends State<BrowserScreen>
     _future = _categories();
     _key = UniqueKey();
     super.initState();
+    categoriesSortEvent.subscribe(_resort);
+  }
+
+
+  @override
+  void dispose() {
+    categoriesSortEvent.unsubscribe(_resort);
+    super.dispose();
+  }
+
+  _resort(_) {
+    setState(() {
+      _future = _categories();
+      _key = UniqueKey();
+    });
   }
 
   @override
