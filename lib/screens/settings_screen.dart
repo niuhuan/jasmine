@@ -8,6 +8,7 @@ import 'package:jasmine/screens/downloads_exports_screen2.dart';
 
 import '../basic/commons.dart';
 import '../basic/web_dav_sync.dart';
+import '../configs/Authentication.dart';
 import '../configs/android_display_mode.dart';
 import '../configs/categories_sort.dart';
 import '../configs/display_jmcode.dart';
@@ -83,6 +84,7 @@ class _SettingsState extends State<SettingsScreen> {
             },
             title: const Text("清除账号信息"),
           ),
+          authenticationSetting(),
           const Divider(),
           ListTile(
             onTap: () {

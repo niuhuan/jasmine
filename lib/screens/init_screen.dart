@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/Authentication.dart';
 import 'package:jasmine/configs/configs.dart';
 import 'package:jasmine/configs/login.dart';
 
@@ -69,6 +69,15 @@ class _InitScreenState extends State<InitScreen> {
             }),
           );
         });
+      } else if (currentAuthentication()) {
+        Future.delayed(Duration.zero, () async {
+          await webDavSyncAuto(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return const AuthScreen();
+            }),
+          );
+        });
       } else if (loginStatus == LoginStatus.notSet) {
         Future.delayed(Duration.zero, () async {
           await webDavSyncAuto(context);
@@ -99,5 +108,54 @@ class _InitScreenState extends State<InitScreen> {
         );
       });
     }
+  }
+}
+
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      test();
+    });
+  }
+
+  test() async {
+    if (await verifyAuthentication(context)) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) {
+          return const AppScreen();
+        }),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("身份验证"),
+      ),
+      body: Center(
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: MaterialButton(
+            onPressed: () async {
+              test();
+            },
+            child: const Text(
+              '您在之前使用APP时开启了身份验证, 请点这段文字进行身份核查, 核查通过后将会进入APP',
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

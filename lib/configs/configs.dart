@@ -1,3 +1,4 @@
+import 'package:jasmine/configs/Authentication.dart';
 import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/android_version.dart';
 import 'package:jasmine/configs/display_jmcode.dart';
@@ -68,4 +69,5 @@ Future initConfigs() async {
   await initDisplayJmcode();
   await initSearchTitleWords();
   await initCategoriesSort();
+  await initAuthentication();
 }

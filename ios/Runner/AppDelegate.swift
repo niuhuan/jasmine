@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import LocalAuthentication
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -50,6 +51,16 @@ import Flutter
                     }
                 case "iosGetDocumentDir" :
                     result(documentDirectory)
+                case "verifyAuthentication":
+                    let context = LAContext()
+                    let can = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+                    guard can == true else {
+                        result(false)
+                        return
+                    }
+                    context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "身份验证") { (success, error) in
+                        result(success)
+                    }
                 default:
                     result(FlutterMethodNotImplemented)
                 }
