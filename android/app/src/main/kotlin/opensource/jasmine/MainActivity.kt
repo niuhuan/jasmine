@@ -1,35 +1,23 @@
 package opensource.jasmine
 
-
 import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.hardware.biometrics.BiometricPrompt
-import android.os.*
+import android.os.Build
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Display
 import android.view.KeyEvent
-import android.view.WindowManager
-import androidx.annotation.NonNull
-import androidx.annotation.RequiresApi
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.sync.Mutex
-import mobile.Mobile
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.nio.file.Files
 import java.util.concurrent.Executors
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.TimeUnit
+import java.io.File
 import opensource.jenny.Jni
 
 class MainActivity : FlutterActivity() {
@@ -70,7 +58,6 @@ class MainActivity : FlutterActivity() {
                     call.arguments<String>() ?: throw Exception("need arg"),
                 )
                 "picturesDir" -> picturesDir().absolutePath
-                "verifyAuthentication" -> auth()
                 else -> result.notImplemented()
             }
         }
@@ -239,54 +226,6 @@ class MainActivity : FlutterActivity() {
         if (!dir.exists()) {
             dir.mkdirs()
         }
-    }
-
-    // withCoroutine -> queue
-    private fun auth(): Boolean {
-        var queue = LinkedBlockingQueue<Boolean>()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            var mBiometricPrompt = BiometricPrompt.Builder(this)
-                .setTitle("验证身份")
-                .setDescription("需要验证您的身份")
-                .setNegativeButton(
-                    "取消", mainExecutor
-                ) { _, _ -> queue.add(false) }
-                .build()
-
-
-            var mCancellationSignal = CancellationSignal()
-            mCancellationSignal.setOnCancelListener {
-                queue.add(false)
-            }
-
-            var mAuthenticationCallback = object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
-                    super.onAuthenticationError(errorCode, errString)
-                    queue.add(false)
-                }
-
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    queue.add(false)
-                }
-
-                override fun onAuthenticationSucceeded(result1: BiometricPrompt.AuthenticationResult?) {
-                    super.onAuthenticationSucceeded(result1)
-                    queue.add(true)
-                }
-            }
-
-            mBiometricPrompt.authenticate(
-                mCancellationSignal,
-                mainExecutor,
-                mAuthenticationCallback
-            )
-
-        } else {
-            queue.add(false)
-        }
-
-        return queue.poll(5, TimeUnit.MINUTES) ?: false
     }
 
 }
