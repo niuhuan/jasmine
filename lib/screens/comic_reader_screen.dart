@@ -1158,9 +1158,14 @@ class _ComicReaderWebToonState extends _ComicReaderState {
 class _ComicReaderGalleryState extends _ComicReaderState {
   late PageController _pageController;
   late PhotoViewGallery _gallery;
+  late List<ImageProvider> _imageProviders;
 
   @override
   void initState() {
+    _imageProviders = [];
+    for (var image in widget.chapter.images) {
+      _imageProviders.add(PageImageProvider(widget.chapter.id, image));
+    }
     _pageController = PageController(initialPage: widget.startIndex);
     _gallery = PhotoViewGallery.builder(
       scrollDirection: widget.readerDirection == ReaderDirection.topToBottom
@@ -1180,10 +1185,7 @@ class _ComicReaderGalleryState extends _ComicReaderState {
       builder: (BuildContext context, int index) {
         return PhotoViewGalleryPageOptions(
           filterQuality: FilterQuality.high,
-          imageProvider: PageImageProvider(
-            widget.chapter.id,
-            widget.chapter.images[index],
-          ),
+          imageProvider: _imageProviders[index],
           errorBuilder: (b, e, s) {
             print("$e,$s");
             return LayoutBuilder(
@@ -1196,6 +1198,7 @@ class _ComicReaderGalleryState extends _ComicReaderState {
       },
     );
     super.initState();
+    _preloadJump(widget.startIndex, init: true);
   }
 
   @override
@@ -1233,10 +1236,34 @@ class _ComicReaderGalleryState extends _ComicReaderState {
     } else {
       _pageController.jumpToPage(pageIndex);
     }
+    _preloadJump(pageIndex);
   }
 
   void _onGalleryPageChange(int to) {
+    var toIndex = to * 2;
+    // 提前加载
+    for (var i = toIndex + 1; i < toIndex + 3 && i < _imageProviders.length; i++) {
+      final ip = _imageProviders[i];
+      precacheImage(ip, context);
+    }
+    // 提前加载
     super._onCurrentChange(to);
+  }
+
+  _preloadJump(int index, {bool init = false}) {
+    fn() {
+      for (var i = index - 1; i < index + 3; i++) {
+        if (i < 0 || i >= _imageProviders.length) continue;
+        final ip = _imageProviders[i];
+        precacheImage(ip, context);
+      }
+    }
+
+    if (init) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) => fn());
+    } else {
+      fn();
+    }
   }
 
   Widget _buildNextEpController() {
