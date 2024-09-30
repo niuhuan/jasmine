@@ -101,7 +101,11 @@ class _UserScreenState extends State<UserScreen>
         child = _buildSelfInfoCard();
         break;
       case LoginStatus.loginField:
-        child = _buildLoginButton("登录失败/点击重试");
+        child = Column(children: [
+          _buildLoginButton("登录失败/点击重试"),
+          Container(height: 10),
+          _buildLoginErrorButton(),
+        ]);
         break;
     }
     return Container(
@@ -152,6 +156,50 @@ class _UserScreenState extends State<UserScreen>
         return Icon(Icons.refresh,
             size: size * .5, color: Colors.white.withOpacity(.5));
       },
+    );
+  }
+
+  Widget _buildLoginErrorButton() {
+    return MaterialButton(
+      onPressed: () async {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("登录失败"),
+              content: SelectableText(loginMessage),
+              actions: [
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("确认"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
+        decoration: BoxDecoration(
+          color: Colors.red.shade700,
+          border: Border.all(
+            color: Colors.black,
+            style: BorderStyle.solid,
+            width: .5,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+        ),
+        child: const Text(
+          "查看错误",
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
     );
   }
 
