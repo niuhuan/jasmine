@@ -10,6 +10,7 @@ import 'package:jasmine/configs/passed.dart';
 import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/search_title_words.dart';
 import 'package:jasmine/configs/theme.dart';
+import 'package:jasmine/configs/two_page_direction.dart';
 import 'package:jasmine/configs/using_right_click_pop.dart';
 import 'package:jasmine/configs/volume_key_control.dart';
 import 'package:jasmine/configs/web_dav_password.dart';
@@ -45,6 +46,7 @@ Future initConfigs() async {
   await initPagerControllerMode();
   await initPagerViewMode();
   await initReaderType();
+  await initTwoPageDirection();
   await initReaderDirection();
   await initReaderControllerType();
   await initReaderSliderPosition();

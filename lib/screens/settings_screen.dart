@@ -18,6 +18,7 @@ import '../configs/no_animation.dart';
 import '../configs/proxy.dart';
 import '../configs/search_title_words.dart';
 import '../configs/theme.dart';
+import '../configs/two_page_direction.dart';
 import '../configs/using_right_click_pop.dart';
 import '../configs/volume_key_control.dart';
 import '../configs/web_dav_password.dart';
@@ -73,6 +74,8 @@ class _SettingsState extends State<SettingsScreen> {
           webDavSyncClick(context),
           const Divider(),
           displayJmcodeSetting(),
+          const Divider(),
+          twoGalleryDirectionSetting(context),
           const Divider(),
           ListTile(
             onTap: () async {
