@@ -38,11 +38,14 @@ Widget cdnHostSetting() {
 
 
 var cdnHosts = {
-"随机": "0",
-"分流1": "1",
-"分流2": "2",
-"分流3": "3",
-"分流4": "4",
+  "随机": "0",
+  "分流1": "1",
+  "分流2": "2",
+  "分流3": "3",
+  "分流4": "4",
+  "分流5": "5",
+  "分流6": "6",
+  "分流7": "7",
 };
 
 Future<T?> chooseCdnDialog<T>(BuildContext buildContext) async {
