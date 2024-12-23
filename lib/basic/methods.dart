@@ -378,6 +378,19 @@ class Methods {
     });
   }
 
+  Future export_jm_pdf(
+      int id, String folder, bool deleteExported) {
+    return _invoke("export_jm_pdf", {
+      "comic_id": [id],
+      "dir": folder,
+      "delete_exported": deleteExported,
+    });
+  }
+
+  Future check_binding() {
+    return _invoke("check_binding", "");
+  }
+
   Future import_jm_zip(String path) {
     print(path);
     return _invoke("import_jm_zip", path);
@@ -495,6 +508,14 @@ class Methods {
 
   Future<bool> verifyAuthentication() async {
     return await _channel.invokeMethod("verifyAuthentication");
+  }
+
+  Future<String> checkLibpdfium() async {
+    return await _invoke("check_libpdfium", "");
+  }
+
+  Future<String> downloadLibpdfium() async {
+    return await _invoke("download_libpdfium", "");
   }
 }
 

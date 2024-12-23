@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../basic/web_dav_sync.dart';
 import '../configs/login.dart';
 import '../configs/passed.dart';
@@ -42,480 +41,468 @@ class ContentBodyState extends State<ContentBody> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(750, 1334),
-      builder: (BuildContext context, Widget? child) {
-        return Column(
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(
-                    top: 10.0, left: 10.0, right: 20.0, bottom: 10.0),
-                child: Container(
-                  width: ScreenUtil().setWidth(750),
-                  alignment: Alignment.bottomRight,
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(160.0)),
-                  child: Text(
-                    sums,
-                    maxLines: 8,
-                    style: const TextStyle(fontSize: 66, color: Colors.white),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(
+              top: 10.0, left: 10.0, right: 20.0, bottom: 10.0),
+          child: Container(
+            width: 750,
+            alignment: Alignment.bottomRight,
+            child: Text(
+              sums,
+              maxLines: 8,
+              style: const TextStyle(fontSize: 66, color: Colors.white),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            child: Column(
+              children: [
+                Center(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(45),
+                            color: Colors.grey,
+                            splashColor: Colors.white,
+                            onPressed: () {
+                              btnclick('重置');
+                            },
+                            child: const Text('AC',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20)),
+                            shape: const CircleBorder(
+                              side: BorderSide(color: Colors.grey),
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(45),
+                            color: Colors.grey,
+                            splashColor: Colors.white,
+                            onPressed: () {
+                              btnclick('加/减');
+                            },
+                            child: const Text('+/-',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Colors.grey)),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(40),
+                            color: Colors.grey,
+                            splashColor: Colors.white,
+                            onPressed: () {
+                              btnclick('百分号');
+                            },
+                            child: const Text('%',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 25)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Colors.grey)),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(34),
+                            color: Color(int.parse(list[0]['bgc'])),
+                            splashColor: Color(int.parse(list[0]['bgc'])),
+                            onPressed: () {
+                              btnclick('除');
+                            },
+                            child: Text('÷',
+                                style: TextStyle(
+                                    color:
+                                    Color(int.parse(list[0]['color'])),
+                                    fontSize: 30)),
+                            shape: CircleBorder(
+                                side: BorderSide(
+                                    color:
+                                    Color(int.parse(list[0]['bgc'])))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              flex: 1,
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(102.0)),
-                width: ScreenUtil().setWidth(750),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(45)),
-                                color: Colors.grey,
-                                splashColor: Colors.white,
-                                onPressed: () {
-                                  btnclick('重置');
-                                },
-                                child: const Text('AC',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 20)),
-                                shape: const CircleBorder(
-                                  side: BorderSide(color: Colors.grey),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(45)),
-                                color: Colors.grey,
-                                splashColor: Colors.white,
-                                onPressed: () {
-                                  btnclick('加/减');
-                                },
-                                child: const Text('+/-',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 20)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Colors.grey)),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(40)),
-                                color: Colors.grey,
-                                splashColor: Colors.white,
-                                onPressed: () {
-                                  btnclick('百分号');
-                                },
-                                child: const Text('%',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 25)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Colors.grey)),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(34)),
-                                color: Color(int.parse(list[0]['bgc'])),
-                                splashColor: Color(int.parse(list[0]['bgc'])),
-                                onPressed: () {
-                                  btnclick('除');
-                                },
-                                child: Text('÷',
-                                    style: TextStyle(
-                                        color:
-                                            Color(int.parse(list[0]['color'])),
-                                        fontSize: 30)),
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color:
-                                            Color(int.parse(list[0]['bgc'])))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('7');
-                                },
-                                child: const Text('7',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('8');
-                                },
-                                child: const Text('8',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('9');
-                                },
-                                child: const Text('9',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(34)),
-                                color: Color(int.parse(list[1]['bgc'])),
-                                splashColor: Color(int.parse(list[1]['bgc'])),
-                                onPressed: () {
-                                  btnclick('乘');
-                                },
-                                child: Text('×',
-                                    style: TextStyle(
-                                        color:
-                                            Color(int.parse(list[1]['color'])),
-                                        fontSize: 30)),
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color:
-                                            Color(int.parse(list[1]['bgc'])))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('4');
-                                },
-                                child: const Text('4',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('5');
-                                },
-                                child: const Text('5',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('6');
-                                },
-                                child: const Text('6',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(34)),
-                                color: Color(int.parse(list[2]['bgc'])),
-                                splashColor: Color(int.parse(list[2]['bgc'])),
-                                onPressed: () {
-                                  btnclick('减');
-                                },
-                                child: Text('—',
-                                    style: TextStyle(
-                                        color:
-                                            Color(int.parse(list[2]['color'])),
-                                        fontSize: 30)),
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color:
-                                            Color(int.parse(list[2]['bgc'])))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('1');
-                                },
-                                child: const Text('1',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('2');
-                                },
-                                child: const Text('2',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(36)),
-                                color: const Color(0xFF3B3B3B),
-                                splashColor: Colors.grey,
-                                onPressed: () {
-                                  numClick('3');
-                                },
-                                child: const Text('3',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 30)),
-                                shape: const CircleBorder(
-                                    side: BorderSide(color: Color(0xFF3B3B3B))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: MaterialButton(
-                                padding:
-                                    EdgeInsets.all(ScreenUtil().setWidth(34)),
-                                color: Color(int.parse(list[3]['bgc'])),
-                                splashColor: Color(int.parse(list[3]['bgc'])),
-                                onPressed: () {
-                                  btnclick('加');
-                                },
-                                child: Text('+',
-                                    style: TextStyle(
-                                        color:
-                                            Color(int.parse(list[3]['color'])),
-                                        fontSize: 30)),
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color:
-                                            Color(int.parse(list[3]['bgc'])))),
-                              ),
-                              alignment: Alignment.center,
-                            ),
-                            flex: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            child: MaterialButton(
-                              padding: const EdgeInsets.only(
-                                  left: 70.0,
-                                  top: 20.0,
-                                  bottom: 20.0,
-                                  right: 76.0),
-                              color: const Color(0xFF3B3B3B),
-                              splashColor: Colors.grey,
-                              onPressed: () {
-                                numClick('0');
-                              },
-                              child: const Text('0',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30)),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40)),
-                            ),
-                            margin: const EdgeInsets.only(left: 10.0),
-                            alignment: Alignment.center,
-                          ),
-                          Container(
-                            child: MaterialButton(
-                              padding:
-                                  EdgeInsets.all(ScreenUtil().setWidth(36)),
-                              color: const Color(0xFF3B3B3B),
-                              splashColor: Colors.grey,
-                              onPressed: () {
-                                numClick('.');
-                              },
-                              child: const Text('.',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30)),
-                              shape: const CircleBorder(
-                                  side: BorderSide(color: Color(0xFF3B3B3B))),
-                            ),
-                            alignment: Alignment.center,
-                          ),
-                          Container(
-                            child: MaterialButton(
-                              padding:
-                                  EdgeInsets.all(ScreenUtil().setWidth(34)),
-                              color: Colors.orange,
-                              splashColor: Colors.orange,
-                              onPressed: () {
-                                btnclick('等于');
-                              },
-                              child: const Text('=',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30)),
-                              shape: const CircleBorder(
-                                  side: BorderSide(color: Colors.orange)),
-                            ),
-                            alignment: Alignment.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                Container(
+                  padding: const EdgeInsets.all(10.0),
                 ),
-              ),
-              flex: 3,
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('7');
+                            },
+                            child: const Text('7',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('8');
+                            },
+                            child: const Text('8',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('9');
+                            },
+                            child: const Text('9',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(34),
+                            color: Color(int.parse(list[1]['bgc'])),
+                            splashColor: Color(int.parse(list[1]['bgc'])),
+                            onPressed: () {
+                              btnclick('乘');
+                            },
+                            child: Text('×',
+                                style: TextStyle(
+                                    color:
+                                    Color(int.parse(list[1]['color'])),
+                                    fontSize: 30)),
+                            shape: CircleBorder(
+                                side: BorderSide(
+                                    color:
+                                    Color(int.parse(list[1]['bgc'])))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('4');
+                            },
+                            child: const Text('4',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('5');
+                            },
+                            child: const Text('5',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('6');
+                            },
+                            child: const Text('6',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(34),
+                            color: Color(int.parse(list[2]['bgc'])),
+                            splashColor: Color(int.parse(list[2]['bgc'])),
+                            onPressed: () {
+                              btnclick('减');
+                            },
+                            child: Text('—',
+                                style: TextStyle(
+                                    color:
+                                    Color(int.parse(list[2]['color'])),
+                                    fontSize: 30)),
+                            shape: CircleBorder(
+                                side: BorderSide(
+                                    color:
+                                    Color(int.parse(list[2]['bgc'])))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('1');
+                            },
+                            child: const Text('1',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('2');
+                            },
+                            child: const Text('2',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(36),
+                            color: const Color(0xFF3B3B3B),
+                            splashColor: Colors.grey,
+                            onPressed: () {
+                              numClick('3');
+                            },
+                            child: const Text('3',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30)),
+                            shape: const CircleBorder(
+                                side: BorderSide(color: Color(0xFF3B3B3B))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: MaterialButton(
+                            padding:
+                            EdgeInsets.all(34),
+                            color: Color(int.parse(list[3]['bgc'])),
+                            splashColor: Color(int.parse(list[3]['bgc'])),
+                            onPressed: () {
+                              btnclick('加');
+                            },
+                            child: Text('+',
+                                style: TextStyle(
+                                    color:
+                                    Color(int.parse(list[3]['color'])),
+                                    fontSize: 30)),
+                            shape: CircleBorder(
+                                side: BorderSide(
+                                    color:
+                                    Color(int.parse(list[3]['bgc'])))),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        child: MaterialButton(
+                          padding: const EdgeInsets.only(
+                              left: 70.0,
+                              top: 20.0,
+                              bottom: 20.0,
+                              right: 76.0),
+                          color: const Color(0xFF3B3B3B),
+                          splashColor: Colors.grey,
+                          onPressed: () {
+                            numClick('0');
+                          },
+                          child: const Text('0',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 30)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40)),
+                        ),
+                        margin: const EdgeInsets.only(left: 10.0),
+                        alignment: Alignment.center,
+                      ),
+                      Container(
+                        child: MaterialButton(
+                          padding:
+                          EdgeInsets.all(36),
+                          color: const Color(0xFF3B3B3B),
+                          splashColor: Colors.grey,
+                          onPressed: () {
+                            numClick('.');
+                          },
+                          child: const Text('.',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 30)),
+                          shape: const CircleBorder(
+                              side: BorderSide(color: Color(0xFF3B3B3B))),
+                        ),
+                        alignment: Alignment.center,
+                      ),
+                      Container(
+                        child: MaterialButton(
+                          padding:
+                          EdgeInsets.all(34),
+                          color: Colors.orange,
+                          splashColor: Colors.orange,
+                          onPressed: () {
+                            btnclick('等于');
+                          },
+                          child: const Text('=',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 30)),
+                          shape: const CircleBorder(
+                              side: BorderSide(color: Colors.orange)),
+                        ),
+                        alignment: Alignment.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 
