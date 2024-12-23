@@ -26,31 +26,31 @@ jobs:
         config:
           - target: linux
             host: ubuntu-latest
-            flutter_version: '3.27.1'
+            flutter_version: '3.7.3'
             flutter_channel: 'stable'
           - target: windows
             host: windows-latest
-            flutter_version: '3.27.1'
+            flutter_version: '3.7.3'
             flutter_channel: 'stable'
           - target: macos
             host: macos-latest
-            flutter_version: '3.27.1'
+            flutter_version: '3.7.3'
             flutter_channel: 'stable'
           - target: ios
             host: macos-latest
-            flutter_version: '3.27.1'
+            flutter_version: '3.7.3'
             flutter_channel: 'stable'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.27.1'
+            flutter_version: '3.7.3'
             flutter_channel: 'stable'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.27.1'
+            flutter_version: '3.7.3'
             flutter_channel: 'stable'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.27.1'
+            flutter_version: '3.7.3'
             flutter_channel: 'stable'
 
     runs-on: ${{ matrix.config.host }}
@@ -206,7 +206,7 @@ jobs:
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t armeabi-v7a build --release
           cd ../../../..
           wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6899/pdfium-android-arm.tgz
-          tar zxvf pdfium-android-arm64.tgz --strip-components=1 -C android/app/src/main/jniLibs/armeabi-v7a lib/libpdfium.so 
+          tar zxvf pdfium-android-arm.tgz --strip-components=1 -C android/app/src/main/jniLibs/armeabi-v7a lib/libpdfium.so 
           flutter build apk --target-platform android-arm
 
       - name: Install rust target and build (Android-x86_64)
@@ -218,7 +218,7 @@ jobs:
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t x86_64 build --release
           cd ../../../..
           wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6899/pdfium-android-x64.tgz
-          tar zxvf pdfium-android-arm64.tgz --strip-components=1 -C android/app/src/main/jniLibs/x86_64 lib/libpdfium.so 
+          tar zxvf pdfium-android-x64.tgz --strip-components=1 -C android/app/src/main/jniLibs/x86_64 lib/libpdfium.so 
           flutter build apk --target-platform android-x64
 
       - name: Install dependencies and build (Linux)
