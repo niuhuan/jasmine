@@ -296,7 +296,7 @@ jobs:
         name: 'Upload Artifact (Android)'
         uses: actions/upload-artifact@v4
         with:
-          name: 'app-release.apk'
+          name: ${{matrix.config.target}}.apk
           path: 'build/app/outputs/flutter-apk/app-release.apk'
           retention-days: 3
       - if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'linux'
