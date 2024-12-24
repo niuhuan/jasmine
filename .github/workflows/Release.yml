@@ -206,8 +206,9 @@ jobs:
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
           cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
 
-          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-device-arm64.tgz
-          tar zxvf pdfium-ios-device-arm64.tgz --strip-components=1 -C ios/Runner lib/libpdfium.dylib 
+#          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-device-arm64.tgz
+#          tar zxvf pdfium-ios-device-arm64.tgz --strip-components=1 -C ios/Runner lib/libpdfium.dylib
+
           flutter build ios --no-simulator --no-codesign --release
           cd build
           rm -rf Payload

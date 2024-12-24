@@ -195,8 +195,8 @@ jobs:
           cd native/jmbackend/platforms/android
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t arm64-v8a build --release
           cd ../../../..
-          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6899/pdfium-android-arm64.tgz
-          tar zxvf pdfium-android-arm64.tgz --strip-components=1 -C android/app/src/main/jniLibs/arm64-v8a lib/libpdfium.so
+#          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6899/pdfium-android-arm64.tgz
+#          tar zxvf pdfium-android-arm64.tgz --strip-components=1 -C android/app/src/main/jniLibs/arm64-v8a lib/libpdfium.so
           flutter build apk --target-platform android-arm64
 
       - name: Install rust target and build (Android-arm32)
@@ -306,12 +306,18 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'build.AppImage'
-          path: 'build/build.AppImage'
+          path: 'build/linux.AppImage'
           retention-days: 3
       - if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'macos'
         name: 'Upload Artifact (MacOS)'
         uses: actions/upload-artifact@v4
         with:
           name: 'build.dmg'
-          path: 'build/build.dmg'
+          path: 'build/macos.dmg'
+      - if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'windows'
+        name: 'Upload Artifact (MacOS)'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'build.dmg'
+          path: 'build/windows.zip'
 
