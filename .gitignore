@@ -73,3 +73,8 @@ linux/rust1.h
 
 tests_data/
 
+*.tgz
+*.so
+*.dylib
+.build/
+

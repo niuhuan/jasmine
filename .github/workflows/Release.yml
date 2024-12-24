@@ -205,6 +205,10 @@ jobs:
           cargo build --manifest-path native/jmbackend/platforms/ios/Cargo.toml --features= --lib --release --target=aarch64-apple-ios
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
           cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
+        # pdfium-ios-simulator-arm64.tgz    https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-simulator-arm64.tgz
+        # pdfium-ios-simulator-x64.tgz
+          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-device-arm64.tgz
+          tar zxvf pdfium-ios-device-arm64.tgz --strip-components=1 -C ios/Runner lib/libpdfium.dylib 
           flutter build ios --no-simulator --no-codesign --release
           cd build
           rm -rf Payload
@@ -241,7 +245,7 @@ jobs:
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t armeabi-v7a build --release
           cd ../../../..
           wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6899/pdfium-android-arm.tgz
-          tar zxvf pdfium-android-arm64.tgz --strip-components=1 -C android/app/src/main/jniLibs/armeabi-v7a lib/libpdfium.so 
+          tar zxvf pdfium-android-arm.tgz --strip-components=1 -C android/app/src/main/jniLibs/armeabi-v7a lib/libpdfium.so 
           flutter build apk --target-platform android-arm
 
       - name: Install rust target and build (Android-x86_64)
@@ -253,7 +257,7 @@ jobs:
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t x86_64 build --release
           cd ../../../..
           wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6899/pdfium-android-x64.tgz
-          tar zxvf pdfium-android-arm64.tgz --strip-components=1 -C android/app/src/main/jniLibs/x86_64 lib/libpdfium.so 
+          tar zxvf pdfium-android-x64.tgz --strip-components=1 -C android/app/src/main/jniLibs/x86_64 lib/libpdfium.so 
           flutter build apk --target-platform android-x64
 
       - name: Install dependencies and build (Linux)
