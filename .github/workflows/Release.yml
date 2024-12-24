@@ -196,7 +196,7 @@ jobs:
       - name: Append application-identifier (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
         run: |
-          /usr/libexec/PlistBuddy -c 'Add :application-identifier string niuhuan.jasmine' ios/Runner/Info.plist
+          /usr/libexec/PlistBuddy -c 'Add :application-identifier string opensource.jasmine' ios/Runner/Info.plist
 
       - name: Install rust target and build (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
@@ -206,9 +206,6 @@ jobs:
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
           cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
 
-#          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-device-arm64.tgz
-#          tar zxvf pdfium-ios-device-arm64.tgz --strip-components=1 -C ios/Runner lib/libpdfium.dylib
-
           flutter build ios --no-simulator --no-codesign --release
           cd build
           rm -rf Payload
@@ -217,7 +214,11 @@ jobs:
           sh ../scripts/thin-payload.sh Payload
           zip -r -9 nosign.ipa Payload
           cd ..
+      
+      
 
+      #          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-device-arm64.tgz
+      #          tar zxvf pdfium-ios-device-arm64.tgz --strip-components=1 -C ios/Runner lib/libpdfium.dylib
 
       # if ios-sim
       # cargo build --manifest-path native/jmbackend/platforms/ios-sim/Cargo.toml --features= --lib --release --target=aarch64-apple-ios-sim
