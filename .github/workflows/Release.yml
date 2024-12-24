@@ -205,8 +205,7 @@ jobs:
           cargo build --manifest-path native/jmbackend/platforms/ios/Cargo.toml --features= --lib --release --target=aarch64-apple-ios
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
           cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
-        # pdfium-ios-simulator-arm64.tgz    https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-simulator-arm64.tgz
-        # pdfium-ios-simulator-x64.tgz
+
           wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-device-arm64.tgz
           tar zxvf pdfium-ios-device-arm64.tgz --strip-components=1 -C ios/Runner lib/libpdfium.dylib 
           flutter build ios --no-simulator --no-codesign --release
@@ -218,11 +217,16 @@ jobs:
           zip -r -9 nosign.ipa Payload
           cd ..
 
+
       # if ios-sim
       # cargo build --manifest-path native/jmbackend/platforms/ios-sim/Cargo.toml --features= --lib --release --target=aarch64-apple-ios-sim
       # cargo build --manifest-path native/jmbackend/platforms/ios-sim/Cargo.toml --features= --lib --release --target=x86_64-apple-ios
       # lipo -create -output ios/librust.a native/jmbackend/platforms/ios-sim/target/x86_64-apple-ios/release/librust.a native/jmbackend/platforms/ios-sim/target/aarch64-apple-ios-sim/release/librust.a
       # cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
+
+      # pdfium-ios-simulator-arm64.tgz    https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-simulator-arm64.tgz
+      # pdfium-ios-simulator-x64.tgz
+
 
       - name: Install rust target and build (Android-arm64)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm64')
