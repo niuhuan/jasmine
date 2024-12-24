@@ -170,7 +170,7 @@ jobs:
           cargo build --manifest-path native/jmbackend/platforms/ios/Cargo.toml --features= --lib --release --target=aarch64-apple-ios
           cp native/jmbackend/platforms/ios/target/aarch64-apple-ios/release/librust.a ios/
           cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
-          wget https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F6913/pdfium-ios-device-arm64.tgz
+          flutter build ios --no-simulator --no-codesign --release
           cd build
           rm -rf Payload
           mkdir Payload
