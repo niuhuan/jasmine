@@ -104,7 +104,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
           "分别导出CBZS.ZIP" + (!isPro ? "\n(发电后使用)" : ""),
         ),
         Container(height: 20),
-        if (Platform.isAndroid || Platform.isIOS) ...[
+        if (true) ...[
           _buildButtonInner(
             _exportPdf,
             "分别导Pdf" + (!isPro ? "\n(发电后使用)" : ""),
@@ -185,7 +185,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
       return;
     }
     if (Platform.isAndroid) {
-    } else if (Platform.isIOS) {
+    } else {
       // check pdf lib
       if (await methods.checkLibpdfium() == "") {
         var down = await confirmDialog(context, "需要下载PDF支持插件", "是否下载PDF支持插件?");
@@ -221,9 +221,6 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         defaultToast(context, "pdf loading error $e");
         return;
       }
-    } else {
-      defaultToast(context, "暂不支持此功能");
-      return;
     }
     if (!await confirmDialog(
         context, "导出确认", "将您所选的漫画分别导出PDF${showExportPath()}")) {
