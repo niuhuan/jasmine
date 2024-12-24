@@ -292,7 +292,7 @@ jobs:
           name: 'nosign.ipa'
           path: 'build/nosign.ipa'
           retention-days: 3
-      - if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'android'
+      - if: steps.check_asset.outputs.skip_build != 'true' && startsWith(matrix.config.target, 'android')
         name: 'Upload Artifact (Android)'
         uses: actions/upload-artifact@v4
         with:
