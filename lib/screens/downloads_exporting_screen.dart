@@ -104,7 +104,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
           "分别导出CBZS.ZIP" + (!isPro ? "\n(发电后使用)" : ""),
         ),
         Container(height: 20),
-        if (!Platform.isIOS) ...[
+        if (Platform.isAndroid) ...[
           _buildButtonInner(
             _exportPdf,
             "分别导Pdf" + (!isPro ? "\n(发电后使用)" : ""),
@@ -184,44 +184,44 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
       defaultToast(context, "请先发电鸭");
       return;
     }
-    if (Platform.isAndroid) {
-    } else {
-      // check pdf lib
-      if (await methods.checkLibpdfium() == "") {
-        var down = await confirmDialog(context, "需要下载PDF支持插件", "是否下载PDF支持插件?");
-        if (down) {
-          exportMessage = "正在下载PDF支持插件";
-          setState(() {
-            exporting = true;
-          });
-          try {
-            await methods.downloadLibpdfium();
-            defaultToast(context, "PDF支持插件下载成功, 请重试");
-          } catch (e, s) {
-            defaultToast(context, "PDF支持插件下载失败");
-          } finally {
-            setState(() {
-              exporting = false;
-            });
-          }
-        }
-        return;
-      }
-      try {
-        await methods.check_binding();
-      } catch (e, s) {
-        var msg = "$e";
-        // 300字输出一行
-        var idx = 0;
-        while (idx < msg.length) {
-          var out = msg.substring(idx, min(idx + 300, msg.length)) + "\n";
-          print(out);
-          idx += 300;
-        }
-        defaultToast(context, "pdf loading error $e");
-        return;
-      }
-    }
+    // if (Platform.isAndroid) {
+    // } else {
+    //   // check pdf lib
+    //   if (await methods.checkLibpdfium() == "") {
+    //     var down = await confirmDialog(context, "需要下载PDF支持插件", "是否下载PDF支持插件?");
+    //     if (down) {
+    //       exportMessage = "正在下载PDF支持插件";
+    //       setState(() {
+    //         exporting = true;
+    //       });
+    //       try {
+    //         await methods.downloadLibpdfium();
+    //         defaultToast(context, "PDF支持插件下载成功, 请重试");
+    //       } catch (e, s) {
+    //         defaultToast(context, "PDF支持插件下载失败");
+    //       } finally {
+    //         setState(() {
+    //           exporting = false;
+    //         });
+    //       }
+    //     }
+    //     return;
+    //   }
+    //   try {
+    //     await methods.check_binding();
+    //   } catch (e, s) {
+    //     var msg = "$e";
+    //     // 300字输出一行
+    //     var idx = 0;
+    //     while (idx < msg.length) {
+    //       var out = msg.substring(idx, min(idx + 300, msg.length)) + "\n";
+    //       print(out);
+    //       idx += 300;
+    //     }
+    //     defaultToast(context, "pdf loading error $e");
+    //     return;
+    //   }
+    // }
     if (!await confirmDialog(
         context, "导出确认", "将您所选的漫画分别导出PDF${showExportPath()}")) {
       return;
