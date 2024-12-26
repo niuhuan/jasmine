@@ -57,17 +57,15 @@ Widget displayExportPathInfo() {
         );
       }
       return Column(children: [
-        ListTile(
-          onTap: () async {
-            String? choose = await chooseFolder(context);
-            if (choose != null) {
-              _setExportPath(choose);
-            }
-            setState(() {});
-          },
-          title: const Text("导出路径 (点击可修改)"),
-          subtitle: Text(_currentExportPath),
-        ),
+        if (!Platform.isMacOS)
+          ListTile(
+            onTap: () async {
+              await chooseEx(context);
+              setState(() {});
+            },
+            title: const Text("导出路径 (点击可修改)"),
+            subtitle: Text(_currentExportPath),
+          ),
         ...Platform.isAndroid
             ? [
                 Container(height: 15),
@@ -93,7 +91,7 @@ Future<String> attachExportPath() async {
   if (Platform.isIOS) {
     path = await methods.iosGetDocumentDir();
   } else {
-    if(!await androidMangeStorageRequest()) {
+    if (!await androidMangeStorageRequest()) {
       throw Exception("申请权限被拒绝");
     }
     path = _currentExportPath;
@@ -104,4 +102,11 @@ Future<String> attachExportPath() async {
     await methods.androidMkdirs(path);
   }
   return path;
+}
+
+Future chooseEx(BuildContext context) async {
+  String? choose = await chooseFolder(context);
+  if (choose != null) {
+    await _setExportPath(choose);
+  }
 }
