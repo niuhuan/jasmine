@@ -1175,7 +1175,7 @@ class _ComicReaderGalleryState extends _ComicReaderState {
       backgroundDecoration: const BoxDecoration(color: Colors.black),
       loadingBuilder: (context, event) => LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          return buildLoading(constraints.maxWidth, constraints.maxHeight);
+          return buildLoading(context, constraints.maxWidth, constraints.maxHeight);
         },
       ),
       pageController: _pageController,
@@ -1190,7 +1190,7 @@ class _ComicReaderGalleryState extends _ComicReaderState {
             print("$e,$s");
             return LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                return buildError(constraints.maxWidth, constraints.maxHeight);
+                return buildError(context, constraints.maxWidth, constraints.maxHeight);
               },
             );
           },
@@ -1539,6 +1539,7 @@ class _TwoPageGalleryReaderState extends _ComicReaderState {
                         errorBuilder: (b, e, s) {
                           print("$e,$s");
                           return buildError(
+                            context,
                             constraints.maxWidth / 2,
                             constraints.maxHeight / 2,
                           );
@@ -1556,6 +1557,7 @@ class _TwoPageGalleryReaderState extends _ComicReaderState {
                         errorBuilder: (b, e, s) {
                           print("$e,$s");
                           return buildError(
+                            context,
                             constraints.maxWidth / 2,
                             constraints.maxHeight / 2,
                           );

@@ -7,6 +7,7 @@ import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/configs/pager_controller_mode.dart';
 import 'package:jasmine/screens/comic_info_screen.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
+import 'package:jasmine/screens/components/types.dart';
 
 import '../../configs/is_pro.dart';
 import 'comic_list.dart';
@@ -15,8 +16,10 @@ const _noProMax = 10;
 
 class ComicPager extends StatefulWidget {
   final Future<InnerComicPage> Function(int page) onPage;
+  final List<ComicLongPressMenuItem>? longPressMenuItems;
 
-  const ComicPager({required this.onPage, Key? key}) : super(key: key);
+  const ComicPager({required this.onPage, this.longPressMenuItems, Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ComicPagerState();
@@ -43,17 +46,23 @@ class _ComicPagerState extends State<ComicPager> {
   Widget build(BuildContext context) {
     switch (currentPagerControllerMode) {
       case PagerControllerMode.stream:
-        return _StreamPager(onPage: widget.onPage);
+        return _StreamPager(
+            onPage: widget.onPage,
+            longPressMenuItems: widget.longPressMenuItems);
       case PagerControllerMode.pager:
-        return _PagerPager(onPage: widget.onPage);
+        return _PagerPager(
+            onPage: widget.onPage,
+            longPressMenuItems: widget.longPressMenuItems);
     }
   }
 }
 
 class _StreamPager extends StatefulWidget {
   final Future<InnerComicPage> Function(int page) onPage;
+  final List<ComicLongPressMenuItem>? longPressMenuItems;
 
-  const _StreamPager({Key? key, required this.onPage}) : super(key: key);
+  const _StreamPager({Key? key, required this.onPage, this.longPressMenuItems})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _StreamPagerState();
@@ -250,6 +259,7 @@ class _StreamPagerState extends State<_StreamPager> {
             onScroll: _onScroll,
             data: _data,
             append: _buildLoadingCard(),
+            longPressMenuItems: widget.longPressMenuItems,
           ),
         ),
       ],
@@ -296,8 +306,10 @@ class _StreamPagerState extends State<_StreamPager> {
 
 class _PagerPager extends StatefulWidget {
   final Future<InnerComicPage> Function(int page) onPage;
+  final List<ComicLongPressMenuItem>? longPressMenuItems;
 
-  const _PagerPager({Key? key, required this.onPage}) : super(key: key);
+  const _PagerPager({Key? key, required this.onPage, this.longPressMenuItems})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PagerPagerState();
@@ -357,6 +369,7 @@ class _PagerPagerState extends State<_PagerPager> {
           appBar: _buildPagerBar(),
           body: ComicList(
             data: _data,
+            longPressMenuItems: widget.longPressMenuItems,
           ),
         );
       },

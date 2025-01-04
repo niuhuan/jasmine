@@ -76,6 +76,11 @@ class Methods {
     return ComicsResponse.fromJson(jsonDecode(rsp));
   }
 
+  Future<dynamic> deleteViewLogByComicId(int comicId) async {
+    final rsp = await _invoke("delete_view_log_by_comic_id", comicId);
+    return rsp;
+  }
+
   Future<CategoriesResponse> categories() async {
     return CategoriesResponse.fromJson(
         jsonDecode(await _invoke("categories", "")));

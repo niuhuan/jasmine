@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:ui' as ui show Codec;
 
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/screens/components/types.dart';
 
 import '../file_photo_view_screen.dart';
 
@@ -108,6 +109,7 @@ class JM3x4Cover extends StatefulWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
+  final List<LongPressMenuItem>? longPressMenuItems;
 
   const JM3x4Cover({
     Key? key,
@@ -115,6 +117,7 @@ class JM3x4Cover extends StatefulWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.longPressMenuItems,
   }) : super(key: key);
 
   @override
@@ -133,11 +136,12 @@ class _JM3x4CoverState extends State<JM3x4Cover> {
   @override
   Widget build(BuildContext context) {
     return pathFutureImage(
+      context,
       _future,
       widget.width,
       widget.height,
       fit: widget.fit,
-      context: context,
+      longPressMenuItems: widget.longPressMenuItems,
     );
   }
 }
@@ -148,6 +152,7 @@ class JMSquareCover extends StatefulWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
+  final List<LongPressMenuItem>? longPressMenuItems;
 
   const JMSquareCover({
     Key? key,
@@ -155,6 +160,7 @@ class JMSquareCover extends StatefulWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.longPressMenuItems,
   }) : super(key: key);
 
   @override
@@ -173,11 +179,12 @@ class _JMSquareCoverState extends State<JMSquareCover> {
   @override
   Widget build(BuildContext context) {
     return pathFutureImage(
+      context,
       _future,
       widget.width,
       widget.height,
       fit: widget.fit,
-      context: context,
+      longPressMenuItems: widget.longPressMenuItems,
     );
   }
 }
@@ -213,11 +220,11 @@ class _JMPhotoImageState extends State<JMPhotoImage> {
   @override
   Widget build(BuildContext context) {
     return pathFutureImage(
+      context,
       _future,
       widget.width,
       widget.height,
       fit: widget.fit,
-      context: context,
     );
   }
 }
@@ -258,29 +265,41 @@ class _JMPageImageState extends State<JMPageImage> {
 
   @override
   Widget build(BuildContext context) {
-    return pathFutureImage(_future, widget.width, widget.height);
+    return pathFutureImage(context, _future, widget.width, widget.height);
   }
 }
 
-Widget pathFutureImage(Future<String> future, double? width, double? height,
-    {BoxFit fit = BoxFit.cover, BuildContext? context}) {
+Widget pathFutureImage(BuildContext context, Future<String> future, double? width, double? height,
+    {BoxFit fit = BoxFit.cover,
+    List<LongPressMenuItem>? longPressMenuItems}) {
   return FutureBuilder(
       future: future,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.hasError) {
           print("${snapshot.error}");
           print("${snapshot.stackTrace}");
-          return buildError(width, height);
+          return buildError(
+            context,
+            width,
+            height,
+            longPressMenuItems: longPressMenuItems,
+          );
         }
         if (snapshot.connectionState != ConnectionState.done) {
-          return buildLoading(width, height);
+          return buildLoading(
+            context,
+            width,
+            height,
+            longPressMenuItems: longPressMenuItems,
+          );
         }
         return buildFile(
+          context,
           snapshot.data!,
           width,
           height,
           fit: fit,
-          context: context,
+          longPressMenuItems: longPressMenuItems,
         );
       });
 }
@@ -322,20 +341,41 @@ Widget buildMock(double? width, double? height) {
   return GestureDetector(onLongPress: () {}, child: widget);
 }
 
-Widget buildError(double? width, double? height) {
-  return Image(
+Widget buildError(BuildContext context, double? width, double? height,
+    {List<LongPressMenuItem>? longPressMenuItems}) {
+  var error = Image(
     image: const AssetImage('lib/assets/error.png'),
     width: width,
     height: height,
   );
+  if (longPressMenuItems != null && longPressMenuItems.isNotEmpty) {
+    return GestureDetector(
+      onLongPress: () async {
+        String? choose = await chooseListDialog(
+          context,
+          title: '请选择',
+          values: longPressMenuItems.map((e) => e.title).toList(),
+        );
+        for (var item in longPressMenuItems) {
+          if (item.title == choose) {
+            item.onChoose();
+            break;
+          }
+        }
+      },
+      child: error,
+    );
+  }
+  return error;
 }
 
-Widget buildLoading(double? width, double? height) {
+Widget buildLoading(BuildContext context, double? width, double? height,
+    {List<LongPressMenuItem>? longPressMenuItems}) {
   double? size;
   if (width != null && height != null) {
     size = width < height ? width : height;
   }
-  return SizedBox(
+  var loading = SizedBox(
     width: width,
     height: height,
     child: Center(
@@ -346,10 +386,30 @@ Widget buildLoading(double? width, double? height) {
       ),
     ),
   );
+  if (longPressMenuItems != null && longPressMenuItems.isNotEmpty) {
+    return GestureDetector(
+      onLongPress: () async {
+        String? choose = await chooseListDialog(
+          context,
+          title: '请选择',
+          values: longPressMenuItems.map((e) => e.title).toList(),
+        );
+        for (var item in longPressMenuItems) {
+          if (item.title == choose) {
+            item.onChoose();
+            break;
+          }
+        }
+      },
+      child: loading,
+    );
+  }
+  return loading;
 }
 
-Widget buildFile(String file, double? width, double? height,
-    {BoxFit fit = BoxFit.cover, BuildContext? context}) {
+Widget buildFile(
+    BuildContext context, String file, double? width, double? height,
+    {BoxFit fit = BoxFit.cover, List<LongPressMenuItem>? longPressMenuItems}) {
   var image = Image(
     image: FileImage(File(file)),
     width: width,
@@ -357,11 +417,10 @@ Widget buildFile(String file, double? width, double? height,
     errorBuilder: (a, b, c) {
       print("$b");
       print("$c");
-      return buildError(width, height);
+      return buildError(context, width, height);
     },
     fit: fit,
   );
-  if (context == null) return image;
   return GestureDetector(
     onLongPress: () async {
       String? choose = await chooseListDialog(
@@ -379,6 +438,7 @@ Widget buildFile(String file, double? width, double? height,
                   '保存图片到文件',
                 ]
               : [],
+          ...longPressMenuItems?.map((e) => e.title) ?? [],
         ],
       );
       switch (choose) {
@@ -392,6 +452,14 @@ Widget buildFile(String file, double? width, double? height,
           break;
         case '保存图片到文件':
           saveImageFileToFile(context, file);
+          break;
+        default:
+          for (var item in longPressMenuItems ?? []) {
+            if (item.title == choose) {
+              item.onChoose();
+              break;
+            }
+          }
           break;
       }
     },
