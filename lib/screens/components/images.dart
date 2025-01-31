@@ -343,10 +343,20 @@ Widget buildMock(double? width, double? height) {
 
 Widget buildError(BuildContext context, double? width, double? height,
     {List<LongPressMenuItem>? longPressMenuItems}) {
-  var error = Image(
-    image: const AssetImage('lib/assets/error.png'),
+  double? size;
+  if (width != null && height != null) {
+    size = width < height ? width : height;
+  }
+  var error = SizedBox(
     width: width,
     height: height,
+    child: Center(
+      child: Icon(
+        Icons.error_outline,
+        size: size,
+        color: Colors.grey,
+      ),
+    ),
   );
   if (longPressMenuItems != null && longPressMenuItems.isNotEmpty) {
     return GestureDetector(
