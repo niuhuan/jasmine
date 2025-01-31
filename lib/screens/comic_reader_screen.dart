@@ -244,6 +244,7 @@ class _ComicReader extends StatefulWidget {
 }
 
 abstract class _ComicReaderState extends State<_ComicReader> {
+  bool _sliderDragging = false;
   Widget _buildViewer();
 
   _needJumpTo(int pageIndex, bool animation);
@@ -346,6 +347,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         return Stack(
           children: [
             _buildViewer(),
+            if (_sliderDragging) _sliderDraggingText(),
             _buildBar(_buildFullScreenControllerStackItem()),
           ],
         );
@@ -353,6 +355,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         return Stack(
           children: [
             _buildTouchOnceControllerAction(_buildViewer()),
+            if (_sliderDragging) _sliderDraggingText(),
             _buildBar(null),
           ],
         );
@@ -360,6 +363,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         return Stack(
           children: [
             _buildTouchDoubleControllerAction(_buildViewer()),
+            if (_sliderDragging) _sliderDraggingText(),
             _buildBar(null),
           ],
         );
@@ -367,6 +371,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         return Stack(
           children: [
             _buildTouchDoubleOnceNextControllerAction(_buildViewer()),
+            if (_sliderDragging) _sliderDraggingText(),
             _buildBar(null),
           ],
         );
@@ -374,10 +379,30 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         return Stack(
           children: [
             _buildViewer(),
+            if (_sliderDragging) _sliderDraggingText(),
             _buildBar(_buildThreeAreaControllerAction()),
           ],
         );
     }
+  }
+
+  Widget _sliderDraggingText() {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0x88000000),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          "${_slider + 1} / ${widget.chapter.images.length}",
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildFullScreenControllerStackItem() {
@@ -713,13 +738,23 @@ abstract class _ComicReaderState extends State<_ComicReader> {
       min: 0,
       max: (widget.chapter.images.length - 1).toDouble(),
       onDragging: (handlerIndex, lowerValue, upperValue) {
-        _slider = (lowerValue.toInt());
+        setState(() {
+          _slider = (lowerValue.toInt());
+        });
       },
       onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+        setState(() {
+          _sliderDragging = false;
+        });
         _slider = (lowerValue.toInt());
         if (_slider != _current) {
           _needJumpTo(_slider, false);
         }
+      },
+      onDragStarted: (handlerIndex, lowerValue, upperValue) {
+        setState(() {
+          _sliderDragging = true;
+        });
       },
       trackBar: FlutterSliderTrackBar(
         inactiveTrackBar: BoxDecoration(
@@ -735,24 +770,7 @@ abstract class _ComicReaderState extends State<_ComicReader> {
         step: 1,
         isPercentRange: false,
       ),
-      tooltip: FlutterSliderTooltip(custom: (value) {
-        double a = value + 1;
-        return Container(
-          padding: const EdgeInsets.all(8),
-          decoration: ShapeDecoration(
-            color: Colors.black.withAlpha(0xCC),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusDirectional.circular(3)),
-          ),
-          child: Text(
-            '${a.toInt()}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-            ),
-          ),
-        );
-      }),
+      tooltip: FlutterSliderTooltip(disabled: true),
     );
   }
 
