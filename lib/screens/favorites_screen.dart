@@ -54,11 +54,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   void initState() {
-    for (var value in selfInfo.favoriteList) {
-      try {
-        _folderMap[int.parse(value.fid)] = value.name;
-      } catch (e) {}
-    }
     super.initState();
   }
 
