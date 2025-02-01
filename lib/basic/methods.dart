@@ -110,8 +110,8 @@ class Methods {
     })));
   }
 
-  Future<FavoritesResponse> favorites(int folderId, int page, String o) async {
-    return FavoritesResponse.fromJson(
+  Future<Favorite> favorites(int folderId, int page, String o) async {
+    return Favorite.fromJson(
       jsonDecode(await _invoke("favorites", {
         "folder_id": folderId,
         "page": page,
@@ -130,6 +130,14 @@ class Methods {
     return ActionResponse.fromJson(
       jsonDecode(await _invoke("set_favorite", aid)),
     );
+  }
+
+  Future createFavoriteFolder(String name) async {
+    return _invoke("create_favorite_folder", name);
+  }
+
+  Future deleteFavoriteFolder(int folderId) async {
+    return _invoke("delete_favorite_folder", folderId);
   }
 
   Future comicFavoriteFolderMove(int comicId, int folderId) async {

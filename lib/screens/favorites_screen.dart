@@ -54,7 +54,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   void initState() {
-    for (var value in favData.folderList) {
+    for (var value in favData) {
       try {
         _folderMap[value.fid] = value.name;
       } catch (e) {
@@ -101,6 +101,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         key: Key("FAVOUR:$_folderId:$_sort"),
         onPage: (int page) async {
           final response = await methods.favorites(_folderId, page, _sort);
+          setState(() {
+            favData  = response.folderList;
+          });
           return InnerComicPage(total: response.total, list: response.list);
         },
       ),

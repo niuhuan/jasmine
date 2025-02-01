@@ -66,11 +66,56 @@ Future daily(BuildContext context) async {
   }
 }
 
-Favorite favData = Favorite();
+List<FavoriteFolderItem> favData = [];
+
+Widget createFavoriteFolderItemTile(BuildContext context) {
+  return ListTile(
+    title: const Text("创建收藏文件夹"),
+    onTap: () async {
+      if (loginStatus != LoginStatus.loginSuccess) {
+        defaultToast(context, "请先登录");
+        return;
+      }
+      var name = await displayTextInputDialog(context, title: "创建收藏文件夹", hint: "文件夹名称");
+      if (name == null) {
+        return;
+      }
+      await methods.createFavoriteFolder(name);
+      fav(context);
+      defaultToast(context, "创建成功");
+    },
+  );
+}
+
+Widget deleteFavoriteFolderItemTile(BuildContext context) {
+  return ListTile(
+    title: const Text("删除收藏文件夹"),
+    onTap: () async {
+      if (loginStatus != LoginStatus.loginSuccess) {
+        defaultToast(context, "请先登录");
+        return;
+      }
+      var j = favData.map((i) {
+        return MapEntry(i.name, i.fid);
+      }).toList();
+      j.add(const MapEntry("默认 / 不删除", 0));
+      var v = await chooseMapDialog<int>(
+        context,
+        title: "删除资料夹",
+        values: Map.fromEntries(j),
+      );
+      if (v != null && v != 0) {
+        await methods.deleteFavoriteFolder(v);
+        fav(context);
+        defaultToast(context, "删除成功");
+      }
+    },
+  );
+}
 
 Future fav(BuildContext buildContext) async {
   try {
-    favData = await methods.favorite();
+    favData = (await methods.favorite()).folderList;
   } catch (e, st) {
     print("$e\n$st");
     defaultToast(buildContext, "$e");

@@ -14,6 +14,7 @@ import '../configs/categories_sort.dart';
 import '../configs/display_jmcode.dart';
 import '../configs/download_and_export_to.dart';
 import '../configs/export_rename.dart';
+import '../configs/login.dart';
 import '../configs/no_animation.dart';
 import '../configs/proxy.dart';
 import '../configs/search_title_words.dart';
@@ -87,6 +88,8 @@ class _SettingsState extends State<SettingsScreen> {
             },
             title: const Text("清除账号信息"),
           ),
+          createFavoriteFolderItemTile(context),
+          deleteFavoriteFolderItemTile(context),
           authenticationSetting(),
           const Divider(),
           ListTile(

@@ -283,10 +283,11 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
         data.isFavorite = !data.isFavorite;
       });
       defaultToast(context, "收藏成功");
-      if (data.isFavorite && favData.folderList.isNotEmpty) {
-        var j = favData.folderList.map((i) {
+      if (data.isFavorite && favData.isNotEmpty) {
+        var j = favData.map((i) {
           return MapEntry(i.name, i.fid);
         }).toList();
+        j.add(const MapEntry("默认 / 不移动", 0));
         var v = await chooseMapDialog<int>(
           context,
           title: "移动到资料夹",
