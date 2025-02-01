@@ -54,6 +54,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   void initState() {
+    for (var value in favData.folderList) {
+      try {
+        _folderMap[value.fid] = value.name;
+      } catch (e) {
+        print(e);
+        defaultToast(context, "$e");
+      }
+    }
     super.initState();
   }
 

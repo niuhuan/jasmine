@@ -51,6 +51,11 @@ class CountPage<T> {
     json["count"] = count;
     return json;
   }
+
+  CountPage() {
+    total = 0;
+    count = 0;
+  }
 }
 
 class SearchPage {
@@ -721,6 +726,55 @@ class FavoriteFolder {
   late final String name;
 
   FavoriteFolder.fromJson(Map<String, dynamic> json) {
+    fid = json['FID'];
+    uid = json['UID'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['FID'] = fid;
+    _data['UID'] = uid;
+    _data['name'] = name;
+    return _data;
+  }
+}
+
+class Favorite extends CountPage<ComicSimple> {
+  late final List<FavoriteFolderItem> folderList;
+  Favorite.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    list = List.from(json['list']).map((e) => ComicSimple.fromJson(e)).toList();
+    folderList = List.from(json['folder_list'])
+        .map((e) => FavoriteFolderItem.fromJson(e))
+        .toList();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final _data = super.toJson();
+    _data['list'] = list;
+    _data['folder_list'] = folderList;
+    return _data;
+  }
+
+  Favorite(): super() {
+    list = [];
+    folderList = [];
+  }
+}
+
+class FavoriteFolderItem {
+  FavoriteFolderItem({
+    required this.fid,
+    required this.uid,
+    required this.name,
+  });
+
+  late final int fid;
+  late final int uid;
+  late final String name;
+
+  FavoriteFolderItem.fromJson(Map<String, dynamic> json) {
     fid = json['FID'];
     uid = json['UID'];
     name = json['name'];

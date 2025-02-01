@@ -42,6 +42,7 @@ Future initLogin(BuildContext context) async {
       _selfInfo = preLogin.selfInfo!;
       _loginState = LoginStatus.loginSuccess;
       daily(context);
+      fav(context);
     } else {
       _loginState = LoginStatus.loginField;
     }
@@ -65,6 +66,17 @@ Future daily(BuildContext context) async {
   }
 }
 
+Favorite favData = Favorite();
+
+Future fav(BuildContext buildContext) async {
+  try {
+    favData = await methods.favorite();
+  } catch (e, st) {
+    print("$e\n$st");
+    defaultToast(buildContext, "$e");
+  }
+}
+
 Future login(String username, String password, BuildContext context) async {
   try {
     _loginState = LoginStatus.logging;
@@ -72,6 +84,7 @@ Future login(String username, String password, BuildContext context) async {
     _selfInfo = selfInfo;
     _loginState = LoginStatus.loginSuccess;
     daily(context);
+    fav(context);
   } catch (e, st) {
     print("$e\n$st");
     _loginState = LoginStatus.loginField;

@@ -120,10 +120,20 @@ class Methods {
     );
   }
 
+  Future<Favorite> favorite() async {
+    return Favorite.fromJson(
+      jsonDecode(await _invoke("favorite", "")),
+    );
+  }
+
   Future<ActionResponse> setFavorite(int aid) async {
     return ActionResponse.fromJson(
       jsonDecode(await _invoke("set_favorite", aid)),
     );
+  }
+
+  Future comicFavoriteFolderMove(int comicId, int folderId) async {
+    return _invoke("comic_favorite_folder_move", [comicId, folderId]);
   }
 
   Future<GamePage> games(int page) async {
@@ -383,8 +393,7 @@ class Methods {
     });
   }
 
-  Future export_jm_pdf(
-      int id, String folder, bool deleteExported) {
+  Future export_jm_pdf(int id, String folder, bool deleteExported) {
     return _invoke("export_jm_pdf", {
       "comic_id": [id],
       "dir": folder,
@@ -514,7 +523,6 @@ class Methods {
   Future<String> daily(int uid) {
     return _invoke("daily", uid);
   }
-
 }
 
 class _Response {
