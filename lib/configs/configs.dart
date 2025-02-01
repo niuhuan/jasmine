@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:jasmine/configs/Authentication.dart';
 import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/android_version.dart';
@@ -35,7 +36,7 @@ import 'login.dart';
 import 'pager_controller_mode.dart';
 import 'pager_view_mode.dart';
 
-Future initConfigs() async {
+Future initConfigs(BuildContext context) async {
   await initPassed();
   await initAndroidVersion();
   await initAndroidDisplayMode();
@@ -67,7 +68,7 @@ Future initConfigs() async {
   await initNoAnimation();
   await initDownloadAndExportTo();
   await initExportRename();
-  await initLogin();
+  await initLogin(context);
   await initDisplayJmcode();
   await initSearchTitleWords();
   await initCategoriesSort();

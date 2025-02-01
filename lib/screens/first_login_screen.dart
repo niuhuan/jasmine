@@ -71,7 +71,7 @@ class _FirstLoginScreenState extends State<FirstLoginScreen> {
       setState(() {
         _logging = true;
       });
-      await login(_username, _password);
+      await login(_username, _password, context);
       await reloadIsPro();
       if (loginStatus != LoginStatus.loginSuccess) {
         defaultToast(context, loginMessage);

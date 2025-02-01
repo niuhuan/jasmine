@@ -511,6 +511,10 @@ class Methods {
     return await _channel.invokeMethod("verifyAuthentication");
   }
 
+  Future<String> daily(int uid) {
+    return _invoke("daily", uid);
+  }
+
 }
 
 class _Response {

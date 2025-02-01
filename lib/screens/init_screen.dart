@@ -58,7 +58,7 @@ class _InitScreenState extends State<InitScreen> {
   Future _init() async {
     try {
       await methods.init();
-      await initConfigs();
+      await initConfigs(context);
       print("STATE : ${loginStatus}");
       if (!currentPassed()) {
         Future.delayed(Duration.zero, () async {

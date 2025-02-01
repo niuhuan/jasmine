@@ -31,7 +31,7 @@ set _loginState(LoginStatus value) {
   _event.broadcast();
 }
 
-Future initLogin() async {
+Future initLogin(BuildContext context) async {
   try {
     _loginState = LoginStatus.logging;
     final preLogin = await methods.preLogin();
@@ -41,6 +41,7 @@ Future initLogin() async {
     } else if (preLogin.preLogin) {
       _selfInfo = preLogin.selfInfo!;
       _loginState = LoginStatus.loginSuccess;
+      daily(context);
     } else {
       _loginState = LoginStatus.loginField;
     }
@@ -52,12 +53,25 @@ Future initLogin() async {
   }
 }
 
-Future login(String username, String password) async {
+Future daily(BuildContext context) async {
+  try {
+    String msg = await methods.daily(selfInfo.uid);
+    if (msg.isNotEmpty) {
+      defaultToast(context, msg);
+    }
+  } catch (e, st) {
+    print("$e\n$st");
+    defaultToast(context, "$e");
+  }
+}
+
+Future login(String username, String password, BuildContext context) async {
   try {
     _loginState = LoginStatus.logging;
     final selfInfo = await methods.login(username, password);
     _selfInfo = selfInfo;
     _loginState = LoginStatus.loginSuccess;
+    daily(context);
   } catch (e, st) {
     print("$e\n$st");
     _loginState = LoginStatus.loginField;
@@ -188,7 +202,7 @@ class _LoginDialogState extends State<_LoginDialog> {
                     color: Colors.orange.shade700,
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      await login(_username, _password);
+                      await login(_username, _password, context);
                       await reloadIsPro();
                     },
                     child: Container(
