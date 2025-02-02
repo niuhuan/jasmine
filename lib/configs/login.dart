@@ -76,7 +76,8 @@ Widget createFavoriteFolderItemTile(BuildContext context) {
         defaultToast(context, "请先登录");
         return;
       }
-      var name = await displayTextInputDialog(context, title: "创建收藏文件夹", hint: "文件夹名称");
+      var name = await displayTextInputDialog(context,
+          title: "创建收藏文件夹", hint: "文件夹名称");
       if (name == null) {
         return;
       }
@@ -108,6 +109,37 @@ Widget deleteFavoriteFolderItemTile(BuildContext context) {
         await methods.deleteFavoriteFolder(v);
         fav(context);
         defaultToast(context, "删除成功");
+      }
+    },
+  );
+}
+
+Widget renameFavoriteFolderItemTile(BuildContext context) {
+  return ListTile(
+    title: const Text("重命名收藏文件夹"),
+    onTap: () async {
+      if (loginStatus != LoginStatus.loginSuccess) {
+        defaultToast(context, "请先登录");
+        return;
+      }
+      var j = favData.map((i) {
+        return MapEntry(i.name, i.fid);
+      }).toList();
+      j.add(const MapEntry("默认 / 不重命名", 0));
+      var v = await chooseMapDialog<int>(
+        context,
+        title: "重命名资料夹",
+        values: Map.fromEntries(j),
+      );
+      if (v != null && v != 0) {
+        var name = await displayTextInputDialog(context,
+            title: "重命名收藏文件夹", hint: "文件夹名称");
+        if (name == null) {
+          return;
+        }
+        await methods.renameFavoriteFolder(v, name);
+        fav(context);
+        defaultToast(context, "重命名成功");
       }
     },
   );

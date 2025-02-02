@@ -144,6 +144,10 @@ class Methods {
     return _invoke("comic_favorite_folder_move", [comicId, folderId]);
   }
 
+  Future renameFavoriteFolder(int folderId, String name) async {
+    return _invoke("rename_favorite_folder", ["$folderId", name]);
+  }
+
   Future<GamePage> games(int page) async {
     return GamePage.fromJson(
       jsonDecode(await _invoke("games", page)),

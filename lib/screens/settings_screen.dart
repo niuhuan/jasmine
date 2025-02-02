@@ -90,6 +90,7 @@ class _SettingsState extends State<SettingsScreen> {
           ),
           createFavoriteFolderItemTile(context),
           deleteFavoriteFolderItemTile(context),
+          renameFavoriteFolderItemTile(context),
           authenticationSetting(),
           const Divider(),
           ListTile(
