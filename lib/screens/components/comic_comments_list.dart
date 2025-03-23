@@ -297,7 +297,8 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         alignment: WrapAlignment.spaceBetween,
                         children: [
-                          Text("Lv.${comment.expinfo.level}", style: levelStyle),
+                          Text("Lv.${comment.expinfo.level}",
+                              style: levelStyle),
                           Text.rich(TextSpan(
                             style: levelStyle,
                             children: [
@@ -398,15 +399,23 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                           .replaceAll("</div>", ""),
                     );
                   },
-                  child: Text(
-                    comment.content
-                        .replaceAll(
-                          "<div style='flex-direction:row;flex-wrap:wrap;'>",
-                          "",
-                        )
-                        .replaceAll("</div>", ""),
-                    style: connectStyle,
-                  ),
+                  child: Text.rich(TextSpan(
+                    children: [...parseCommentBody(comment.content
+                          .replaceAll(
+                            "<div style='flex-direction:row;flex-wrap:wrap;'>",
+                            "",
+                          )
+                          .replaceAll("</div>", ""))],
+                  )),
+                  // child: Text(
+                  //   comment.content
+                  //       .replaceAll(
+                  //         "<div style='flex-direction:row;flex-wrap:wrap;'>",
+                  //         "",
+                  //       )
+                  //       .replaceAll("</div>", ""),
+                  //   style: connectStyle,
+                  // ),
                 ),
                 ...widget.gotoComic
                     ? [
@@ -444,6 +453,32 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
         ],
       ),
     );
+  }
+
+  //<img style="width:18px;height:18px" src="https://www.cdnxxx-proxy.xyz/media/emoji/0002.png" alt="doge" />
+  List<InlineSpan> parseCommentBody(String comment) {
+    var regex = RegExp(r'<img style=\"width:18px;height:18px\" src=\"(.*?)\" alt=\"(.*?)\" />');
+    var matches = regex.allMatches(comment);
+    if (matches.isNotEmpty) {
+      var list = comment.split(regex);
+      var spans = <InlineSpan>[];
+      for (var i = 0; i < list.length; i++) {
+        spans.add(TextSpan(text: list[i]));
+        if (i < list.length - 1) {
+          spans.add(WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Image.network(
+              matches.elementAt(i).group(1)!,
+              width: 18,
+              height: 18,
+              fit: BoxFit.cover,
+            ),
+          ));
+        }
+      }
+      return spans;
+    }
+    return [TextSpan(text: comment)];
   }
 }
 

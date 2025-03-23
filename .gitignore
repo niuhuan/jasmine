@@ -77,4 +77,4 @@ tests_data/
 *.so
 *.dylib
 .build/
-
+.vscode/
