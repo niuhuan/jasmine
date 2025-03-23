@@ -56,7 +56,8 @@ Future<T?> chooseCdnDialog<T>(BuildContext buildContext) async {
     builder: (BuildContext context) {
       return SimpleDialog(
         title: const Text("图片分流"),
-        children: _cdnList
+        children: [
+          ..._cdnList
             .map(
               (e) => SimpleDialogOption(
             child: CdnOptionRow(
@@ -67,8 +68,54 @@ Future<T?> chooseCdnDialog<T>(BuildContext buildContext) async {
               Navigator.of(context).pop(e);
             },
           ),
-        )
-            .toList(),
+        ),
+            SimpleDialogOption(
+              child: const Text("手动输入"),
+              onPressed: () async {
+                Navigator.of(context).pop(await _manualInputApiHost(context));
+              },
+            ),
+            SimpleDialogOption(
+              child: const Text("取消"),
+              onPressed: () {
+                Navigator.of(context).pop(null);
+              },
+            ),
+        ],
+      );
+    },
+  );
+}
+
+final TextEditingController _controller = TextEditingController();
+
+Future<String> _manualInputApiHost(BuildContext context) async {
+  _controller.text = _cdnHost;
+  return await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("手动输入CDN地址"),
+        content: TextField(
+          controller: _controller,
+          decoration: const InputDecoration(
+            hintText: "www.example.com",
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("取消"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop(_controller.text);
+            },
+            child: const Text("确定"),
+          ),
+        ],
       );
     },
   );
