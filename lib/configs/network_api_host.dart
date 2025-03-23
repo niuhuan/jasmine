@@ -1,25 +1,30 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 
 late String _apiHost;
 
-const apiHosts = {
-  "原始": "0",
-  "分流1": "1",
-  "分流2": "2",
-  "分流3": "3",
-  "分流4": "4",
-};
+const _base64List = [
+  "d3d3LmNkbnh4eC1wcm94eS52aXA=",
+  "d3d3LmNkbnh4eC1wcm94eS54eXo=",
+  "d3d3LmNkbnh4eC1wcm94eS5jbw==",
+  "d3d3LmNkbnh4eC1wcm94eS52aXA=",
+  "d3d3LmNkbnh4eC1wcm94eS5vcmc=",
+  "d3d3LmNkbm1od3MuY2M=",
+  "d3d3LmptYXBpcHJveHl4eHgudmlw",
+]; 
 
-String _apiHostName(String value) {
-  return value == "0" ? "原始" : "分流$value";
-}
-
-String get currentApiHostName => _apiHostName(_apiHost);
+var _apiList = [];
 
 Future<void> initApiHost() async {
+  for (var i = 0; i < _base64List.length; i++) {
+    _apiList.add(utf8.decode(base64.decode(_base64List[i])));
+  }
   _apiHost = await methods.loadApiHost();
 }
+
+String get currentApiHostName => (_apiHost);
 
 Future<T?> chooseApiDialog<T>(BuildContext buildContext) async {
   return await showDialog<T>(
@@ -27,16 +32,15 @@ Future<T?> chooseApiDialog<T>(BuildContext buildContext) async {
     builder: (BuildContext context) {
       return SimpleDialog(
         title: const Text("API分流"),
-        children: apiHosts.entries
+        children: _apiList
             .map(
               (e) => SimpleDialogOption(
                 child: ApiOptionRow(
-                  e.key,
-                  e.value,
-                  key: Key("API:${e.value}"),
+                  e,
+                  key: Key("API:${e}"),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(e.value);
+                  Navigator.of(context).pop(e);
                 },
               ),
             )
@@ -47,10 +51,9 @@ Future<T?> chooseApiDialog<T>(BuildContext buildContext) async {
 }
 
 class ApiOptionRow extends StatefulWidget {
-  final String title;
   final String value;
 
-  const ApiOptionRow(this.title, this.value, {Key? key}) : super(key: key);
+  const ApiOptionRow(this.value, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ApiOptionRowState();
@@ -69,7 +72,7 @@ class _ApiOptionRowState extends State<ApiOptionRow> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(widget.title),
+        Text(widget.value),
         Expanded(child: Container()),
         FutureBuilder(
           future: _feature,
@@ -152,7 +155,7 @@ Widget apiHostSetting() {
           setState(() {});
         },
         title: const Text("API分流"),
-        subtitle: Text(_apiHostName(_apiHost)),
+        subtitle: Text(_apiHost),
       );
     },
   );

@@ -42,7 +42,7 @@ class Methods {
   }
 
   Future init() {
-    return _invoke("init", "");
+    return _invoke("init_dart", "");
   }
 
   Future<String> loadProperty(String propertyKey) {

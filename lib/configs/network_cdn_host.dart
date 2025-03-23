@@ -1,15 +1,29 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
 
 late String _cdnHost;
 
-String _cdnHostName(String value) {
-  return value == "0" ? "随机" : "分流$value";
-}
 
-String get currentCdnHostName => _cdnHostName(_cdnHost);
+String get currentCdnHostName => _cdnHost;
+
+const _base64List = [
+  "Y2RuLW1zcC5qbWFwaXByb3h5My5uZXQ=",
+  "Y2RuLW1zcDIuam1hcGlub2RldWR6bi5uZXQ=",
+  "Y2RuLW1zcDIuam1hcGlwcm94eTEuY2M=",
+  "Y2RuLW1zcDIuam1hcGlwcm94eTIuY2M=",
+  "Y2RuLW1zcC5qbWFwaW5vZGV1ZHpuLm5ldA==",
+  "Y2RuLW1zcC5qbWFwaXByb3h5MS5jYw==",
+  "Y2RuLW1zcC5qbWFwaXByb3h5Mi5jYw==",
+];
+
+var _cdnList = [];
 
 Future<void> initCdnHost() async {
+  for (var i = 0; i < _base64List.length; i++) {
+    _cdnList.add(utf8.decode(base64.decode(_base64List[i])));
+  }
   _cdnHost = await methods.loadCdnHost();
 }
 
@@ -30,23 +44,11 @@ Widget cdnHostSetting() {
           setState(() {});
         },
         title: const Text("图片分流"),
-        subtitle: Text(_cdnHostName(_cdnHost)),
+        subtitle: Text(_cdnHost),
       );
     },
   );
 }
-
-
-var cdnHosts = {
-  "随机": "0",
-  "分流1": "1",
-  "分流2": "2",
-  "分流3": "3",
-  "分流4": "4",
-  "分流5": "5",
-  "分流6": "6",
-  "分流7": "7",
-};
 
 Future<T?> chooseCdnDialog<T>(BuildContext buildContext) async {
   return await showDialog<T>(
@@ -54,16 +56,15 @@ Future<T?> chooseCdnDialog<T>(BuildContext buildContext) async {
     builder: (BuildContext context) {
       return SimpleDialog(
         title: const Text("图片分流"),
-        children: cdnHosts.entries
+        children: _cdnList
             .map(
               (e) => SimpleDialogOption(
             child: CdnOptionRow(
-              e.key,
-              e.value,
-              key: Key("CDN:${e.value}"),
+              e,
+              key: Key("CDN:${e}"),
             ),
             onPressed: () {
-              Navigator.of(context).pop(e.value);
+              Navigator.of(context).pop(e);
             },
           ),
         )
@@ -74,10 +75,9 @@ Future<T?> chooseCdnDialog<T>(BuildContext buildContext) async {
 }
 
 class CdnOptionRow extends StatefulWidget {
-  final String title;
   final String value;
 
-  const CdnOptionRow(this.title, this.value, {Key? key}) : super(key: key);
+  const CdnOptionRow(this.value, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CdnOptionRowState();
@@ -96,7 +96,7 @@ class _CdnOptionRowState extends State<CdnOptionRow> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(widget.title),
+        Text(widget.value),
         Expanded(child: Container()),
         FutureBuilder(
           future: _feature,
