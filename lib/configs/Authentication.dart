@@ -6,13 +6,15 @@ import '../basic/commons.dart';
 import '../basic/methods.dart';
 import 'DesktopAuthenticationScreen.dart';
 import 'android_version.dart';
+
 const _propertyName = "authentication";
 late bool _authentication;
 
 Future<void> initAuthentication() async {
   if (Platform.isIOS || androidVersion >= 29) {
-    _authentication =
-        (await methods.loadProperty(_propertyName)) == "true";
+    _authentication = (await methods.loadProperty(_propertyName)) == "true";
+  } else if (Platform.isAndroid) {
+    _authentication = false;
   }
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     _authentication = await needDesktopAuthentication();
@@ -69,8 +71,8 @@ Widget authenticationSetting() {
 
 Future<void> _chooseAuthentication(BuildContext context) async {
   if (await methods.verifyAuthentication()) {
-    String? result =
-        await chooseListDialog<String>(context, title: "进入APP时验证身份", values: ["是", "否"]);
+    String? result = await chooseListDialog<String>(context,
+        title: "进入APP时验证身份", values: ["是", "否"]);
     if (result != null) {
       var target = result == "是";
       await methods.saveProperty(_propertyName, "$target");
