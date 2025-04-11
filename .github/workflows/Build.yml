@@ -119,7 +119,6 @@ jobs:
           OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
           OHOS_SDK_NATIVE=$OHOS_NDK_HOME
 
-          sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
           rustup target add aarch64-unknown-linux-ohos
           cargo install ohrs
           bash scripts/ohos-native.sh
@@ -149,6 +148,7 @@ jobs:
           cd $(dirname $(dirname $(realpath $(which flutter))))
           git config --global --add safe.directory ${{ env.FLUTTER_ROOT }}
           git remote set-url origin https://gitcode.com/openharmony-sig/flutter_flutter.git
+          git fetch
           git checkout -b 3.22.0-ohos origin/3.22.0-ohos
           git remote prune origin
           git gc --prune=now --aggressive
