@@ -194,6 +194,8 @@ jobs:
       - if: matrix.config.target == 'ohos-arm64'
         name: Install rust target and build (ohos)
         run: |
+          export HOS_SDK_HOME=$OHOS_BASE_SDK_HOME
+          export OHOS_SDK_HOME=$OHOS_BASE_SDK_HOME
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
           rustup target add aarch64-unknown-linux-ohos
           cargo install ohrs
