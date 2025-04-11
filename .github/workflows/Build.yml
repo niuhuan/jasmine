@@ -148,7 +148,7 @@ jobs:
           rm -rf "$AGENT_TOOLSDIRECTORY"
           cd $(dirname $(dirname $(realpath $(which flutter))))
           git config --global --add safe.directory ${{ env.FLUTTER_ROOT }}
-          git remote set-url ff https://gitcode.com/openharmony-sig/flutter_flutter.git
+          git remote set-url origin https://gitcode.com/openharmony-sig/flutter_flutter.git
           git checkout -b 3.22.0-ohos origin/3.22.0-ohos
           git remote prune origin
           git gc --prune=now --aggressive
