@@ -137,6 +137,8 @@ jobs:
         run: |
           apt update
           apt install -y jq curl xz-utils build-essential rsync
+          apt-get clean
+          apt-get autoclean
 
 
       - if: matrix.config.target == 'ohos-arm64' && steps.check_asset.outputs.skip_build != 'true'
@@ -178,10 +180,11 @@ jobs:
           rm -rf "$AGENT_TOOLSDIRECTORY"
           cd $(dirname $(dirname $(realpath $(which flutter))))
           git config --global --add safe.directory ${{ env.FLUTTER_ROOT }}
-          git remote add ff https://gitcode.com/openharmony-sig/flutter_flutter.git
-          git fetch ff
-          git checkout -b 3.22.0-ohos ff/3.22.0-ohos
-          rm -rf .git
+          git remote ser-url origin https://gitcode.com/openharmony-sig/flutter_flutter.git
+          git fetch
+          git checkout -b 3.22.0-ohos origin/3.22.0-ohos
+          git remote prune origin
+          git gc --prune=now --aggressive
 
       - name: Install cargo tools (non-android)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'macos' || matrix.config.target == 'windows' || matrix.config.target == 'linux' || matrix.config.target == 'ios' )
