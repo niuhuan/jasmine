@@ -123,6 +123,8 @@ jobs:
         name: Setup OpenHarmony SDK
         shell: bash
         run: |
+          rm -rf "/usr/local/share/boost"
+          rm -rf "$AGENT_TOOLSDIRECTORY"
           cd $(dirname $(dirname $(realpath $(which flutter))))
           git config --global --add safe.directory ${{ env.FLUTTER_ROOT }}
           git remote add ff https://gitcode.com/openharmony-sig/flutter_flutter.git
