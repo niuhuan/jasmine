@@ -158,6 +158,7 @@ jobs:
         shell: bash
         run: |
           cd $(dirname $(dirname $(realpath $(which flutter))))
+          git config --global --add safe.directory ${{ env.FLUTTER_ROOT }}
           git remote add ff https://gitcode.com/openharmony-sig/flutter_flutter.git
           git fetch ff
           git checkout -b 3.22.0-ohos ff/3.22.0-ohos
