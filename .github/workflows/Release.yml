@@ -225,7 +225,10 @@ jobs:
 
       - if: matrix.config.target == 'ohos-arm64'
         name: Setup OpenHarmony SDK
-        uses: openharmony-rs/setup-ohos-sdk@v0.1
+        uses: openharmony-rs/setup-ohos-sdk@v0.2.1
+        id: setup-ohos
+        with:
+          version: "5.0.1"
 
       # https://gitcode.com/openharmony-sig/flutter_flutter/commit/70f0164d35d0b47f97c56b12ff26769827bdb206
       - if: matrix.config.target == 'ohos-arm64'
