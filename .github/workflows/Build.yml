@@ -44,10 +44,11 @@ jobs:
           #   host: ubuntu-latest
           #   flutter_version: '3.22.1'
           #   flutter_channel: 'stable'
-          # - target: android-arm64
-          #   host: ubuntu-latest
-          #   flutter_version: '3.22.1'
-          #   flutter_channel: 'stable'
+          - target: android-arm64
+            host: ubuntu-latest
+            flutter_version: '3.22.1'
+            flutter_channel: 'stable'
+            container: 
           # - target: android-x86_64
           #   host: ubuntu-latest
           #   flutter_version: '3.22.1'
@@ -56,8 +57,10 @@ jobs:
             host: ubuntu-latest
             flutter_version: '3.22.1'
             flutter_channel: 'stable'
+            container: ghcr.io/sanchuanhehe/harmony-next-pipeline-docker/harmonyos-ci-image:latest
 
     runs-on: ${{ matrix.config.host }}
+    container: ${{ matrix.config.container }}
 
     env:
       TARGET: ${{ matrix.config.target }}
@@ -195,29 +198,15 @@ jobs:
           version: "5.0.1"
       
 
-
       - if: matrix.config.target == 'ohos-arm64'
         name: Install rust target and build (ohos)
         run: |
           find ${{ env.OHOS_BASE_SDK_HOME }} > sdk.txt
 
-      - if: matrix.config.target == 'ohos-arm64'
-        name: upload text
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'sdk.txt'
-          path: 'sdk.txt'
-          retention-days: 3
-
       
       - if: matrix.config.target == 'ohos-arm64'
         name: Install rust target and build (ohos)
         run: |
-          ls ${{ env.OHOS_BASE_SDK_HOME }}
-          export HOS_SDK_HOME=${{ env.OHOS_BASE_SDK_HOME }}
-          export OHOS_SDK_HOME=${{ env.OHOS_BASE_SDK_HOME }}
-          export HDC_HOME=${{ env.OHOS_BASE_SDK_HOME }}/toolchains
-          export PATH=${{ env.OHOS_BASE_SDK_HOME }}/toolchains:$PATH
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
           rustup target add aarch64-unknown-linux-ohos
           cargo install ohrs
