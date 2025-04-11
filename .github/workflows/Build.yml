@@ -71,7 +71,6 @@ jobs:
       - if: matrix.config.target == 'ohos-arm64'
         run: |
           find /opt/harmonyos-tools > sdk.txt
-          exit 1
 
       - if: matrix.config.target == 'ohos-arm64'
         uses: actions/upload-artifact@v4
