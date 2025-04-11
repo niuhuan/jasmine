@@ -104,7 +104,7 @@ jobs:
         name: install jq
         run: |
           apt update
-          apt install -y jq curl xz-utils build-essential
+          apt install -y jq curl xz-utils build-essential rsync
 
 
       - if: matrix.config.target == 'ohos-arm64'
