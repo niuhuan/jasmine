@@ -109,7 +109,7 @@ jobs:
         name: install jq
         run: |
           apt update
-          apt install -y jq
+          apt install -y jq curl
 
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'
