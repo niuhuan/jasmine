@@ -26,6 +26,7 @@ async fn main() -> Result<()> {
         "android-arm32" => format!("jasmine-{}-arm32.apk", code),
         "android-arm64" => format!("jasmine-{}-arm64.apk", code),
         "android-x86_64" => format!("jasmine-{}-x86_64.apk", code),
+        "ohos-arm64" => format!("jasmine-{}-arm64-unsigned.hap", code),
         un => panic!("unknown target : {}", un),
     };
     if flutter_version.starts_with("2.") {
@@ -40,6 +41,7 @@ async fn main() -> Result<()> {
         "android-arm32" => "../build/app/outputs/flutter-apk/app-release.apk",
         "android-arm64" => "../build/app/outputs/flutter-apk/app-release.apk",
         "android-x86_64" => "../build/app/outputs/flutter-apk/app-release.apk",
+        "ohos-arm64" => "../ohos/entry/build/default/outputs/default/entry-default-unsigned.hap",
         un => panic!("unknown target : {}", un),
     };
 

@@ -156,20 +156,6 @@ jobs:
           cd ci
           cp version.code.txt ../lib/assets/version.txt
 
-      - name: Sed old deps (Android)
-        if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.flutter_version == '2.10.5')
-        run: |
-          sed -i "s/another_xlider: ^1.0.1+2/another_xlider: 1.0.1+2/g" pubspec.yaml
-          sed -i "s/flutter_styled_toast: ^2.0.0/flutter_styled_toast: 2.0.0/g" pubspec.yaml
-          sed -i "s/filesystem_picker: ^3.1.0/filesystem_picker: 2.0.0/g" pubspec.yaml
-          sed -i "s/file_picker: 5.2.1/file_picker: 4.6.1/g" pubspec.yaml
-          sed -i "s/modal_bottom_sheet: ^3.0.0-pre/modal_bottom_sheet: ^2.0.0/g" pubspec.yaml
-          sed -i "s/window_manager: ^0.3.2//g" pubspec.yaml
-          echo > lib/basic/desktop.dart
-          sed -i 's/import '\''basic\/desktop.dart'\'';/\n/g' lib/main.dart
-          sed -i "s/onDesktopStart();//g" lib/main.dart
-          sed -i "s/onDesktopStop();//g" lib/main.dart
-          
 
       - name: Append application-identifier (ios)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'ios')
@@ -208,6 +194,7 @@ jobs:
       - if: matrix.config.target == 'ohos-arm64'
         name: Install rust target and build (ohos)
         run: |
+          sed -i "s/  modal_bottom_sheet: ^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https://github.com/niuhuan/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g" lib/main.dart
           rustup target add aarch64-unknown-linux-ohos
           cargo install ohrs
           bash scripts/ohos-native.sh
@@ -274,9 +261,9 @@ jobs:
           cbindgen native/jmbackend/src/lib.rs -l c++ > windows/rust.h
           flutter config --enable-windows-desktop
           flutter build windows
-          cd build/windows/runner/Release
-          Compress-Archive * ../../../../build/windows.zip
-          cd ../../../..
+          cd build/windows/x64/runner/Release
+          Compress-Archive * ../../../../../build/windows.zip
+          cd ../../../../..
 
       - name: Build (macos)
         if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'macos'
@@ -313,6 +300,13 @@ jobs:
         with:
           name: 'nosign.ipa'
           path: 'build/nosign.ipa'
+          retention-days: 3
+      - if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.target == 'ohos-arm64'
+        name: 'Upload Artifact (ohos-arm64)'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'entry-default-unsigned.hap'
+          path: 'ohos/entry/build/default/outputs/default/entry-default-unsigned.hap'
           retention-days: 3
       - if: steps.check_asset.outputs.skip_build != 'true' && startsWith(matrix.config.target, 'android')
         name: 'Upload Artifact (Android)'
