@@ -198,12 +198,12 @@ jobs:
       # lipo -create -output ios/librust.a native/jmbackend/platforms/ios-sim/target/x86_64-apple-ios/release/librust.a native/jmbackend/platforms/ios-sim/target/aarch64-apple-ios-sim/release/librust.a
       # cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
 
-      - if: matrix.config.target == 'ohos-arm64'
-        name: Setup OpenHarmony SDK
-        uses: openharmony-rs/setup-ohos-sdk@v0.2.1
-        id: setup-ohos
-        with:
-          version: "5.0.1"
+      # - if: matrix.config.target == 'ohos-arm64'
+      #   name: Setup OpenHarmony SDK
+      #   uses: openharmony-rs/setup-ohos-sdk@v0.2.1
+      #   id: setup-ohos
+      #   with:
+      #     version: "5.0.1"
       
 
       - if: matrix.config.target == 'ohos-arm64'
