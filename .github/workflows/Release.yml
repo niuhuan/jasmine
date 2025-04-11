@@ -132,6 +132,23 @@ jobs:
           repository: 'niuhuan/jasmine-rs-core'
           path: 'native'
 
+
+      - if: matrix.config.target == 'ohos-arm64'
+        name: Install rust target and build (ohos)
+        run: |
+          export PATH=/opt/harmonyos-tools/command-line-tools/ohpm/bin:$PATH
+          export PATH=/opt/harmonyos-tools/command-line-tools/bin:$PATH
+          export OHOS_NDK_HOME=/opt/harmonyos-tools/command-line-tools/sdk/default/openharmony
+
+          OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
+          OHOS_SDK_NATIVE=$OHOS_NDK_HOME
+
+          sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
+          rustup target add aarch64-unknown-linux-ohos
+          cargo install ohrs
+          bash scripts/ohos-native.sh
+          rm -rf native
+
       - name: Cache Flutter dependencies (Linux/Android)
         if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.host == 'ubuntu-latest'
         uses: actions/cache@v3
@@ -240,7 +257,6 @@ jobs:
       #   with:
       #     version: "5.0.1"
 
-      # https://gitcode.com/openharmony-sig/flutter_flutter/commit/70f0164d35d0b47f97c56b12ff26769827bdb206
       - if: matrix.config.target == 'ohos-arm64'
         name: Install rust target and build (ohos)
         run: |
@@ -250,11 +266,9 @@ jobs:
 
           OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
           OHOS_SDK_NATIVE=$OHOS_NDK_HOME
-          
+
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
-          rustup target add aarch64-unknown-linux-ohos
-          cargo install ohrs
-          bash scripts/ohos-native.sh
+
           flutter build hap --target-platform ohos-arm64
 
       - name: Install rust target and build (Android-arm64)
