@@ -90,6 +90,7 @@ jobs:
             host: ubuntu-latest
             flutter_version: '3.22.1'
             flutter_channel: 'stable'
+            container: ghcr.io/sanchuanhehe/harmony-next-pipeline-docker/harmonyos-ci-image:latest
 
     runs-on: ${{ matrix.config.host }}
 
@@ -137,6 +138,12 @@ jobs:
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.os }}-flutter
+
+      - if: matrix.config.target == 'ohos-arm64'
+        name: install jq
+        run: |
+          apt update
+          apt install -y jq
 
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'

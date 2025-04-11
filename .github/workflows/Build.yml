@@ -44,11 +44,10 @@ jobs:
           #   host: ubuntu-latest
           #   flutter_version: '3.22.1'
           #   flutter_channel: 'stable'
-          - target: android-arm64
-            host: ubuntu-latest
-            flutter_version: '3.22.1'
-            flutter_channel: 'stable'
-            container: 
+          # - target: android-arm64
+          #   host: ubuntu-latest
+          #   flutter_version: '3.22.1'
+          #   flutter_channel: 'stable'
           # - target: android-x86_64
           #   host: ubuntu-latest
           #   flutter_version: '3.22.1'
@@ -109,8 +108,8 @@ jobs:
       - if: matrix.config.target == 'ohos-arm64'
         name: install jq
         run: |
-          sudo apt update
-          sudo apt install -y jq
+          apt update
+          apt install -y jq
 
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'
