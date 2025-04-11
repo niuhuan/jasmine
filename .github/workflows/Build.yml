@@ -68,21 +68,6 @@ jobs:
 
     steps:
 
-      - if: matrix.config.target == 'ohos-arm64'
-        run: |
-          find /opt/harmonyos-tools > sdk.txt
-
-      - if: matrix.config.target == 'ohos-arm64'
-        uses: actions/upload-artifact@v4
-        with: 
-          name: 'sdk.txt'
-          path: sdk.txt
-
-      - if: matrix.config.target == 'ohos-arm64'
-        name: install jq
-        run: |
-          exit 1
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -220,17 +205,18 @@ jobs:
       #   id: setup-ohos
       #   with:
       #     version: "5.0.1"
-      
-
-      - if: matrix.config.target == 'ohos-arm64'
-        name: Install rust target and build (ohos)
-        run: |
-          find ${{ env.OHOS_BASE_SDK_HOME }} > sdk.txt
 
       
       - if: matrix.config.target == 'ohos-arm64'
         name: Install rust target and build (ohos)
         run: |
+          export PATH=/opt/harmonyos-tools/command-line-tools/ohpm/bin:$PATH
+          export PATH=/opt/harmonyos-tools/command-line-tools/bin:$PATH
+          export OHOS_NDK_HOME=/opt/harmonyos-tools/command-line-tools/sdk/default/openharmony
+
+          OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
+          OHOS_SDK_NATIVE=$OHOS_NDK_HOME
+
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
           rustup target add aarch64-unknown-linux-ohos
           cargo install ohrs
