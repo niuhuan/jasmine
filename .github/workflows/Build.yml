@@ -67,6 +67,13 @@ jobs:
       flutter_channel: ${{ matrix.config.flutter_channel }}
 
     steps:
+
+      - if: matrix.config.target == 'ohos-arm64'
+        name: install jq
+        run: |
+          which hvigorw
+          exit 1
+
       - name: Checkout
         uses: actions/checkout@v3
 
