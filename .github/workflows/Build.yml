@@ -100,6 +100,12 @@ jobs:
           path: 'native'
 
 
+      - if: matrix.config.target == 'ohos-arm64'
+        name: install jq
+        run: |
+          apt update
+          apt install -y jq curl xz-utils build-essential
+
 
       - if: matrix.config.target == 'ohos-arm64'
         name: Install rust target and build (ohos)
@@ -123,12 +129,6 @@ jobs:
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.os }}-flutter
-
-      - if: matrix.config.target == 'ohos-arm64'
-        name: install jq
-        run: |
-          apt update
-          apt install -y jq curl xz-utils build-essential
 
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'

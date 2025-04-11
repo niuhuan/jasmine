@@ -132,8 +132,14 @@ jobs:
           repository: 'niuhuan/jasmine-rs-core'
           path: 'native'
 
+      - if: matrix.config.target == 'ohos-arm64' && steps.check_asset.outputs.skip_build != 'true'
+        name: install jq
+        run: |
+          apt update
+          apt install -y jq curl xz-utils build-essential
 
-      - if: matrix.config.target == 'ohos-arm64'
+
+      - if: matrix.config.target == 'ohos-arm64' && steps.check_asset.outputs.skip_build != 'true'
         name: Install rust target and build (ohos)
         run: |
           export PATH=/opt/harmonyos-tools/command-line-tools/ohpm/bin:$PATH
@@ -156,12 +162,6 @@ jobs:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.os }}-flutter
 
-      - if: matrix.config.target == 'ohos-arm64'
-        name: install jq
-        run: |
-          apt update
-          apt install -y jq curl xz-utils build-essential
-
       - name: Setup flutter
         if: steps.check_asset.outputs.skip_build != 'true'
         uses: subosito/flutter-action@v2
@@ -170,7 +170,7 @@ jobs:
           flutter-version: ${{ env.flutter_version }}
           architecture: x64
 
-      - if: matrix.config.target == 'ohos-arm64'
+      - if: matrix.config.target == 'ohos-arm64' && steps.check_asset.outputs.skip_build != 'true'
         name: Setup OpenHarmony SDK
         shell: bash
         run: |
