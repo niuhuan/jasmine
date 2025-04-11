@@ -125,7 +125,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
             width: constraints.maxWidth,
             padding: const EdgeInsets.all(15),
             color:
-                (Theme.of(context).textTheme.bodyText1?.color ?? Colors.black)
+                (Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black)
                     .withOpacity(.05),
             child: Text(
               text,

@@ -201,7 +201,7 @@ class _ComicDownloadScreenState extends State<ComicDownloadScreen> {
     }
     return Theme.of(context).colorScheme.brightness == Brightness.light
         ? Colors.white
-        : Theme.of(context).textTheme.bodyText1!.color!.withOpacity(.17);
+        : Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.17);
   }
 
   Icon _iconOfEp(int id) {

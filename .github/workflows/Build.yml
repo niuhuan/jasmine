@@ -26,31 +26,35 @@ jobs:
         config:
           - target: linux
             host: ubuntu-latest
-            flutter_version: '3.7.3'
+            flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: windows
             host: windows-latest
-            flutter_version: '3.7.3'
+            flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: macos
             host: macos-latest
-            flutter_version: '3.7.3'
+            flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: ios
             host: macos-latest
-            flutter_version: '3.7.3'
+            flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: android-arm32
             host: ubuntu-latest
-            flutter_version: '3.7.3'
+            flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: android-arm64
             host: ubuntu-latest
-            flutter_version: '3.7.3'
+            flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: android-x86_64
             host: ubuntu-latest
-            flutter_version: '3.7.3'
+            flutter_version: '3.22.1'
+            flutter_channel: 'stable'
+          - target: ohos-arm64
+            host: ubuntu-latest
+            flutter_version: '3.22.1'
             flutter_channel: 'stable'
 
     runs-on: ${{ matrix.config.host }}
@@ -106,6 +110,15 @@ jobs:
           channel: ${{ env.flutter_channel }}
           flutter-version: ${{ env.flutter_version }}
           architecture: x64
+
+      - if: matrix.config.target == 'ohos-arm64'
+        name: Setup OpenHarmony SDK
+        shell: bash
+        run: |
+          cd $(dirname $(dirname $(realpath $(which flutter))))
+          git remote add ff https://gitcode.com/openharmony-sig/flutter_flutter.git
+          git fetch ff
+          git checkout -b 3.22.0-ohos ff/3.22.0-ohos
 
       - name: Install cargo tools (non-android)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'macos' || matrix.config.target == 'windows' || matrix.config.target == 'linux' || matrix.config.target == 'ios' )
@@ -187,6 +200,18 @@ jobs:
       # cargo build --manifest-path native/jmbackend/platforms/ios-sim/Cargo.toml --features= --lib --release --target=x86_64-apple-ios
       # lipo -create -output ios/librust.a native/jmbackend/platforms/ios-sim/target/x86_64-apple-ios/release/librust.a native/jmbackend/platforms/ios-sim/target/aarch64-apple-ios-sim/release/librust.a
       # cbindgen native/jmbackend/src/lib.rs -l c > ios/rust.h
+
+      - if: matrix.config.target == 'ohos-arm64'
+        name: Setup OpenHarmony SDK
+        uses: openharmony-rs/setup-ohos-sdk@v0.1
+
+      - if: matrix.config.target == 'ohos-arm64'
+        name: Install rust target and build (ohos)
+        run: |
+          rustup target add aarch64-unknown-linux-ohos
+          cargo install ohrs
+          bash scripts/ohos-native.sh
+          flutter build hap --target-platform ohos-arm64
 
       - name: Install rust target and build (Android-arm64)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'android-arm64')

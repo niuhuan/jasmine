@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/configs/network_api_host.dart';
 import 'package:jasmine/configs/network_cdn_host.dart';
+import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/screens/init_screen.dart';
 
 import 'components/right_click_pop.dart';
@@ -45,6 +46,7 @@ class NetworkSettingScreen extends StatelessWidget {
         children: [
           apiHostSetting(),
           cdnHostSetting(),
+          proxySetting(),
         ],
       ),
     );

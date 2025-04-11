@@ -78,3 +78,5 @@ tests_data/
 *.dylib
 .build/
 .vscode/
+
+.metadata

@@ -239,12 +239,12 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
     var levelStyle = TextStyle(
         fontSize: 12, color: theme.colorScheme.secondary.withOpacity(.8));
     var connectStyle =
-        TextStyle(color: theme.textTheme.bodyText1?.color?.withOpacity(.8));
+        TextStyle(color: theme.textTheme.bodyMedium?.color?.withOpacity(.8));
     var gotoComicStyle = TextStyle(
       color: theme.colorScheme.secondary.withOpacity(.5),
     );
     var datetimeStyle = TextStyle(
-        color: theme.textTheme.bodyText1?.color?.withOpacity(.6), fontSize: 12);
+        color: theme.textTheme.bodyMedium?.color?.withOpacity(.6), fontSize: 12);
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(

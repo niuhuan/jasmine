@@ -196,7 +196,7 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
                             indicatorColor: theme.colorScheme.secondary,
                             labelColor: theme.colorScheme.secondary,
                             unselectedLabelColor:
-                                theme.textTheme.bodyText1?.color,
+                                theme.textTheme.bodyMedium?.color,
                             onTap: (val) async {
                               setState(() {
                                 _tabIndex = val;
@@ -372,9 +372,7 @@ class _ComicSerialsState extends State<_ComicSerials> {
                 ? Colors.white
                 : Theme.of(context)
                     .textTheme
-                    .bodyText1!
-                    .color!
-                    .withOpacity(.17),
+                    .bodyMedium?.color?.withOpacity(.17),
             child: Text(
               e.sort + (e.name == "" ? "" : (" - ${e.name}")),
             ),
@@ -402,9 +400,7 @@ class _ComicSerialsState extends State<_ComicSerials> {
                 ? Colors.white
                 : Theme.of(context)
                     .textTheme
-                    .bodyText1!
-                    .color!
-                    .withOpacity(.17),
+                    .bodyMedium?.color?.withOpacity(.17),
             child: Text(
               e.sort + (e.name == "" ? "" : (" - ${e.name}")),
             ),

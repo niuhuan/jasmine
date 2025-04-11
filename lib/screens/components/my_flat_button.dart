@@ -27,7 +27,7 @@ class MyFlatButton extends StatelessWidget {
                 child: Container(
                   color: Theme.of(context)
                       .textTheme
-                      .bodyText1!
+                      .bodyMedium!
                       .color!
                       .withOpacity(.05),
                   padding: const EdgeInsets.all(10),

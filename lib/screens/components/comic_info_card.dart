@@ -177,7 +177,7 @@ class ComicInfoCard extends StatelessWidget {
         style: TextStyle(
           // 30%蓝色 叠加本该有的颜色
           color: Color.alphaBlend(Colors.blue.withOpacity(0.3),
-              Theme.of(context).textTheme.bodyText1!.color!),
+              Theme.of(context).textTheme.bodyMedium!.color!),
         ),
         recognizer: TapGestureRecognizer()
           ..onTap = () {

@@ -10,7 +10,7 @@ Widget importNotice(BuildContext context) {
       color: (Theme
           .of(context)
           .textTheme
-          .bodyText1
+          .bodyMedium
           ?.color ?? Colors.black)
           .withOpacity(.01),
       child: const Text(

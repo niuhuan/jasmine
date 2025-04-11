@@ -51,7 +51,7 @@ Widget displayExportPathInfo() {
         return Container(
           margin: const EdgeInsets.all(15),
           padding: const EdgeInsets.all(15),
-          color: (Theme.of(context).textTheme.bodyText1?.color ?? Colors.black)
+          color: (Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black)
               .withOpacity(.01),
           child: const Text("您正在使用iOS设备:\n导出到文件的内容请打开系统自带文件管理进行浏览"),
         );
@@ -72,7 +72,7 @@ Widget displayExportPathInfo() {
                 Container(
                   margin: const EdgeInsets.all(15),
                   padding: const EdgeInsets.all(15),
-                  color: (Theme.of(context).textTheme.bodyText1?.color ??
+                  color: (Theme.of(context).textTheme.bodyMedium?.color ??
                           Colors.black)
                       .withOpacity(.01),
                   child: const Text(
