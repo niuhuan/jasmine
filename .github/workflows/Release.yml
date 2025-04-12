@@ -184,7 +184,7 @@ jobs:
           git config --global --add safe.directory ${{ env.FLUTTER_ROOT }}
           git remote ser-url origin https://gitcode.com/openharmony-sig/flutter_flutter.git'
           git fetch
-          git checkout -b 3.22.0-ohos origin/3.22.0-ohos
+          git checkout 3.22.0-ohos
           git remote prune origin
       
       # git gc --prune=now --aggressive
