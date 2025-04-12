@@ -148,8 +148,11 @@ jobs:
           export PATH=/opt/harmonyos-tools/command-line-tools/bin:$PATH
           export OHOS_NDK_HOME=/opt/harmonyos-tools/command-line-tools/sdk/default/openharmony
 
-          OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
-          OHOS_SDK_NATIVE=$OHOS_NDK_HOME
+          export OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
+          export OHOS_SDK_NATIVE=$OHOS_NDK_HOME
+
+          export HOS_SDK_HOME=$OHOS_NDK_HOME
+          export OHOS_SDK_HOME=$OHOS_NDK_HOME
 
           rustup target add aarch64-unknown-linux-ohos
           cargo install ohrs
@@ -268,8 +271,11 @@ jobs:
           export PATH=/opt/harmonyos-tools/command-line-tools/bin:$PATH
           export OHOS_NDK_HOME=/opt/harmonyos-tools/command-line-tools/sdk/default/openharmony
 
-          OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
-          OHOS_SDK_NATIVE=$OHOS_NDK_HOME
+          export OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
+          export OHOS_SDK_NATIVE=$OHOS_NDK_HOME
+
+          export HOS_SDK_HOME=$OHOS_NDK_HOME
+          export OHOS_SDK_HOME=$OHOS_NDK_HOME
 
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
 
