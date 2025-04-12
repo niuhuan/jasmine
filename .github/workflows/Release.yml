@@ -87,7 +87,7 @@ jobs:
             flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: ohos-arm64
-            host: ubuntu-latest-large
+            host: Chicago
             flutter_version: '3.22.1'
             flutter_channel: 'stable'
             container: ghcr.io/sanchuanhehe/harmony-next-pipeline-docker/harmonyos-ci-image:latest
