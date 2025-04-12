@@ -151,7 +151,8 @@ jobs:
           git fetch
           git checkout -b 3.22.0-ohos origin/3.22.0-ohos
           git remote prune origin
-          git gc --prune=now --aggressive
+      
+      # git gc --prune=now --aggressive
 
       - name: Install cargo tools (non-android)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'macos' || matrix.config.target == 'windows' || matrix.config.target == 'linux' || matrix.config.target == 'ios' )
