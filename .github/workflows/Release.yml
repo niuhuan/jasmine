@@ -86,10 +86,10 @@ jobs:
             host: ubuntu-latest
             flutter_version: '3.22.1'
             flutter_channel: 'stable'
-          - target: ohos-arm64
-            host: macos-latest
-            flutter_version: '3.22.1'
-            flutter_channel: 'stable'
+          # - target: ohos-arm64
+          #   host: macos-latest
+          #   flutter_version: '3.22.1'
+          #   flutter_channel: 'stable'
 
     runs-on: ${{ matrix.config.host }}
 
