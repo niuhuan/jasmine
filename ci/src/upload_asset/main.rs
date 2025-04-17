@@ -12,13 +12,12 @@ async fn main() -> Result<()> {
     // get ghToken
     let gh_token = std::env::var("GH_TOKEN")?;
     let target = std::env::var("TARGET")?;
-    let flutter_version = std::env::var("flutter_version")?;
 
     let vs_code_txt = tokio::fs::read_to_string("version.code.txt").await?;
 
     let code = vs_code_txt.trim();
 
-    let mut release_file_name = match target.as_str() {
+    let release_file_name = match target.as_str() {
         "macos" => format!("jasmine-{}.dmg", code),
         "ios" => format!("jasmine-{}-nosign.ipa", code),
         "windows" => format!("jasmine-{}-windows-x86_64.zip", code),
@@ -29,9 +28,6 @@ async fn main() -> Result<()> {
         "ohos-arm64" => format!("jasmine-{}-arm64-unsigned.hap", code),
         un => panic!("unknown target : {}", un),
     };
-    if flutter_version.starts_with("2.") {
-        release_file_name = format!("compatible-{}", release_file_name);
-    }
 
     let local_path = match target.as_str() {
         "macos" => "../build/macos.dmg",

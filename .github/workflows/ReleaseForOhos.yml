@@ -36,7 +36,7 @@ jobs:
         with:
           name: core-build-output
           path: native/jmbackend/platforms/ohos/dist
-  build-hap:
+  build-and-upload--hap:
     needs: build-core
     runs-on: ubuntu-latest
     container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:latest
@@ -60,22 +60,6 @@ jobs:
           flutter build hap --target-platform=ohos-arm64
           cd ohos
           hvigorw assembleHap --release
-      - name: Upload Build Output
-        uses: actions/upload-artifact@v4
-        with:
-          name: entry-default-unsigned.hap
-          path: ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
-  upload-hap:
-    needs: build-hap
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Download Build Output
-        uses: actions/download-artifact@v4
-        with:
-          name: entry-default-unsigned.hap
-          path: ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
