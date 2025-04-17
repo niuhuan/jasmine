@@ -66,6 +66,7 @@ jobs:
           path: ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
   upload-hap:
     needs: build-hap
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
