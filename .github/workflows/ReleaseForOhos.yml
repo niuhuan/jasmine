@@ -1,4 +1,4 @@
-name: Build for ohos
+name: Release for ohos
 
 on:
   workflow_dispatch:
@@ -65,6 +65,8 @@ jobs:
           name: entry-default-unsigned.hap
           path: ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
   upload-hap:
+    needs: build-hap
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Download Build Output
