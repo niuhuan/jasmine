@@ -63,5 +63,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: entry-default-unsigned.hap
-          path: entry/build/default/outputs/default/entry-default-unsigned.hap
+          path: ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
 
