@@ -30,12 +30,11 @@ jobs:
           export OHOS_NDK_HOME=$OHOS_BASE_SDK_HOME
           cd native/jmbackend/platforms/ohos
           make
-          cd $GITHUB_WORKSPACE
       - name: Upload Build Output
         uses: actions/upload-artifact@v4
         with:
           name: core-build-output
-          path: $GITHUB_WORKSPACE/native/jmbackend/platforms/ohos/dist
+          path: native/jmbackend/platforms/ohos/dist
   build-hap:
     needs: build-core
     runs-on: ubuntu-latest
@@ -47,7 +46,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: core-build-output
-          path: $GITHUB_WORKSPACE/native/jmbackend/platforms/ohos/dist
+          path: native/jmbackend/platforms/ohos/dist
       - name: rsync
         run: |
           apt update
