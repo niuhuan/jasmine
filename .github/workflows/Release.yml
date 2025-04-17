@@ -87,10 +87,9 @@ jobs:
             flutter_version: '3.22.1'
             flutter_channel: 'stable'
           - target: ohos-arm64
-            host: self-hosted
+            host: macos-latest
             flutter_version: '3.22.1'
             flutter_channel: 'stable'
-            container: ghcr.io/sanchuanhehe/harmony-next-pipeline-docker/harmonyos-ci-image:latest
 
     runs-on: ${{ matrix.config.host }}
 
@@ -132,33 +131,6 @@ jobs:
           repository: 'niuhuan/jasmine-rs-core'
           path: 'native'
 
-      - if: matrix.config.target == 'ohos-arm64' && steps.check_asset.outputs.skip_build != 'true'
-        name: install jq
-        run: |
-          apt update
-          apt install -y jq curl xz-utils build-essential rsync
-          apt-get clean
-          apt-get autoclean
-
-
-      - if: matrix.config.target == 'ohos-arm64' && steps.check_asset.outputs.skip_build != 'true'
-        name: Install rust target and build (ohos)
-        run: |
-          export PATH=/opt/harmonyos-tools/command-line-tools/ohpm/bin:$PATH
-          export PATH=/opt/harmonyos-tools/command-line-tools/bin:$PATH
-          export OHOS_NDK_HOME=/opt/harmonyos-tools/command-line-tools/sdk/default/openharmony
-
-          export OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
-          export OHOS_SDK_NATIVE=$OHOS_NDK_HOME
-
-          export HOS_SDK_HOME=$OHOS_NDK_HOME
-          export OHOS_SDK_HOME=$OHOS_NDK_HOME
-
-          rustup target add aarch64-unknown-linux-ohos
-          cargo install ohrs
-          bash scripts/ohos-native.sh
-          rm -rf native
-
       - name: Cache Flutter dependencies (Linux/Android)
         if: steps.check_asset.outputs.skip_build != 'true' && matrix.config.host == 'ubuntu-latest'
         uses: actions/cache@v3
@@ -186,8 +158,6 @@ jobs:
           git fetch
           git checkout 3.22.0-ohos
           git remote prune origin
-      
-      # git gc --prune=now --aggressive
 
       - name: Install cargo tools (non-android)
         if: steps.check_asset.outputs.skip_build != 'true' && ( matrix.config.target == 'macos' || matrix.config.target == 'windows' || matrix.config.target == 'linux' || matrix.config.target == 'ios' )
@@ -270,12 +240,15 @@ jobs:
           export PATH=/opt/harmonyos-tools/command-line-tools/ohpm/bin:$PATH
           export PATH=/opt/harmonyos-tools/command-line-tools/bin:$PATH
           export OHOS_NDK_HOME=/opt/harmonyos-tools/command-line-tools/sdk/default/openharmony
-
           export OHOS_BASE_SDK_HOME=$OHOS_NDK_HOME
           export OHOS_SDK_NATIVE=$OHOS_NDK_HOME
-
           export HOS_SDK_HOME=$OHOS_NDK_HOME
           export OHOS_SDK_HOME=$OHOS_NDK_HOME
+
+          rustup target add aarch64-unknown-linux-ohos
+          cargo install ohrs
+          bash scripts/ohos-native.sh
+          rm -rf native
 
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
 

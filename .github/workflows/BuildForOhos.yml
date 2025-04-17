@@ -1,0 +1,65 @@
+on:
+  workflow_dispatch:
+
+env:
+  RUST_TOOLCHAIN: nightly-2025-02-15
+
+jobs:
+  build-core: 
+    runs-on: ubuntu-latest
+    container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:latest
+    steps:
+      - name: checkout core
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: 'niuhuan/jasmine-rs-core'
+          path: 'native'
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+      - name: build-core
+        run: |
+          apt update
+          apt install -y build-essential
+          rustup target add aarch64-unknown-linux-ohos
+          cargo install ohrs
+          cd native/jmbackend/platforms/ohos
+          make
+          cd $GITHUB_WORKSPACE
+      - name: Upload Build Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-build-output
+          path: $GITHUB_WORKSPACE/native/jmbackend/platforms/ohos/dist
+  build-hap:
+    needs: build-core
+    runs-on: ubuntu-latest
+    container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Download Build Output
+        uses: actions/download-artifact@v4
+        with:
+          name: core-build-output
+          path: $GITHUB_WORKSPACE/native/jmbackend/platforms/ohos/dist
+      - name: rsync
+        run: |
+          apt update
+          apt install -y rsync
+          rsync -av --exclude oh-package.json5 native/jmbackend/platforms/ohos/dist/ ohos/entry/libs/
+      - name: build hap
+        run: |
+          sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
+          flutter build hap --target-platform=ohos-arm64
+          cd ohos
+          hvigorw assembleHap --release
+      - name: Upload Build Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: entry-default-unsigned.hap
+          path: entry/build/default/outputs/default/entry-default-unsigned.hap
+
+
