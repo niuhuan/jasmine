@@ -83,6 +83,7 @@ jobs:
         if: steps.check_asset.outputs.skip_build != 'true'
         run: |
           export flutter_version=3.22.1
+          export TARGET=ohos-arm64
           cd ci
           cargo run --bin upload-asset
 
