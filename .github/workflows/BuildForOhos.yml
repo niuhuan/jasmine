@@ -1,3 +1,5 @@
+name: Build for ohos
+
 on:
   workflow_dispatch:
 
@@ -25,6 +27,7 @@ jobs:
           apt install -y build-essential
           rustup target add aarch64-unknown-linux-ohos
           cargo install ohrs
+          export OHOS_NDK_HOME=$OHOS_BASE_SDK_HOME
           cd native/jmbackend/platforms/ohos
           make
           cd $GITHUB_WORKSPACE
@@ -53,6 +56,7 @@ jobs:
       - name: build hap
         run: |
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      branch: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
+          cp ci/version.code.txt lib/assets/version.txt
           flutter build hap --target-platform=ohos-arm64
           cd ohos
           hvigorw assembleHap --release
