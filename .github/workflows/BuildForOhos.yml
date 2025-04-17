@@ -32,6 +32,7 @@ jobs:
           export OHOS_NDK_HOME=$OHOS_BASE_SDK_HOME
           cd native/jmbackend/platforms/ohos
           make
+          find dist -type f -name "*.so" ! -name "librust" -exec rm -f {} \;
       - name: rsync
         run: |
           rsync -av --exclude oh-package.json5 native/jmbackend/platforms/ohos/dist/ ohos/entry/libs/

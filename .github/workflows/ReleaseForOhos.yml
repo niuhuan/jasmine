@@ -31,6 +31,7 @@ jobs:
           export OHOS_NDK_HOME=$OHOS_BASE_SDK_HOME
           cd native/jmbackend/platforms/ohos
           make
+          find dist -type f -name "*.so" ! -name "librust" -exec rm -f {} \;
       - name: Upload Build Output
         uses: actions/upload-artifact@v4
         with:
