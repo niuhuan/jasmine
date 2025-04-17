@@ -51,7 +51,7 @@ jobs:
       - name: rsync
         run: |
           apt update
-          apt install -y rsync build-essential
+          apt install -y rsync build-essential pkg-config libssl-dev
           rsync -av --exclude oh-package.json5 native/jmbackend/platforms/ohos/dist/ ohos/entry/libs/
       - name: build hap
         run: |
