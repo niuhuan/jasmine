@@ -1,6 +1,6 @@
 import { FlutterAbility, FlutterEngine, MethodCall, MethodChannel, MethodResult } from '@ohos/flutter_ohos';
 import { GeneratedPluginRegistrant } from '../plugins/GeneratedPluginRegistrant';
-import rust from 'librust.so'
+import { init, invoke } from 'librust.so'
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { fileIo as fs, ReadOptions } from '@kit.CoreFileKit'
 
@@ -9,7 +9,7 @@ export default class EntryAbility extends FlutterAbility {
 
     this.printDir();
 
-    rust.init(this.context.filesDir)
+    init(this.context.filesDir)
 
     new MethodChannel(flutterEngine.dartExecutor.getBinaryMessenger(), "methods")
       .setMethodCallHandler(this)
@@ -32,7 +32,7 @@ export default class EntryAbility extends FlutterAbility {
     hilog.warn(0, 'onMethodCall', '%{public}s', call.args);
     switch (call.method) {
       case 'invoke':
-        rust.invoke(call.args).then((invokeResult) => {
+        invoke(call.args).then((invokeResult) => {
           result.success(invokeResult)
         })
         break;
