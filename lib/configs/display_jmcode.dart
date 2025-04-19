@@ -11,8 +11,11 @@ const _propertyName = "displayJmcode";
 late bool _displayJmcode;
 
 Future<void> initDisplayJmcode() async {
-  _displayJmcode =
-      (await methods.loadProperty(_propertyName)) == "true";
+  var str = await methods.loadProperty(_propertyName);
+  if (str == "") {
+    str = "true";
+  }
+  _displayJmcode = str == "true";
 }
 
 bool currentDisplayJmcode() {

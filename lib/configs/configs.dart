@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jasmine/configs/Authentication.dart';
 import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/android_version.dart';
+import 'package:jasmine/configs/app_font_size.dart';
 import 'package:jasmine/configs/display_jmcode.dart';
 import 'package:jasmine/configs/download_thread_count.dart';
 import 'package:jasmine/configs/no_animation.dart';
@@ -73,4 +74,5 @@ Future initConfigs(BuildContext context) async {
   await initSearchTitleWords();
   await initCategoriesSort();
   await initAuthentication();
+  await initFontSizeAdjust();
 }

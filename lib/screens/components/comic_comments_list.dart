@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/app_font_size.dart';
 import 'package:jasmine/screens/components/item_builder.dart';
 
 import '../comic_info_screen.dart';
@@ -233,18 +234,25 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
 
   @override
   Widget build(BuildContext context) {
+    final contentFontSize = (Theme.of(context).textTheme.bodyMedium?.fontSize ??
+            14) +
+        currentFontSizeAdjust(FontSizeAdjustType.fontSizeAdjustCommentContent);
+
     var comment = widget.comment;
     var theme = Theme.of(context);
     var nameStyle = const TextStyle(fontWeight: FontWeight.bold);
     var levelStyle = TextStyle(
-        fontSize: 12, color: theme.colorScheme.secondary.withOpacity(.8));
+      fontSize: 12,
+      color: theme.colorScheme.secondary.withOpacity(.8),
+    );
     var connectStyle =
         TextStyle(color: theme.textTheme.bodyMedium?.color?.withOpacity(.8));
     var gotoComicStyle = TextStyle(
       color: theme.colorScheme.secondary.withOpacity(.5),
     );
     var datetimeStyle = TextStyle(
-        color: theme.textTheme.bodyMedium?.color?.withOpacity(.6), fontSize: 12);
+        color: theme.textTheme.bodyMedium?.color?.withOpacity(.6),
+        fontSize: 12);
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -324,37 +332,6 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                                   setState(() {
                                     likeLoading = true;
                                   });
-                                  // try {
-                                  //   switch (widget.mainType) {
-                                  //     case CommentMainType.COMIC:
-                                  //       await method.switchLikeComment(
-                                  //         comment.id,
-                                  //         widget.mainId,
-                                  //       );
-                                  //       break;
-                                  //     case CommentMainType.GAME:
-                                  //       await method.switchLikeGameComment(
-                                  //         comment.id,
-                                  //         widget.mainId,
-                                  //       );
-                                  //       break;
-                                  //   }
-                                  //   setState(() {
-                                  //     if (comment.isLiked) {
-                                  //       comment.isLiked = false;
-                                  //       comment.likesCount--;
-                                  //     } else {
-                                  //       comment.isLiked = true;
-                                  //       comment.likesCount++;
-                                  //     }
-                                  //   });
-                                  // } catch (e, s) {
-                                  //   defaultToast(context, "点赞失败");
-                                  // } finally {
-                                  //   setState(() {
-                                  //     likeLoading = false;
-                                  //   });
-                                  // }
                                 },
                                 child: Text.rich(
                                   TextSpan(style: levelStyle, children: [
@@ -362,11 +339,6 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                                       alignment: PlaceholderAlignment.middle,
                                       child: Icon(
                                         Icons.favorite,
-                                        // likeLoading
-                                        //     ? Icons.refresh
-                                        //     : comment.isLiked
-                                        //         ? Icons.favorite
-                                        //         : Icons.favorite_border,
                                         size: 13,
                                         color: theme.colorScheme.secondary
                                             .withOpacity(.7),
@@ -399,23 +371,21 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                           .replaceAll("</div>", ""),
                     );
                   },
-                  child: Text.rich(TextSpan(
-                    children: [...parseCommentBody(comment.content
-                          .replaceAll(
-                            "<div style='flex-direction:row;flex-wrap:wrap;'>",
-                            "",
-                          )
-                          .replaceAll("</div>", ""))],
-                  )),
-                  // child: Text(
-                  //   comment.content
-                  //       .replaceAll(
-                  //         "<div style='flex-direction:row;flex-wrap:wrap;'>",
-                  //         "",
-                  //       )
-                  //       .replaceAll("</div>", ""),
-                  //   style: connectStyle,
-                  // ),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        ...parseCommentBody(comment.content
+                            .replaceAll(
+                              "<div style='flex-direction:row;flex-wrap:wrap;'>",
+                              "",
+                            )
+                            .replaceAll("</div>", ""))
+                      ],
+                    ),
+                    style: TextStyle(
+                      fontSize: contentFontSize,
+                    ),
+                  ),
                 ),
                 ...widget.gotoComic
                     ? [
@@ -457,7 +427,8 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
 
   //<img style="width:18px;height:18px" src="https://www.cdnxxx-proxy.xyz/media/emoji/0002.png" alt="doge" />
   List<InlineSpan> parseCommentBody(String comment) {
-    var regex = RegExp(r'<img style=\"width:18px;height:18px\" src=\"(.*?)\" alt=\"(.*?)\" />');
+    var regex = RegExp(
+        r'<img style=\"width:18px;height:18px\" src=\"(.*?)\" alt=\"(.*?)\" />');
     var matches = regex.allMatches(comment);
     if (matches.isNotEmpty) {
       var list = comment.split(regex);

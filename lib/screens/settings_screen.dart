@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/methods.dart';
+import 'package:jasmine/configs/app_font_size.dart';
 import 'package:jasmine/configs/network_api_host.dart';
 import 'package:jasmine/configs/network_cdn_host.dart';
 import 'package:jasmine/screens/downloads_exports_screen2.dart';
@@ -102,6 +103,7 @@ class _SettingsState extends State<SettingsScreen> {
           ),
           const Divider(),
           searchTitleWordsSetting(),
+          ...fontSizeAdjustSettings(),
           const Divider(),
         ],
       ),
