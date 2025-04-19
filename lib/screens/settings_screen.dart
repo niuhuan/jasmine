@@ -49,63 +49,100 @@ class _SettingsState extends State<SettingsScreen> {
       appBar: AppBar(
         title: const Text("设置"),
       ),
-      body: ListView(
-        children: [
-          const Divider(),
-          apiHostSetting(),
-          cdnHostSetting(),
-          proxySetting(),
-          const Divider(),
-          categoriesSortSetting(context),
-          themeSetting(context),
-          const Divider(),
-          androidDisplayModeSetting(),
-          const Divider(),
-          usingRightClickPopSetting(),
-          const Divider(),
-          volumeKeyControlSetting(),
-          noAnimationSetting(),
-          const Divider(),
-          exportRenameSetting(),
-          downloadAndExportToSetting(),
-          const Divider(),
-          webDavSyncSwitchSetting(),
-          webDavUrlSetting(),
-          webDavUserNameSetting(),
-          webDavPasswordSetting(),
-          webDavSyncClick(context),
-          const Divider(),
-          displayJmcodeSetting(),
-          const Divider(),
-          twoGalleryDirectionSetting(context),
-          const Divider(),
-          ListTile(
-            onTap: () async {
-              if (await confirmDialog(
-                  context, "清除账号信息", "您确定要清除账号信息并退出APP吗?")) {
-                await methods.logout();
-                exit(0);
-              }
-            },
-            title: const Text("清除账号信息"),
-          ),
-          createFavoriteFolderItemTile(context),
-          deleteFavoriteFolderItemTile(context),
-          renameFavoriteFolderItemTile(context),
-          authenticationSetting(),
-          const Divider(),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (c) => const DownloadsExportScreen2()));
-            },
-            title: const Text("导出下载到目录(即使没有下载完)"),
-          ),
-          const Divider(),
-          searchTitleWordsSetting(),
-          ...fontSizeAdjustSettings(),
-          const Divider(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ExpansionTile(
+              leading: const Icon(Icons.manage_accounts),
+              title: const Text('用户和网络'),
+              children: [
+                const Divider(),
+                apiHostSetting(),
+                cdnHostSetting(),
+                proxySetting(),
+                const Divider(),
+                createFavoriteFolderItemTile(context),
+                deleteFavoriteFolderItemTile(context),
+                renameFavoriteFolderItemTile(context),
+                const Divider(),
+                ListTile(
+                  onTap: () async {
+                    if (await confirmDialog(
+                        context, "清除账号信息", "您确定要清除账号信息并退出APP吗?")) {
+                      await methods.logout();
+                      exit(0);
+                    }
+                  },
+                  title: const Text("清除账号信息"),
+                ),
+                const Divider(),
+              ],
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.menu_book_outlined),
+              title: Text('阅读'),
+              children: [
+                const Divider(),
+                volumeKeyControlSetting(),
+                noAnimationSetting(),
+                const Divider(),
+                twoGalleryDirectionSetting(context),
+                const Divider(),
+              ],
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.backup),
+              title: Text('同步'),
+              children: [
+                const Divider(),
+                webDavSyncSwitchSetting(),
+                webDavUrlSetting(),
+                webDavUserNameSetting(),
+                webDavPasswordSetting(),
+                webDavSyncClick(context),
+                const Divider(),
+              ],
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.ad_units),
+              title: Text('系统和应用程序'),
+              children: [
+                const Divider(),
+                categoriesSortSetting(context),
+                themeSetting(context),
+                const Divider(),
+                androidDisplayModeSetting(),
+                const Divider(),
+                usingRightClickPopSetting(),
+                const Divider(),
+                authenticationSetting(),
+                const Divider(),
+                exportRenameSetting(),
+                downloadAndExportToSetting(),
+                const Divider(),
+                displayJmcodeSetting(),
+                const Divider(),
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (c) => const DownloadsExportScreen2()));
+                  },
+                  title: const Text("导出下载到目录(即使没有下载完)"),
+                ),
+                const Divider(),
+                searchTitleWordsSetting(),
+                ...fontSizeAdjustSettings(),
+                const Divider(),
+              ],
+            ),
+            SafeArea(
+              top: false,
+              child: Container(
+                height: 50,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
