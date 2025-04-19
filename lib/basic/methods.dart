@@ -413,6 +413,14 @@ class Methods {
     });
   }
 
+  Future export_jm_pdf2(int id, String folder, bool deleteExported) {
+    return _invoke("export_jm_pdf2", {
+      "comic_id": [id],
+      "dir": folder,
+      "delete_exported": deleteExported,
+    });
+  }
+
   Future import_jm_zip(String path) {
     print(path);
     return _invoke("import_jm_zip", path);

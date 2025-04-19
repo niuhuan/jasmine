@@ -44,6 +44,8 @@ final _lightTheme = ThemeData.light().copyWith(
 
 final _darkTheme = ThemeData.dark().copyWith(
   useMaterial3: true,
+  scaffoldBackgroundColor: Color(0xFF1C1B1E),
+  dialogBackgroundColor: Color(0xFF1C1B1E),
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xFFCFBCFF),

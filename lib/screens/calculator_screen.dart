@@ -151,9 +151,6 @@ class ContentBodyState extends State<ContentBody> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                ),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -244,9 +241,6 @@ class ContentBodyState extends State<ContentBody> {
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
                 ),
                 Center(
                   child: Row(
@@ -339,9 +333,7 @@ class ContentBodyState extends State<ContentBody> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                ),
+
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -433,9 +425,7 @@ class ContentBodyState extends State<ContentBody> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                ),
+
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

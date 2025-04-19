@@ -74,6 +74,7 @@ class _DownloadsExportingScreen2State extends State<DownloadsExportingScreen2> {
         displayExportPathInfo(),
         Container(height: 20),
         SwitchListTile(
+          title: const Text("导出后删除原文件"),
           value: deleteExport,
           onChanged: (value) {
             setState(() {
@@ -86,6 +87,17 @@ class _DownloadsExportingScreen2State extends State<DownloadsExportingScreen2> {
           onPressed: _exportJpegs,
           child: Text(
             "导出成文件夹" + (!isPro ? "\n(发电后使用)" : ""),
+            style: TextStyle(
+              color: !isPro ? Colors.grey : null,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Container(height: 20),
+        MaterialButton(
+          onPressed: _exportPdf2,
+          child: Text(
+            "导出成PDF" + (!isPro ? "\n(发电后使用)" : ""),
             style: TextStyle(
               color: !isPro ? Colors.grey : null,
             ),
@@ -122,6 +134,45 @@ class _DownloadsExportingScreen2State extends State<DownloadsExportingScreen2> {
           path,
           deleteExport,
         );
+        exported = true;
+      } catch (err) {
+        e = err;
+        exportFail = true;
+      } finally {
+        setState(() {
+          exporting = false;
+        });
+      }
+    }
+  }
+
+  _exportPdf2() async {
+    if (!isPro) {
+      defaultToast(context, "请先发电鸭");
+      return;
+    }
+    late String? path;
+    try {
+      path = Platform.isIOS
+          ? await methods.iosGetDocumentDir()
+          : await chooseFolder(context);
+    } catch (e) {
+      defaultToast(context, "$e");
+      return;
+    }
+    print("path $path");
+    if (path != null) {
+      try {
+        setState(() {
+          exporting = true;
+        });
+        for (var id in widget.idList) {
+          await methods.export_jm_pdf2(
+            id,
+            path,
+            deleteExport,
+          );
+        }
         exported = true;
       } catch (err) {
         e = err;
