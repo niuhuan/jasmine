@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'dart:io';
 import 'dart:ui' as ui show Codec;
-import 'dart:ui' as ui;
 
 import 'package:jasmine/basic/methods.dart';
 import 'package:jasmine/screens/components/types.dart';
@@ -20,7 +19,7 @@ class JM3x4ImageProvider extends ImageProvider<JM3x4ImageProvider> {
   JM3x4ImageProvider(this.comicId, {this.scale = 1.0});
 
   @override
-  ImageStreamCompleter loadImage(JM3x4ImageProvider key, ImageDecoderCallback decode) {
+  ImageStreamCompleter load(JM3x4ImageProvider key, DecoderCallback decode) {
     return MultiFrameImageStreamCompleter(
       codec: _loadAsync(key),
       scale: key.scale,
@@ -34,7 +33,7 @@ class JM3x4ImageProvider extends ImageProvider<JM3x4ImageProvider> {
 
   Future<ui.Codec> _loadAsync(JM3x4ImageProvider key) async {
     assert(key == this);
-    return ui.instantiateImageCodec(
+    return PaintingBinding.instance!.instantiateImageCodec(
       await File(await methods.jm3x4Cover(comicId)).readAsBytes(),
     );
   }
@@ -65,7 +64,7 @@ class PageImageProvider extends ImageProvider<PageImageProvider> {
   PageImageProvider(this.id, this.imageName, {this.scale = 1.0});
 
   @override
-  ImageStreamCompleter loadImage(PageImageProvider key, ImageDecoderCallback decode) {
+  ImageStreamCompleter load(PageImageProvider key, DecoderCallback decode) {
     return MultiFrameImageStreamCompleter(
       codec: _loadAsync(key),
       scale: key.scale,
@@ -79,7 +78,7 @@ class PageImageProvider extends ImageProvider<PageImageProvider> {
 
   Future<ui.Codec> _loadAsync(PageImageProvider key) async {
     assert(key == this);
-    return ui.instantiateImageCodec(
+    return PaintingBinding.instance!.instantiateImageCodec(
       await File(await methods.jmPageImage(id, imageName)).readAsBytes(),
     );
   }
@@ -272,7 +271,7 @@ class _JMPageImageState extends State<JMPageImage> {
 
 Widget pathFutureImage(BuildContext context, Future<String> future, double? width, double? height,
     {BoxFit fit = BoxFit.cover,
-    List<LongPressMenuItem>? longPressMenuItems}) {
+      List<LongPressMenuItem>? longPressMenuItems}) {
   return FutureBuilder(
       future: future,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -441,13 +440,13 @@ Widget buildFile(
           '预览图片',
           ...Platform.isAndroid || Platform.isIOS
               ? [
-                  '保存图片到相册',
-                ]
+            '保存图片到相册',
+          ]
               : [],
           ...!Platform.isIOS
               ? [
-                  '保存图片到文件',
-                ]
+            '保存图片到文件',
+          ]
               : [],
           ...longPressMenuItems?.map((e) => e.title) ?? [],
         ],
