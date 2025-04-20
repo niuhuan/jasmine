@@ -10,7 +10,7 @@ env:
 jobs:
   build-core: 
     runs-on: ubuntu-latest
-    container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:3.7.12-ohos-1.0.6
+    container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:3.22.0-ohos
     steps:
       - name: checkout core
         uses: actions/checkout@v3
