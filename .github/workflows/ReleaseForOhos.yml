@@ -57,6 +57,7 @@ jobs:
       - name: build hap
         run: |
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      ref: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
+          cp scripts/ohos.images.bak lib/screens/components/images.dart
           cp ci/version.code.txt lib/assets/version.txt
           flutter build hap --target-platform=ohos-arm64
           cd ohos
