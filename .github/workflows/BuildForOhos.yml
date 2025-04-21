@@ -9,7 +9,7 @@ env:
 jobs:
   build: 
     runs-on: ubuntu-latest
-    container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:3.22.0-ohos
+    container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:3.7.12-ohos-1.0.6
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -40,7 +40,6 @@ jobs:
       - name: build hap
         run: |
           sed -i 's/  modal_bottom_sheet: \^3.0.0-pre/  modal_bottom_sheet:\n    git:\n      url: https:\/\/github.com\/niuhuan\/modal_bottom_sheet.git\n      ref: ohos\n      path: modal_bottom_sheet/g' pubspec.yaml
-          cp scripts/ohos.images.bak lib/screens/components/images.dart
           cp ci/version.code.txt lib/assets/version.txt
           flutter build hap --target-platform=ohos-arm64
           cd ohos
