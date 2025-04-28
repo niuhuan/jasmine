@@ -316,8 +316,8 @@ jobs:
           asset_path_dict["linux"]="build/linux.AppImage"
           asset_path_dict["macos"]="build/macos.dmg"
           
-          asset_name = ${asset_dict[$(echo ${{ matrix.config.target }})]}
-          asset_path = ${asset_path_dict[$(echo ${{ matrix.config.target }})]}
+          asset_name = ${asset_dict["${{ matrix.config.target }}"]}
+          asset_path = ${asset_path_dict["${{ matrix.config.target }}"]}
           
           echo "Uploading asset $asset_name from $asset_path"
           gh release upload $VERSION "$asset_path#$asset_name" --clobber
