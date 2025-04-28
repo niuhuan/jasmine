@@ -137,7 +137,7 @@ jobs:
           cargo install --force cbindgen
 
       - name: Install cargo tools (Android)
-        if: ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' )
+        if: startsWith(matrix.config.target, 'android-')
         run: |
           cargo install --force cargo-ndk
 
