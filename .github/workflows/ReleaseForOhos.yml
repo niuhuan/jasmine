@@ -82,6 +82,8 @@ jobs:
           && apt update \
           && apt install curl gh -y
           
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          
           export VERSION=$(cat ci/version.code.txt | xargs echo)
           asset_path=ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
           asset_name="${{ github.event.repository.name }}-$VERSION-unsigned.hap"
