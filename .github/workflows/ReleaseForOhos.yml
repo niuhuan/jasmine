@@ -37,7 +37,8 @@ jobs:
         with:
           name: core-build-output
           path: native/jmbackend/platforms/ohos/dist
-  build-and-upload--hap:
+
+  build-and-upload-hap:
     needs: build-core
     runs-on: ubuntu-latest
     container: ghcr.io/niuhuan/harmony-next-flutter-pipeline-docker/image:latest
@@ -66,11 +67,12 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
-      - name: Upload Asset (All)
-        if: steps.check_asset.outputs.skip_build != 'true'
+
+      - name: Upload Asset
         run: |
-          export flutter_version=3.22.1
-          export TARGET=ohos-arm64
-          cd ci
-          cargo run --bin upload-asset
+          export VERSION=$(cat ci/version.code.txt | xargs echo)
+          asset_path = ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
+          asset_name="${{ github.event.repository.name }}-$VERSION-unsigned.hap"
+          echo "Uploading asset $asset_name from $asset_path"
+          gh release upload $VERSION "$asset_path#$asset_name" --clobber 
 
