@@ -301,6 +301,7 @@ jobs:
         if: matrix.config.target != 'windows'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
         run: |
           export VERSION=$(cat ci/version.code.txt | xargs echo)
           declare -A asset_dict
