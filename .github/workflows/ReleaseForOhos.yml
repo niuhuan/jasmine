@@ -73,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           export VERSION=$(cat ci/version.code.txt | xargs echo)
-          asset_path = ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
+          asset_path=ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
           asset_name="${{ github.event.repository.name }}-$VERSION-unsigned.hap"
           echo "Uploading asset $asset_name from $asset_path"
           mv "$asset_path" "$asset_name"
