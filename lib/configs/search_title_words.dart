@@ -13,7 +13,7 @@ late bool _searchTitleWords;
 Future<void> initSearchTitleWords() async {
   var str = await methods.loadProperty(_propertyName);
   if (str == "") {
-    str = "true";
+    str = "false";
   }
   _searchTitleWords = str == "true";
 }
