@@ -297,8 +297,8 @@ jobs:
           echo "Uploading asset ${{ github.event.repository.name }}-$VERSION-windows-x86_64.zip"
           gh release upload $VERSION "build/windows.zip#${{ github.event.repository.name }}-$VERSION-windows-x86_64.zip" --clobber
 
-      - name: Upload Asset (non-windows)
-        if: matrix.config.target != 'windows'
+      - name: Upload Asset (android , linux)
+        if: startsWith(matrix.config.target, 'android') || startsWith(matrix.config.target, 'linux')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
@@ -323,3 +323,20 @@ jobs:
           echo "Uploading asset $asset_name from $asset_path"
           gh release upload $VERSION "$asset_path#$asset_name" --clobber
 
+      - name: Upload Asset (macos , ios)
+        if: startsWith(matrix.config.target, 'macos') || startsWith(matrix.config.target, 'ios')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          export VERSION=$(cat ci/version.code.txt | xargs echo)
+          if [ "${{ matrix.config.target }}" == "ios" ]; then
+            asset_name="${{ github.event.repository.name }}-$VERSION-nosign.ipa"
+            asset_path="build/nosign.ipa"
+          else
+            asset_name="${{ github.event.repository.name }}-$VERSION.dmg"
+            asset_path="build/macos.dmg"
+          fi
+            echo "Uploading asset $asset_name from $asset_path"
+            gh release upload $VERSION "$asset_path#$asset_name" --clobber  
+          
