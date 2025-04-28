@@ -87,5 +87,5 @@ jobs:
           asset_name="${{ github.event.repository.name }}-$VERSION-unsigned.hap"
           echo "Uploading asset $asset_name from $asset_path"
           mv "$asset_path" "$asset_name"
-          gh release upload $VERSION "$asset_name" --clobber 
+          gh release upload $VERSION "${asset_name}#${asset_name}" --clobber 
 
