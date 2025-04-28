@@ -69,6 +69,8 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       - name: Upload Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           export VERSION=$(cat ci/version.code.txt | xargs echo)
           asset_path = ohos/entry/build/default/outputs/default/entry-default-unsigned.hap
