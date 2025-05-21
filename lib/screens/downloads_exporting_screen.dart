@@ -101,7 +101,7 @@ class _DownloadsExportingScreenState extends State<DownloadsExportingScreen> {
         Container(height: 20),
         _buildButtonInner(
           _exportCbzsZips,
-          "分别导出CBZS.ZIP" + (!isPro ? "\n(发电后使用)" : ""),
+          "分别导出CBZ" + (!isPro ? "\n(发电后使用)" : ""),
         ),
         Container(height: 20),
         if (true) ...[
