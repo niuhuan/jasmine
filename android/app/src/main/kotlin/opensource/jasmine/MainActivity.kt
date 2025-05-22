@@ -19,6 +19,10 @@ import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.Executors
 import java.io.File
 import opensource.jenny.Jni
+import java.util.concurrent.LinkedBlockingQueue
+import android.hardware.biometrics.BiometricPrompt
+import java.util.concurrent.TimeUnit
+import android.os.CancellationSignal
 
 class MainActivity : FlutterActivity() {
 
@@ -58,7 +62,8 @@ class MainActivity : FlutterActivity() {
                     call.arguments<String>() ?: throw Exception("need arg"),
                 )
                 "picturesDir" -> picturesDir().absolutePath
-                else -> result.notImplemented()
+                "verifyAuthentication" -> auth()
+                else -> notImplementedToken
             }
         }
     }
@@ -226,6 +231,52 @@ class MainActivity : FlutterActivity() {
         if (!dir.exists()) {
             dir.mkdirs()
         }
+    }
+    private fun auth(): Boolean {
+        var queue = LinkedBlockingQueue<Boolean>()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            var mBiometricPrompt = BiometricPrompt.Builder(this)
+                .setTitle("验证身份")
+                .setDescription("需要验证您的身份")
+                .setNegativeButton(
+                    "取消", mainExecutor
+                ) { _, _ -> queue.add(false) }
+                .build()
+
+
+            var mCancellationSignal = CancellationSignal()
+            mCancellationSignal.setOnCancelListener {
+                queue.add(false)
+            }
+
+            var mAuthenticationCallback = object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
+                    super.onAuthenticationError(errorCode, errString)
+                    queue.add(false)
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    queue.add(false)
+                }
+
+                override fun onAuthenticationSucceeded(result1: BiometricPrompt.AuthenticationResult?) {
+                    super.onAuthenticationSucceeded(result1)
+                    queue.add(true)
+                }
+            }
+
+            mBiometricPrompt.authenticate(
+                mCancellationSignal,
+                mainExecutor,
+                mAuthenticationCallback
+            )
+
+        } else {
+            queue.add(false)
+        }
+
+        return queue.poll(5, TimeUnit.MINUTES) ?: false
     }
 
 }
