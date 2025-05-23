@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/platform.dart';
 import 'package:jasmine/configs/Authentication.dart';
 import 'package:jasmine/configs/android_display_mode.dart';
 import 'package:jasmine/configs/android_version.dart';
@@ -42,7 +43,7 @@ Future initConfigs(BuildContext context) async {
   await initAndroidVersion();
   await initAndroidDisplayMode();
   await initVersion();
-  autoCheckNewVersion();
+  if (normalPlatform) autoCheckNewVersion();
   await initApiHost();
   await initCdnHost();
   await initPagerControllerMode();
