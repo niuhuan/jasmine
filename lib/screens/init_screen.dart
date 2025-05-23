@@ -31,19 +31,18 @@ class _InitScreenState extends State<InitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffeeeeee),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return Center(
             child: SizedBox(
-              width: constraints.maxWidth / 2,
-              height: constraints.maxHeight / 2,
+              width: constraints.maxWidth * 0.9,
+              height: constraints.maxHeight * 0.9,
               child: ConstrainedBox(
                 constraints: const BoxConstraints.expand(),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
+                child: Opacity(
+                  opacity: 0.8,
                   child: Image.asset(
-                    "lib/assets/ic_launcher.png",
+                    "lib/assets/startup.png",
                     fit: BoxFit.contain,
                   ),
                 ),

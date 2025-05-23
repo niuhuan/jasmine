@@ -69,9 +69,12 @@ class _AboutState extends State<AboutScreen> {
                 constraints: const BoxConstraints.expand(),
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  child: Image.asset(
-                    "lib/assets/ic_launcher.png",
-                    fit: BoxFit.contain,
+                  child: Opacity(
+                    opacity: 0.9,
+                    child: Image.asset(
+                      "lib/assets/avatar.png",
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
