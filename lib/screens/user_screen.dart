@@ -4,6 +4,7 @@ import 'package:jasmine/configs/login.dart';
 import 'package:jasmine/screens/about_screen.dart';
 import 'package:jasmine/screens/comments_screen.dart';
 import 'package:jasmine/screens/components/avatar.dart';
+import 'package:jasmine/screens/pro_oh_screen.dart';
 import 'package:jasmine/screens/pro_screen.dart';
 import 'package:jasmine/screens/settings_screen.dart';
 import 'package:jasmine/screens/view_log_screen.dart';
@@ -49,6 +50,18 @@ class _UserScreenState extends State<UserScreen>
     super.build(context);
     return Scaffold(
       appBar: AppBar(title: const Text("个人中心"), actions: [
+        if (!normalPlatform)
+          IconButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return const ProOhScreen();
+              }));
+            },
+            icon: Icon(
+              isPro ? Icons.offline_bolt : Icons.offline_bolt_outlined,
+            ),
+          ),
         if (normalPlatform)
           IconButton(
             onPressed: () {
