@@ -1,5 +1,13 @@
-Jasmine Comic
-=============
+<div align="center">
+  <h1 align="center">
+    <img src="lib/assets/avatar.png" width="200">
+    <br/>
+    Jasmine 
+
+[![license](https://img.shields.io/github/license/niuhuan/jasmine)](https://raw.githubusercontent.com/niuhuan/wild/master/LICENSE)
+[![releases](https://img.shields.io/github/v/release/niuhuan/jasmine)](https://github.com/niuhuan/wild/releases)
+  </h1>
+</div>
 
 A comic browser，support Android / iOS / MacOS / Windows / Linux.
 

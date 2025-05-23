@@ -97,39 +97,44 @@ class _FirstLoginScreenState extends State<FirstLoginScreen> {
         actions: _logging
             ? []
             : [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _onClickVersion++;
-              });
-              if (_onClickVersion >= 7) {
-                openUrl(String.fromCharCodes(base64Decode("aHR0cHM6Ly9qbWNvbWljMS5yb2Nrcy9zaWdudXA=")));
-              }
-            },
-            icon: Text(currentVersion()),
-          ),
-          _saveButton,
-        ],
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _onClickVersion++;
+                    });
+                    if (_onClickVersion >= 7) {
+                      openUrl(String.fromCharCodes(base64Decode(
+                          "aHR0cHM6Ly9qbWNvbWljMS5yb2Nrcy9zaWdudXA=")));
+                    }
+                  },
+                  icon: Text(currentVersion()),
+                ),
+                _saveButton,
+              ],
       ),
-      body: ListView(
-        children: _logging
-            ? [
-          const Center(child: ContentLoading()),
-        ]
-            : [
-          _usernameField(),
-          _passwordField(),
-          apiHostSetting(),
-          cdnHostSetting(),
-          const Divider(),
-          ListTile(
-            title: const Text("注册"),
-            onTap: () {
-              regxxx(context);
-            },
-          ),
-        ],
-      ),
+      body: _logging ? _loading() : _form(),
+    );
+  }
+
+  Widget _loading() {
+    return const Center(child: ContentLoading());
+  }
+
+  Widget _form() {
+    return ListView(
+      children: [
+        _usernameField(),
+        _passwordField(),
+        apiHostSetting(),
+        cdnHostSetting(),
+        const Divider(),
+        ListTile(
+          title: const Text("注册"),
+          onTap: () {
+            regxxx(context);
+          },
+        ),
+      ],
     );
   }
 }
