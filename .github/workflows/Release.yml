@@ -311,8 +311,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $VERSION = (Get-Content -Path "ci/version.code.txt").Trim()
-          $asset_path = build/windows.zip
-          $asset_name = ${{ github.event.repository.name }}-$VERSION-windows-x86_64.zip
+          $asset_path = "build/windows.zip"
+          $asset_name = "${{ github.event.repository.name }}-$VERSION-windows-x86_64.zip"
           echo "Uploading asset $asset_name from $asset_path"
           mv $asset_path $asset_name
           gh release upload $VERSION $asset_name#$asset_name --clobber
