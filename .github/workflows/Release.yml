@@ -41,6 +41,7 @@ jobs:
           declare -A asset_dict
           asset_dict["ios"]="${{ github.event.repository.name }}-$VERSION-nosign.ipa"
           asset_dict["android-arm64"]="${{ github.event.repository.name }}-arm64-$VERSION.apk"
+          asset_dict["android-arm32"]="${{ github.event.repository.name }}-arm32-$VERSION.apk"
           asset_dict["android-core"]="${{ github.event.repository.name }}-android-core-$VERSION.zip"
           asset_dict["windows"]="${{ github.event.repository.name }}-$VERSION-windows-x86_64.zip"
           asset_dict["linux"]="${{ github.event.repository.name }}-$VERSION.AppImage"
@@ -48,6 +49,7 @@ jobs:
           declare -A host_dict
           host_dict["ios"]="macos-latest"
           host_dict["android-arm64"]="ubuntu-latest"
+          host_dict["android-arm32"]="ubuntu-latest"
           host_dict["android-core"]="ubuntu-latest"
           host_dict["windows"]="windows-latest"
           host_dict["linux"]="ubuntu-latest"
@@ -327,6 +329,7 @@ jobs:
           declare -A asset_dict
           asset_dict["ios"]="${{ github.event.repository.name }}-$VERSION-nosign.ipa"
           asset_dict["android-arm64"]="${{ github.event.repository.name }}-arm64-$VERSION.apk"
+          asset_dict["android-arm32"]="${{ github.event.repository.name }}-arm32-$VERSION.apk"
           asset_dict["windows"]="${{ github.event.repository.name }}-$VERSION-windows-x86_64.zip"
           asset_dict["linux"]="${{ github.event.repository.name }}-$VERSION.AppImage"
           asset_dict["macos"]="${{ github.event.repository.name }}-$VERSION.dmg"
@@ -334,6 +337,7 @@ jobs:
           declare -A asset_path_dict
           asset_path_dict["ios"]="build/nosign.ipa"
           asset_path_dict["android-arm64"]="build/app/outputs/flutter-apk/app-release.apk"
+          asset_path_dict["android-arm32"]="build/app/outputs/flutter-apk/app-release.apk"
           asset_path_dict["windows"]="build/windows.zip"
           asset_path_dict["linux"]="build/linux.AppImage"
           asset_path_dict["macos"]="build/macos.dmg"
