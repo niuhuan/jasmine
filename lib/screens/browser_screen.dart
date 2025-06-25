@@ -13,6 +13,7 @@ import 'components/actions.dart';
 import 'components/comic_floating_search_bar.dart';
 import 'components/content_error.dart';
 import 'components/content_loading.dart';
+import 'week_screen.dart';
 
 class BrowserScreenWrapper extends StatefulWidget {
   final FloatingSearchBarController searchBarController;
@@ -122,6 +123,12 @@ class _BrowserScreenState extends State<BrowserScreen>
       appBar: AppBar(
         title: const Text("浏览"),
         actions: [
+          IconButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const WeekScreen()));
+            },
+            icon: const Icon(Icons.calendar_month),
+          ),
           IconButton(
             onPressed: () async {
               searchHistories = await methods.lastSearchHistories(20);

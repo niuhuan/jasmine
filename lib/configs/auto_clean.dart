@@ -6,6 +6,7 @@ const _propertyName = "auto_clean";
 late String autoClean;
 
 Map<String, String> _nameMap = {
+  (3600 * 24).toString(): "一天",
   (3600 * 24 * 7).toString(): "一周",
   (3600 * 24 * 30).toString(): "一月",
   (3600 * 24 * 30 * 12).toString(): "一年",
@@ -13,6 +14,10 @@ Map<String, String> _nameMap = {
 
 Future initAutoClean() async {
   autoClean = await methods.loadProperty(_propertyName);
+  if (autoClean.isEmpty) {
+    autoClean = (3600 * 24 * 7).toString();
+    await methods.saveProperty(_propertyName, autoClean);
+  }
 }
 
 String autoCleanName() {

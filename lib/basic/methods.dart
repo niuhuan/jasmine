@@ -545,7 +545,9 @@ class Methods {
   }
 
   Future<WeekData> week(int page) async {
-    return WeekData.fromJson(jsonDecode(await _invoke("week", page)));
+    return WeekData.fromJson(jsonDecode(await _invoke("week", {
+      "page": page,
+    })));
   }
 
   Future<WeekFilterResponse> weekFilter(

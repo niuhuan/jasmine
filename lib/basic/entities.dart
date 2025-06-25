@@ -1288,7 +1288,7 @@ class WeekData {
 
   WeekData.fromJson(Map<String, dynamic> json) {
     categories = List.from(json['categories']).map((e) => WeekCategory.fromJson(e)).toList();
-    types = List.from(json['types']).map((e) => WeekType.fromJson(e)).toList();
+    types = List.from(json['type']).map((e) => WeekType.fromJson(e)).toList();
   }
 }
 
