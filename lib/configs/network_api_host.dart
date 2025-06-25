@@ -6,6 +6,7 @@ import 'package:jasmine/basic/methods.dart';
 late String _apiHost;
 
 const _base64List = [
+  "d3d3LmNkbnBsYXlzdGF0aW9uNi52aXA=",
   "d3d3LmNkbnVjLnZpcA==",
   "d3d3LmNkbm1od3NjYy52aXA=",
   "d3d3LmNkbnh4eC1wcm94eS52aXA=",

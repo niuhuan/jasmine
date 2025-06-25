@@ -9,6 +9,7 @@ late String _cdnHost;
 String get currentCdnHostName => _cdnHost;
 
 const _base64List = [
+  "Y2RuLW1zcDMuam1kYW5qb25wcm94eS52aXA=",
   "Y2RuLW1zcDMuam1hcGlub2RldWR6bi5uZXQ=",
   "Y2RuLW1zcC5qbWFwaXByb3h5My5uZXQ=",
   "Y2RuLW1zcDIuam1hcGlub2RldWR6bi5uZXQ=",
