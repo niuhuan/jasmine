@@ -543,6 +543,19 @@ class Methods {
   Future<String> daily(int uid) {
     return _invoke("daily", uid);
   }
+
+  Future<WeekData> week(int page) async {
+    return WeekData.fromJson(jsonDecode(await _invoke("week", page)));
+  }
+
+  Future<WeekFilterResponse> weekFilter(
+      String categoryId, String typeId, int page) async {
+    return WeekFilterResponse.fromJson(jsonDecode(await _invoke("week_filter", {
+      "category_id": categoryId,
+      "type_id": typeId,
+      "page": page,
+    })));
+  }
 }
 
 class _Response {

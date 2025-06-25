@@ -802,6 +802,13 @@ class FavoritesResponse extends CountPage<ComicSimple> {
   }
 }
 
+class WeekFilterResponse extends Page<ComicSimple> {
+    WeekFilterResponse.fromJson(Map<String, dynamic> json) {
+      list = List.from(json['list']).map((e) => ComicSimple.fromJson(e)).toList();
+      total = json['total'];
+  }
+}
+
 class ActionResponse {
   ActionResponse({
     required this.status,
@@ -1272,5 +1279,37 @@ class IsPro {
   IsPro.fromJson(Map<String, dynamic> json) {
     isPro = json["is_pro"];
     this.expire = json["expire"];
+  }
+}
+
+class WeekData {
+  late List<WeekCategory> categories;
+  late List<WeekType> types;
+
+  WeekData.fromJson(Map<String, dynamic> json) {
+    categories = List.from(json['categories']).map((e) => WeekCategory.fromJson(e)).toList();
+    types = List.from(json['types']).map((e) => WeekType.fromJson(e)).toList();
+  }
+}
+
+class WeekCategory {
+  late String id;
+  late String time;
+  late String title;
+
+  WeekCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    time = json['time'];
+    title = json['title'];
+  }
+}
+
+class WeekType {
+  late String id;
+  late String title;
+
+  WeekType.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
   }
 }
