@@ -8,6 +8,7 @@ import 'package:jasmine/screens/components/comic_info_card.dart';
 import 'package:jasmine/screens/components/comic_list.dart';
 import 'package:jasmine/screens/components/item_builder.dart';
 
+import '../configs/ignore_view_log.dart';
 import 'comic_download_screen.dart';
 import 'comic_reader_screen.dart';
 import 'components/comic_comments_list.dart';
@@ -29,7 +30,10 @@ class ComicInfoScreen extends StatefulWidget {
 class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
   var _favouriteLoading = false;
   var _tabIndex = 0;
-  late Future<AlbumResponse> _albumFuture = methods.album(widget.comicId);
+  late Future<AlbumResponse> _albumFuture = methods.album(
+    widget.comicId,
+    ignoreViewLog: currentIgnoreVewLog(),
+  );
   late Future<ViewLog?> _viewFuture = methods.findViewLog(widget.comicId);
 
   @override
@@ -141,7 +145,10 @@ class _ComicInfoScreenState extends State<ComicInfoScreen> with RouteAware {
             future: _albumFuture,
             onRefresh: () async {
               setState(() {
-                _albumFuture = methods.album(widget.comicId);
+                _albumFuture = methods.album(
+                  widget.comicId,
+                  ignoreViewLog: currentIgnoreVewLog(),
+                );
               });
             },
             successBuilder: (

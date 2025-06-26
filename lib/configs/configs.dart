@@ -27,6 +27,7 @@ import 'categories_sort.dart';
 import 'download_and_export_to.dart';
 import 'export_path.dart';
 import 'export_rename.dart';
+import 'ignore_view_log.dart';
 import 'is_pro.dart';
 import 'network_api_host.dart';
 import 'network_cdn_host.dart';
@@ -78,4 +79,5 @@ Future initConfigs(BuildContext context) async {
   await initAuthentication();
   await initFontSizeAdjust();
   await initAppOrientation();
+  await initIgnoreVewLog();
 }

@@ -94,8 +94,11 @@ class Methods {
     return _invoke("save_property", {"k": key, "v": v});
   }
 
-  Future<AlbumResponse> album(int id) async {
-    return AlbumResponse.fromJson(jsonDecode(await _invoke("album", id)));
+  Future<AlbumResponse> album(int id, {bool ignoreViewLog = false}) async {
+    return AlbumResponse.fromJson(jsonDecode(await _invoke("album", {
+      "id": id,
+      "ignore_view_log": ignoreViewLog,
+    })));
   }
 
   Future<ChapterResponse> chapter(int id) async {

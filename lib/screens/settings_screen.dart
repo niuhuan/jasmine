@@ -16,6 +16,7 @@ import '../configs/categories_sort.dart';
 import '../configs/display_jmcode.dart';
 import '../configs/download_and_export_to.dart';
 import '../configs/export_rename.dart';
+import '../configs/ignore_view_log.dart';
 import '../configs/login.dart';
 import '../configs/no_animation.dart';
 import '../configs/proxy.dart';
@@ -108,6 +109,8 @@ class _SettingsState extends State<SettingsScreen> {
               leading: Icon(Icons.ad_units),
               title: Text('系统和应用程序'),
               children: [
+                const Divider(),
+                ignoreVewLogSetting(),
                 const Divider(),
                 appOrientationWidget(),
                 const Divider(),
