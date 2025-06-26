@@ -1,4 +1,4 @@
-package opensource.jasmine
+package opensource.jmtt2mic
 
 import android.content.ContentValues
 import android.graphics.Bitmap
@@ -219,7 +219,7 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun defaultJennyDir(): File {
-        return File(downloadsDir(), "jasmine")
+        return File(downloadsDir(), "jmtt2mic")
     }
 
     private fun androidDefaultExportsDir(): File {
