@@ -20,9 +20,6 @@ bool currentIgnoreVewLog() {
 }
 
 Widget ignoreVewLogSetting() {
-  if (!(Platform.isWindows || Platform.isMacOS || Platform.isLinux)) {
-    return Container();
-  }
   return StatefulBuilder(
     builder: (BuildContext context, void Function(void Function()) setState) {
       return SwitchListTile(
