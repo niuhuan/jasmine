@@ -7,6 +7,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 
+import 'ignore_upgrade_pop.dart';
+
 const _versionUrl =
     "https://api.github.com/repos/niuhuan/jasmine/releases/latest";
 const _versionAssets = 'lib/assets/version.txt';
@@ -165,7 +167,7 @@ String formatDateTimeToDateTime(DateTime c) {
 var _display = true;
 
 void versionPop(BuildContext context) {
-  if (latestVersion != null && _display) {
+  if (latestVersion != null && _display && !currentIgnoreUpgradePop()) {
     _display = false;
     TopConfirm.topConfirm(context, "发现新版本", "发现新版本 $latestVersion , 请到关于页面更新");
   }

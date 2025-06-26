@@ -27,6 +27,7 @@ import 'categories_sort.dart';
 import 'download_and_export_to.dart';
 import 'export_path.dart';
 import 'export_rename.dart';
+import 'ignore_upgrade_pop.dart';
 import 'ignore_view_log.dart';
 import 'is_pro.dart';
 import 'network_api_host.dart';
@@ -45,7 +46,6 @@ Future initConfigs(BuildContext context) async {
   await initAndroidVersion();
   await initAndroidDisplayMode();
   await initVersion();
-  if (normalPlatform) autoCheckNewVersion();
   await initApiHost();
   await initCdnHost();
   await initPagerControllerMode();
@@ -80,4 +80,6 @@ Future initConfigs(BuildContext context) async {
   await initFontSizeAdjust();
   await initAppOrientation();
   await initIgnoreVewLog();
+  await initIgnoreUpgradePop();
+  if (normalPlatform && isPro) autoCheckNewVersion();
 }

@@ -5,6 +5,7 @@ import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/components/badge.dart';
 
+import '../configs/is_pro.dart';
 import '../configs/theme.dart';
 import '../configs/using_right_click_pop.dart';
 import 'components/right_click_pop.dart';
@@ -34,13 +35,10 @@ class _AboutState extends State<AboutScreen> {
           const Divider(),
           _buildLogo(),
           const Divider(),
-          _buildIssues(),
-          const Divider(),
           _buildCurrentVersion(),
           const Divider(),
           _buildNewestVersion(),
-          const Divider(),
-          _buildGotoGithub(),
+          if (latestVersion != null) _buildGotoGithub(),
           const Divider(),
           _buildVersionText(),
           const Divider(),
@@ -99,8 +97,13 @@ class _AboutState extends State<AboutScreen> {
       child: Text.rich(TextSpan(
         children: [
           const TextSpan(text: "最新版本 : "),
-          _buildNewestVersionSpan(),
-          _buildCheckButton(),
+          if (isPro) _buildNewestVersionSpan(),
+          if (isPro) _buildCheckButton(),
+          if (!isPro)
+            const TextSpan(
+              text: "请前往官网获取最新版本",
+              style: TextStyle(color: Colors.grey),
+            ),
         ],
       )),
     );
@@ -158,15 +161,6 @@ class _AboutState extends State<AboutScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       child: SelectableText(info ?? ""),
-    );
-  }
-
-  Widget _buildIssues() {
-    return ListTile(
-      title: const Text("意见反馈"),
-      onTap: () {
-        openUrl("https://github.com/niuhuan/jasmine/issues/");
-      },
     );
   }
 }
