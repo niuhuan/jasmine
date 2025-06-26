@@ -9,7 +9,7 @@ const _propertyName = "WebDavUrl";
 Future<String?> initWebDavUrl() async {
   _currentWebDavUrl  = await methods.loadProperty(_propertyName);
   if (_currentWebDavUrl == "") {
-    _currentWebDavUrl = "http://server/.jasmine.history";
+    _currentWebDavUrl = "http://server/.jmtt2mic.history";
   }
   return null;
 }
@@ -26,7 +26,7 @@ Future<dynamic> inputWebDavUrl(BuildContext context) async {
     src: _currentWebDavUrl,
     title: 'WebDAV文件URL',
     hint: '请输入WebDAV文件URL',
-    desc: " ( 例如 http://server/folder/.jasmine.history ) ",
+    desc: " ( 例如 http://server/folder/.jmtt2mic.history ) ",
   );
   if (input != null) {
     await methods.saveProperty(_propertyName, input);
