@@ -53,7 +53,7 @@ class ContentBodyState extends State<ContentBody> {
             child: Text(
               sums,
               maxLines: 8,
-              style: const TextStyle(fontSize: 66, color: Colors.white),
+              style: const TextStyle(fontSize: 33, color: Colors.white),
             ),
           ),
         ),
