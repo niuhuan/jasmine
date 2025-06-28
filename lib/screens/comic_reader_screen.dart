@@ -19,6 +19,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../configs/ignore_view_log.dart';
 import '../configs/no_animation.dart';
 import '../configs/volume_key_control.dart';
 import 'components/images.dart';
@@ -61,7 +62,16 @@ class _ComicReaderScreenState extends State<ComicReaderScreen> {
 
   @override
   void initState() {
-    methods.updateViewLog(widget.comic.id, widget.chapterId, widget.initRank);
+    if (currentIgnoreVewLog()) {
+      late Future<AlbumResponse> _albumFuture = methods.album(
+        widget.comic.id,
+      );
+      _albumFuture.then((value) {
+          methods.updateViewLog(widget.comic.id, widget.chapterId, widget.initRank);
+      });
+    } else {
+      methods.updateViewLog(widget.comic.id, widget.chapterId, widget.initRank);
+    }
     _load();
     super.initState();
   }
