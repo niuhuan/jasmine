@@ -105,10 +105,11 @@ class Methods {
     return ChapterResponse.fromJson(jsonDecode(await _invoke("chapter", id)));
   }
 
-  Future<CommentPage> forum(String? mode, int? aid, int page) async {
+  Future<CommentPage> forum(String? mode, int? aid, int? uid, int page) async {
     return CommentPage.fromJson(jsonDecode(await _invoke("forum", {
       "mode": mode,
       "aid": aid,
+      "uid": uid,
       "page": page,
     })));
   }

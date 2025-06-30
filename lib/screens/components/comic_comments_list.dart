@@ -10,11 +10,13 @@ import 'avatar.dart';
 class ComicCommentsList extends StatefulWidget {
   final String? mode;
   final int? aid;
+  final int? uid;
   final bool gotoComic;
 
   const ComicCommentsList({
     required this.mode,
     required this.aid,
+    this.uid,
     this.gotoComic = false,
     Key? key,
   }) : super(key: key);
@@ -29,7 +31,7 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
   int _page = 1;
 
   Future<CommentPage> _loadPage() async {
-    final response = await methods.forum(widget.mode, widget.aid, _page);
+    final response = await methods.forum(widget.mode, widget.aid, widget.uid, _page);
     if (_page == 1) {
       if (response.total == 0) {
         _maxPage = 1;
