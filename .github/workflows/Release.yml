@@ -205,11 +205,10 @@ jobs:
       - name: Install rust target and build (Android-core)
         if: ( matrix.config.target == 'android-core')
         run: |
+          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}
           rustup target install aarch64-linux-android
           rustup target install armv7-linux-androideabi
           rustup target install x86_64-linux-android
-          export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}
-          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}
           cd native/jmbackend/platforms/android
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t arm64-v8a build --release
           cargo ndk -o ../../../../android/app/src/main/jniLibs -t armeabi-v7a build --release
