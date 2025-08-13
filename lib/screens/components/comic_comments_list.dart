@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
@@ -6,6 +7,7 @@ import 'package:jasmine/screens/components/item_builder.dart';
 
 import '../comic_info_screen.dart';
 import 'avatar.dart';
+import 'text_preview_screen.dart';
 
 class ComicCommentsList extends StatefulWidget {
   final String? mode;
@@ -31,7 +33,8 @@ class _ComicCommentsListState extends State<ComicCommentsList> {
   int _page = 1;
 
   Future<CommentPage> _loadPage() async {
-    final response = await methods.forum(widget.mode, widget.aid, widget.uid, _page);
+    final response =
+        await methods.forum(widget.mode, widget.aid, widget.uid, _page);
     if (_page == 1) {
       if (response.total == 0) {
         _maxPage = 1;
@@ -255,6 +258,12 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
     var datetimeStyle = TextStyle(
         color: theme.textTheme.bodyMedium?.color?.withOpacity(.6),
         fontSize: 12);
+    var content = comment.content
+        .replaceAll(
+          "<div style='flex-direction:row;flex-wrap:wrap;'>",
+          "",
+        )
+        .replaceAll("</div>", "");
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -375,14 +384,30 @@ class _ComicCommentItemState extends State<_ComicCommentItem> {
                   },
                   child: Text.rich(
                     TextSpan(
-                      children: [
-                        ...parseCommentBody(comment.content
-                            .replaceAll(
-                              "<div style='flex-direction:row;flex-wrap:wrap;'>",
-                              "",
-                            )
-                            .replaceAll("</div>", ""))
-                      ],
+                      children: content.length < 200
+                          ? [...parseCommentBody(content)]
+                          : [
+                              ...parseCommentBody(content.substring(0, 200)),
+                              TextSpan(text: "..."),
+                              TextSpan(
+                                text: "  全文",
+                                style: TextStyle(
+                                  color: theme.colorScheme.secondary
+                                      .withOpacity(.5),
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            TextPreviewScreen(
+                                          text: content,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                              ),
+                            ],
                     ),
                     style: TextStyle(
                       fontSize: contentFontSize,
