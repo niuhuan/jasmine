@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/configs/android_display_mode.dart';
@@ -5,6 +7,7 @@ import 'package:jasmine/configs/proxy.dart';
 import 'package:jasmine/configs/versions.dart';
 import 'package:jasmine/screens/components/badge.dart';
 
+import '../basic/methods.dart';
 import '../configs/is_pro.dart';
 import '../configs/theme.dart';
 import '../configs/using_right_click_pop.dart';
@@ -140,6 +143,8 @@ class _AboutState extends State<AboutScreen> {
     );
   }
 
+  final repoOwnerUrl = "https://api.github.com/repos/ComicSparks/glxx/releases/tags/jasmine";
+
   Widget _buildGotoGithub() {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -148,8 +153,9 @@ class _AboutState extends State<AboutScreen> {
           "去下载地址",
           style: TextStyle(color: Colors.blue),
         ),
-        onTap: () {
-          openUrl("https://github.com/ComicSparks/jasmine/releases/");
+        onTap: () async {
+          var owner = jsonDecode(await methods.httpGet(repoOwnerUrl))["body"].toString().trim();
+          openUrl("https://github.com/$owner/jasmine/releases/");
         },
       ),
     );
