@@ -81,5 +81,5 @@ Future initConfigs(BuildContext context) async {
   await initAppOrientation();
   await initIgnoreVewLog();
   await initIgnoreUpgradePop();
-  if (normalPlatform && isPro) autoCheckNewVersion();
+  if (normalPlatform) autoCheckNewVersion();
 }

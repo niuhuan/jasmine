@@ -8,9 +8,12 @@ import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/basic/methods.dart';
 
 import 'ignore_upgrade_pop.dart';
+import 'is_pro.dart';
 
+const repoOwnerUrl = "https://api.github.com/repos/ComicSparks/glxx/releases/tags/jasmine";
 const _versionUrl =
-    "https://api.github.com/repos/ComicSparks/jasmine/releases/latest";
+    "https://api.github.com/repos/OWNER/jasmine/releases/latest";
+
 const _versionAssets = 'lib/assets/version.txt';
 RegExp _versionExp = RegExp(r"^v\d+\.\d+.\d+$");
 
@@ -55,6 +58,7 @@ String? latestVersionInfo() {
 }
 
 Future autoCheckNewVersion() {
+  // if (!isPro) return Future.value();
   if (_period != 0) {
     // -1 不检查, >0 未到检查时间
     return Future.value();
@@ -79,7 +83,8 @@ bool dirtyVersion() {
 // maybe exception
 Future _versionCheck() async {
   if (_versionExp.hasMatch(_version)) {
-    var json = jsonDecode(await methods.httpGet(_versionUrl));
+    var owner = jsonDecode(await methods.httpGet(repoOwnerUrl))["body"].toString().trim();
+    var json = jsonDecode(await methods.httpGet(_versionUrl.replaceAll("OWNER", owner)));
     if (json["name"] != null) {
       String latestVersion = (json["name"]);
       if (latestVersion != _version) {

@@ -1,10 +1,13 @@
 name: Release
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
 
 env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   RUST_TOOLCHAIN: nightly-2025-02-26
   NDK_VERSION: 27.2.12479018
   FLUTTER_CHANNEL: stable
@@ -34,7 +37,7 @@ jobs:
       - name: Check and create release
         id: check-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           export VERSION=$(cat ci/version.code.txt | xargs echo)
           echo "VERSION : $VERSION"
@@ -116,7 +119,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_TOKEN }}
-          repository: 'ComicSparks/jasmine-rs-core'
+          repository: 'niuhuan/jasmine-rs-core'
           path: 'native'
 
       - name: Cache Flutter dependencies (Linux/Android)

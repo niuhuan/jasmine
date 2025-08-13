@@ -97,13 +97,15 @@ class _AboutState extends State<AboutScreen> {
       child: Text.rich(TextSpan(
         children: [
           const TextSpan(text: "最新版本 : "),
-          if (isPro) _buildNewestVersionSpan(),
-          if (isPro) _buildCheckButton(),
-          if (!isPro)
-            const TextSpan(
-              text: "请前往官网获取最新版本",
-              style: TextStyle(color: Colors.grey),
-            ),
+          // if (isPro)
+          _buildNewestVersionSpan(),
+          // if (isPro)
+          _buildCheckButton(),
+          // if (!isPro)
+          //   const TextSpan(
+          //     text: "请前往官网获取最新版本",
+          //     style: TextStyle(color: Colors.grey),
+          //   ),
         ],
       )),
     );
