@@ -147,14 +147,14 @@ jobs:
           cargo install --force cargo-ndk
 
       - name: Setup java (Android)
-        if: ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' )
+        if: ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64'  || matrix.config.target == 'android-core')
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_VERSION }}
           distribution: 'temurin'
 
       - name: Setup android tools (Android)
-        if: ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64' )
+        if: ( matrix.config.target == 'android-arm32' || matrix.config.target == 'android-arm64' || matrix.config.target == 'android-x86_64'  || matrix.config.target == 'android-core')
         uses: android-actions/setup-android@v3
         with:
           cmdline-tools-version: 8512546
