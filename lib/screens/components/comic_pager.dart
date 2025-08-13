@@ -17,8 +17,13 @@ const _noProMax = 10;
 class ComicPager extends StatefulWidget {
   final Future<InnerComicPage> Function(int page) onPage;
   final List<ComicLongPressMenuItem>? longPressMenuItems;
+  final List<Widget>? appendList;
 
-  const ComicPager({required this.onPage, this.longPressMenuItems, Key? key})
+  const ComicPager(
+      {required this.onPage,
+      this.longPressMenuItems,
+      this.appendList,
+      Key? key})
       : super(key: key);
 
   @override
@@ -48,11 +53,13 @@ class _ComicPagerState extends State<ComicPager> {
       case PagerControllerMode.stream:
         return _StreamPager(
             onPage: widget.onPage,
-            longPressMenuItems: widget.longPressMenuItems);
+            longPressMenuItems: widget.longPressMenuItems,
+            appendList: widget.appendList);
       case PagerControllerMode.pager:
         return _PagerPager(
             onPage: widget.onPage,
-            longPressMenuItems: widget.longPressMenuItems);
+            longPressMenuItems: widget.longPressMenuItems,
+            appendList: widget.appendList);
     }
   }
 }
@@ -60,8 +67,13 @@ class _ComicPagerState extends State<ComicPager> {
 class _StreamPager extends StatefulWidget {
   final Future<InnerComicPage> Function(int page) onPage;
   final List<ComicLongPressMenuItem>? longPressMenuItems;
+  final List<Widget>? appendList;
 
-  const _StreamPager({Key? key, required this.onPage, this.longPressMenuItems})
+  const _StreamPager(
+      {Key? key,
+      required this.onPage,
+      this.longPressMenuItems,
+      this.appendList})
       : super(key: key);
 
   @override
@@ -258,7 +270,12 @@ class _StreamPagerState extends State<_StreamPager> {
             controller: _controller,
             onScroll: _onScroll,
             data: _data,
-            append: _buildLoadingCard(),
+            appendList: _buildLoadingCard() != null
+                ? [
+                    _buildLoadingCard()!,
+                    ...(widget.appendList ?? []),
+                  ]
+                : widget.appendList,
             longPressMenuItems: widget.longPressMenuItems,
           ),
         ),
@@ -307,8 +324,9 @@ class _StreamPagerState extends State<_StreamPager> {
 class _PagerPager extends StatefulWidget {
   final Future<InnerComicPage> Function(int page) onPage;
   final List<ComicLongPressMenuItem>? longPressMenuItems;
+  final List<Widget>? appendList;
 
-  const _PagerPager({Key? key, required this.onPage, this.longPressMenuItems})
+  const _PagerPager({Key? key, required this.onPage, this.longPressMenuItems, this.appendList})
       : super(key: key);
 
   @override
@@ -368,6 +386,7 @@ class _PagerPagerState extends State<_PagerPager> {
         return Scaffold(
           appBar: _buildPagerBar(),
           body: ComicList(
+            appendList: widget.appendList,
             data: _data,
             longPressMenuItems: widget.longPressMenuItems,
           ),

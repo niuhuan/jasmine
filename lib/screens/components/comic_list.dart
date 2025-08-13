@@ -13,7 +13,7 @@ import 'images.dart';
 class ComicList extends StatefulWidget {
   final bool inScroll;
   final List<ComicBasic> data;
-  final Widget? append;
+  final List<Widget>? appendList;
   final ScrollController? controller;
   final Function? onScroll;
   final List<ComicLongPressMenuItem>? longPressMenuItems;
@@ -21,7 +21,7 @@ class ComicList extends StatefulWidget {
   const ComicList({
     Key? key,
     required this.data,
-    this.append,
+    this.appendList,
     this.controller,
     this.inScroll = false,
     this.onScroll,
@@ -101,8 +101,8 @@ class _ComicListState extends State<ComicList> {
         ),
       ));
     }
-    if (widget.append != null) {
-      widgets.add(widget.append!);
+    if (widget.appendList != null) {
+      widgets.addAll(widget.appendList!);
     }
     late final double childAspectRatio;
     switch (currentPagerCoverRate) {
@@ -156,8 +156,8 @@ class _ComicListState extends State<ComicList> {
         child: ComicInfoCard(widget.data[i]),
       ));
     }
-    if (widget.append != null) {
-      widgets.add(SizedBox(height: 100, child: widget.append!));
+    if (widget.appendList != null) {
+      widgets.addAll(widget.appendList!);
     }
     if (widget.inScroll) {
       return Column(children: widgets);
@@ -238,8 +238,8 @@ class _ComicListState extends State<ComicList> {
         ),
       ));
     }
-    if (widget.append != null) {
-      widgets.add(widget.append!);
+    if (widget.appendList != null) {
+      widgets.addAll(widget.appendList!);
     }
     late final double childAspectRatio;
     switch (currentPagerCoverRate) {
@@ -355,8 +355,8 @@ class _ComicListState extends State<ComicList> {
         ),
       ));
     }
-    if (widget.append != null) {
-      widgets.add(widget.append!);
+    if (widget.appendList != null) {
+      widgets.addAll(widget.appendList!);
     }
     final wrap = Wrap(
       alignment: WrapAlignment.spaceAround,

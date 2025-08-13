@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jasmine/basic/commons.dart';
 import 'package:jasmine/screens/components/comic_pager.dart';
 import 'package:jasmine/screens/components/content_builder.dart';
 
@@ -129,9 +130,44 @@ class _WeekContentState extends State<WeekContent>
                 list: response.list,
               );
             },
+            appendList: [
+              _buildNextCard(),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildNextCard() {
+    return GestureDetector(
+      onTap: () {
+        bool found = false;
+        for (var category in widget.data.categories) {
+          if (found) {
+            setState(() {
+              _categoryId = category.id;
+            });
+            break;
+          }
+          if (category.id == _categoryId) {
+            _categoryId = category.id;
+            found = true;
+          }
+        }
+        defaultToast(context, "没有更多了");
+      },
+      child: Card(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: const Icon(Icons.next_plan_rounded),
+            ),
+            const Text('下一页'),
+          ],
+        ),
+      ),
     );
   }
 }

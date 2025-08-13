@@ -95,7 +95,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_TOKEN }}
-          repository: 'niuhuan/jasmine-rs-core'
+          repository: 'ComicSparks/jasmine-rs-core'
           path: 'native'
  
       - name: Cache Flutter dependencies (Linux/Android)

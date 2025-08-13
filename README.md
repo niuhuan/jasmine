@@ -4,8 +4,8 @@
     <br/>
     Jasmine 
 
-[![license](https://img.shields.io/github/license/niuhuan/jasmine)](https://raw.githubusercontent.com/niuhuan/wild/master/LICENSE)
-[![releases](https://img.shields.io/github/v/release/niuhuan/jasmine)](https://github.com/niuhuan/wild/releases)
+[![license](https://img.shields.io/github/license/ComicSparks/jasmine)](https://raw.githubusercontent.com/niuhuan/wild/master/LICENSE)
+[![releases](https://img.shields.io/github/v/release/ComicSparks/jasmine)](https://github.com/niuhuan/wild/releases)
   </h1>
 </div>
 

@@ -10,7 +10,7 @@ import 'package:jasmine/basic/methods.dart';
 import 'ignore_upgrade_pop.dart';
 
 const _versionUrl =
-    "https://api.github.com/repos/niuhuan/jasmine/releases/latest";
+    "https://api.github.com/repos/ComicSparks/jasmine/releases/latest";
 const _versionAssets = 'lib/assets/version.txt';
 RegExp _versionExp = RegExp(r"^v\d+\.\d+.\d+$");
 

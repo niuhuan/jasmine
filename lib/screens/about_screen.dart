@@ -147,7 +147,7 @@ class _AboutState extends State<AboutScreen> {
           style: TextStyle(color: Colors.blue),
         ),
         onTap: () {
-          openUrl("https://github.com/niuhuan/jasmine/releases/");
+          openUrl("https://github.com/ComicSparks/jasmine/releases/");
         },
       ),
     );
